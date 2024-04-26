@@ -35,7 +35,8 @@ import { computed } from 'vue';
       <tbody>
         <tr v-for="(task,index) in tasks"  :key="index" class="itbkk-item">
           <td class="border px-4 py-2 itbkk-title">{{ task.title }}</td>
-          <td class="border px-4 py-2 itbkk-assignees">
+          <td class="border px-4 py-2 itbkk-assignees  "
+          :style="{ fontStyle: task.assignees ? 'normal' : 'italic' }">
             {{ task.assignees || 'Unassigned' }}
           </td>
           <td
