@@ -26,11 +26,13 @@
               v-for="(task, index) in sortedTasks"
               :key="task.taskId"
               class="itbkk-item"
-              @click="handleTaskClick(task.taskId)"
             >
               <td class="border px-4 py-2">{{ index + 1 }}</td>
 
-              <td class="border px-4 py-2 itbkk-title">
+              <td
+                class="border px-4 py-2 itbkk-title"
+                @click="handleTaskClick(task.taskId)"
+              >
                 {{ task.title }}
               </td>
               <td
