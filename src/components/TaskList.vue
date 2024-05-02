@@ -8,6 +8,14 @@
         <table class="table">
           <thead>
             <tr>
+              <th class="border px-4 py-2">
+                <img
+                  src="../assets/add.png"
+                  alt="Add Icon"
+                  style="width: 30px; height: 30px"
+                />
+              </th>
+
               <th class="border px-4 py-2">Title</th>
               <th class="border px-4 py-2">Assignees</th>
               <th class="border px-4 py-2">Status</th>
@@ -15,11 +23,13 @@
           </thead>
           <tbody>
             <tr
-              v-for="task in sortedTasks"
+              v-for="(task, index) in sortedTasks"
               :key="task.taskId"
               class="itbkk-item"
               @click="handleTaskClick(task.taskId)"
             >
+              <td class="border px-4 py-2">{{ index + 1 }}</td>
+
               <td class="border px-4 py-2 itbkk-title">
                 {{ task.title }}
               </td>
@@ -40,7 +50,7 @@
         </table>
       </div>
     </div>
-    <!-- Render the TaskModal component if selectedTask exists -->
+
     <task-modal
       v-if="selectedTask"
       :task="selectedTask"
