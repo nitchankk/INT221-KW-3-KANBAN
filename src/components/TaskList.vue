@@ -9,13 +9,17 @@
           <thead>
             <tr>
               <th class="border px-4 py-2">
-                <img
-                  src="../assets/add.png"
-                  alt="Add Icon"
-                  style="width: 30px; height: 30px"
-                />
+                <button
+                  @click="handleAddTask"
+                  style="border: none; background: none; padding: 0"
+                >
+                  <img
+                    src="../assets/add.png"
+                    alt="Add Icon"
+                    style="width: 30px; height: 30px"
+                  />
+                </button>
               </th>
-
               <th class="border px-4 py-2">Title</th>
               <th class="border px-4 py-2">Assignees</th>
               <th class="border px-4 py-2">Status</th>
@@ -28,7 +32,6 @@
               class="itbkk-item"
             >
               <td class="border px-4 py-2">{{ index + 1 }}</td>
-
               <td
                 class="border px-4 py-2 itbkk-title"
                 @click="handleTaskClick(task.taskId)"
@@ -61,6 +64,8 @@
       :updatedDate="formatLocalDate(selectedTask.updatedOn)"
       :closeModal="closeModal"
     />
+
+    <add-modal v-if="showAddModal" @save="saveTask" @cancel="cancelAdd" />
   </div>
 </template>
 
@@ -68,10 +73,12 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import TaskModal from './TaskModal.vue'
+import AddModal from './AddModal.vue'
 
 // State variables
 const tasks = ref([])
 const selectedTask = ref(null)
+const showAddModal = ref(false)
 
 // Use the route hook to get the current route
 const route = useRoute()
@@ -126,6 +133,28 @@ const openModal = async (taskId) => {
 // Function to handle a task click event
 const handleTaskClick = (taskId) => {
   openModal(taskId)
+}
+
+// Function to handle adding a new task
+const handleAddTask = () => {
+  // Show the AddModal component
+  showAddModal.value = true
+}
+
+// Function to handle saving a new task
+const saveTask = (newTask) => {
+  // Implement your logic to save the new task here
+  console.log('Saving new task:', newTask)
+  // For example, you can add the new task to the tasks array
+  tasks.value.push(newTask)
+  // Close the AddModal component
+  showAddModal.value = false
+}
+
+// Function to handle canceling the addition of a new task
+const cancelAdd = () => {
+  // Close the AddModal component
+  showAddModal.value = false
 }
 
 // Function to close the modal
