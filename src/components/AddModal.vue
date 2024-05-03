@@ -11,6 +11,7 @@
               type="text"
               id="title"
               v-model="taskDetails.title"
+              class="itbkk-title"
               required
             />
           </div>
@@ -19,15 +20,25 @@
             <textarea
               id="description"
               v-model="taskDetails.description"
+              class="itbkk-description"
             ></textarea>
           </div>
           <div class="form-group">
             <label for="assignees">Assignees:</label>
-            <input type="text" id="assignees" v-model="taskDetails.assignees" />
+            <input
+              type="text"
+              id="assignees"
+              v-model="taskDetails.assignees"
+              class="itbkk-assignees"
+            />
           </div>
           <div class="form-group">
             <label for="status">Status:</label>
-            <select id="status" v-model="taskDetails.status">
+            <select
+              id="status"
+              v-model="taskDetails.status"
+              class="itbkk-status"
+            >
               <option
                 v-for="statusOption in statusOptions"
                 :key="statusOption"
@@ -39,9 +50,11 @@
           </div>
 
           <div class="modal-buttons">
-            <button class="itbkk-button button-done" type="submit">Save</button>
+            <button class="itbkk-button itbkk-button-confirm" type="submit">
+              Save
+            </button>
             <button
-              class="itbkk-button button-close"
+              class="itbkk-button itbkk-button-cancel"
               type="button"
               @click="cancelModal"
             >
@@ -68,9 +81,9 @@ export default {
         title: '',
         description: '',
         assignees: '',
-        status: 'No Status' 
+        status: 'No Status'
       },
-      statusOptions: ['No Status', 'To Do', 'Doing', 'Done'] 
+      statusOptions: ['No Status', 'To Do', 'Doing', 'Done']
     }
   },
   methods: {
@@ -111,7 +124,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -174,18 +187,18 @@ textarea {
   cursor: pointer;
 }
 
-.button-done {
+.itbkk-button-confirm {
   background-color: #68d391;
   color: #fff;
 }
 
-.button-close {
+.itbkk-button-cancel {
   background-color: #f67c5e;
   color: #fff;
 }
 
-.button-done:hover,
-.button-close:hover {
+.itbkk-button-confirm:hover,
+.itbkk-button-cancel:hover {
   opacity: 0.8;
 }
 </style>
