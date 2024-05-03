@@ -28,10 +28,13 @@
           <div class="form-group">
             <label for="status">Status:</label>
             <select id="status" v-model="taskDetails.status">
-              <option value="No Status">No Status</option>
-              <option value="ToDo">To Do</option>
-              <option value="Doing">Doing</option>
-              <option value="Done">Done</option>
+              <option
+                v-for="statusOption in statusOptions"
+                :key="statusOption"
+                :value="statusOption"
+              >
+                {{ statusOption }}
+              </option>
             </select>
           </div>
 
@@ -65,14 +68,14 @@ export default {
         title: '',
         description: '',
         assignees: '',
-        status: 'No Status' // Default value
-      }
+        status: 'No Status' 
+      },
+      statusOptions: ['No Status', 'To Do', 'Doing', 'Done'] 
     }
   },
   methods: {
     async saveTask() {
       try {
-        // Send request to the back-end to save task details
         const response = await fetch('http://localhost:8080/itb-kk/v1/tasks', {
           method: 'POST',
           headers: {
@@ -95,7 +98,6 @@ export default {
       }
     },
     cancelModal() {
-      // Simply emit the 'cancel' event to return to the previous page
       this.$emit('cancel')
     }
   }
