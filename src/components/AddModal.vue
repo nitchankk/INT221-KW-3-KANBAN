@@ -71,26 +71,29 @@ export default {
   },
   methods: {
     async saveTask() {
-      try {
+    try {
         // Send request to the back-end to save task details
         const response = await fetch('http://localhost:8080/itb-kk/v1/tasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.taskDetails)
-        })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.taskDetails)
+        });
+        
         if (response.ok) {
-          // If the request is successful, emit the 'save' event to notify the parent component
-          this.$emit('save', this.taskDetails)
+            // Get the newly created task from the response
+            const newTask = await response.json();
+            
+            // Emit the 'save' event to notify the parent component with the new task
+            this.$emit('save', newTask);
         } else {
-          // If the request fails, handle the error
-          console.error('Error saving task:', response.statusText)
+            console.error('Error saving task:', response.statusText);
         }
-      } catch (error) {
-        console.error('Error saving task:', error)
-      }
-    },
+    } catch (error) {
+        console.error('Error saving task:', error);
+    }
+},
     cancelModal() {
       // Simply emit the 'cancel' event to return to the previous page
       this.$emit('cancel')

@@ -10,8 +10,8 @@ const routes = [
     component: () => import('./components/TaskList.vue')
   },
   {
-    path: '/task/:id',
-    redirect: '/task'
+    path: '/task/:taskId',
+    component:() => import('./components/TaskList.vue')
   },
   {
     path: '/test',

@@ -119,20 +119,25 @@ const getStatusLabel = (status) => {
 
 // Function to open the modal and fetch task details
 const openModal = async (taskId) => {
+  if (!taskId) {
+    console.error('Task ID is invalid or missing.');
+    return;
+  }
   try {
-    const response = await fetch(
-      `http://localhost:8080/itb-kk/v1/tasks/${taskId}`
-    )
-    const data = await response.json()
-    selectedTask.value = data
+    const response = await fetch(`http://localhost:8080/itb-kk/v1/tasks/${taskId}`);
+    const data = await response.json();
+    selectedTask.value = data;
   } catch (error) {
-    console.error('Error fetching task details:', error)
+    console.error('Error fetching task details:', error);
   }
 }
-
 // Function to handle a task click event
 const handleTaskClick = (taskId) => {
-  openModal(taskId)
+  if (taskId) {
+    openModal(taskId);
+  } else {
+    console.error('Invalid taskId:', taskId);
+  }
 }
 
 // Function to handle adding a new task
@@ -143,13 +148,16 @@ const handleAddTask = () => {
 
 // Function to handle saving a new task
 const saveTask = (newTask) => {
-  // Implement your logic to save the new task here
-  console.log('Saving new task:', newTask)
-  // For example, you can add the new task to the tasks array
-  tasks.value.push(newTask)
-  // Close the AddModal component
-  showAddModal.value = false
-}
+    console.log('Saving new task:', newTask);
+
+    // Add the new task to the tasks array
+    tasks.value.push(newTask);
+
+    // Close the AddModal component
+    showAddModal.value = false;
+
+    tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn));
+};
 
 // Function to handle canceling the addition of a new task
 const cancelAdd = () => {
