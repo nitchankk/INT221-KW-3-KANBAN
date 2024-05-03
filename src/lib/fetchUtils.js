@@ -1,5 +1,3 @@
-// fetchUtils.js
-
 const baseUrl = 'http://localhost:8080/itb-kk/v1'
 
 const fetchData = async (url) => {
