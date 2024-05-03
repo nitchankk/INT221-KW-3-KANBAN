@@ -4,7 +4,7 @@
       <div class="modal-content">
         <h2 class="modal-title">Success!</h2>
         <p v-if="statusCode === 201">The task has been successfully added.</p>
-        <p v-else>but status code is not 201</p>
+        <p v-else>status code is not 201</p>
         <div class="modal-buttons">
           <button class="itbkk-button button-close" @click="closeModal">
             Close

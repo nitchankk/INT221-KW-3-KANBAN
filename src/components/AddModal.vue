@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import FetchUtils from '../lib/fetchUtils'
+
 export default {
   props: {
     closeModal: {
@@ -89,29 +91,24 @@ export default {
   methods: {
     async saveTask() {
       try {
-        const response = await fetch('http://localhost:8080/itb-kk/v1/tasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.taskDetails)
-        })
+        const newTask = await FetchUtils.postData('tasks', this.taskDetails)
 
-        if (response.ok) {
-          // Get the newly created task from the response
-          const newTask = await response.json()
+        this.$emit('save', newTask)
 
-          // Emit the 'save' event to notify the parent component with the new task
-          this.$emit('save', newTask)
-        } else {
-          console.error('Error saving task:', response.statusText)
+        this.taskDetails = {
+          title: '',
+          description: '',
+          assignees: '',
+          status: 'No Status'
         }
+
+        this.closeModal()
       } catch (error) {
         console.error('Error saving task:', error)
       }
     },
     cancelModal() {
-      this.$emit('cancel')
+      this.closeModal()
     }
   }
 }
