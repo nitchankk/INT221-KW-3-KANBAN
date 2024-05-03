@@ -65,7 +65,17 @@
       :closeModal="closeModal"
     />
 
-    <add-modal v-if="showAddModal" @save="saveTask" @cancel="cancelAdd" />
+    <add-modal
+      v-if="showAddModal"
+      @save="saveTask"
+      @cancel="cancelAdd"
+      :closeModal="closeModal"
+    />
+
+    <status-modal
+      :showModal="showSuccessModal"
+      :closeModal="closeSuccessModal"
+    />
   </div>
 </template>
 
@@ -74,11 +84,14 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import TaskModal from './TaskModal.vue'
 import AddModal from './AddModal.vue'
+// Import the StatusModal component
+import StatusModal from './StatusModal.vue'
 
 // State variables
 const tasks = ref([])
 const selectedTask = ref(null)
 const showAddModal = ref(false)
+const showSuccessModal = ref(false)
 
 // Use the route hook to get the current route
 const route = useRoute()
@@ -120,23 +133,26 @@ const getStatusLabel = (status) => {
 // Function to open the modal and fetch task details
 const openModal = async (taskId) => {
   if (!taskId) {
-    console.error('Task ID is invalid or missing.');
-    return;
+    console.error('Task ID is invalid or missing.')
+    return
   }
   try {
-    const response = await fetch(`http://localhost:8080/itb-kk/v1/tasks/${taskId}`);
-    const data = await response.json();
-    selectedTask.value = data;
+    const response = await fetch(
+      `http://localhost:8080/itb-kk/v1/tasks/${taskId}`
+    )
+    const data = await response.json()
+    selectedTask.value = data
   } catch (error) {
-    console.error('Error fetching task details:', error);
+    console.error('Error fetching task details:', error)
   }
 }
+
 // Function to handle a task click event
 const handleTaskClick = (taskId) => {
   if (taskId) {
-    openModal(taskId);
+    openModal(taskId)
   } else {
-    console.error('Invalid taskId:', taskId);
+    console.error('Invalid taskId:', taskId)
   }
 }
 
@@ -148,16 +164,19 @@ const handleAddTask = () => {
 
 // Function to handle saving a new task
 const saveTask = (newTask) => {
-    console.log('Saving new task:', newTask);
+  console.log('Saving new task:', newTask)
 
-    // Add the new task to the tasks array
-    tasks.value.push(newTask);
+  // Add the new task to the tasks array
+  tasks.value.push(newTask)
 
-    // Close the AddModal component
-    showAddModal.value = false;
+  // Close the AddModal component
+  showAddModal.value = false
 
-    tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn));
-};
+  // Show success modal
+  showSuccessModal.value = true
+
+  tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
+}
 
 // Function to handle canceling the addition of a new task
 const cancelAdd = () => {
@@ -168,6 +187,11 @@ const cancelAdd = () => {
 // Function to close the modal
 const closeModal = () => {
   selectedTask.value = null
+}
+
+// Function to close the success modal
+const closeSuccessModal = () => {
+  showSuccessModal.value = false
 }
 
 // Fetch tasks on component mount
