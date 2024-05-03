@@ -34,4 +34,38 @@ const postData = async (url, data) => {
   }
 }
 
-export default { fetchData, postData }
+const putData = async (url, data) => {
+  try {
+    const response = await fetch(`${baseUrl}/${url}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    return response.json()
+  } catch (error) {
+    console.error('Error updating data:', error)
+    throw error
+  }
+}
+
+const deleteData = async (url) => {
+  try {
+    const response = await fetch(`${baseUrl}/${url}`, {
+      method: 'DELETE'
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    return response.json()
+  } catch (error) {
+    console.error('Error deleting data:', error)
+    throw error
+  }
+}
+
+export default { fetchData, postData, putData, deleteData }

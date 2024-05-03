@@ -4,7 +4,7 @@
       <div class="modal-content">
         <h2 class="modal-title">Success!</h2>
         <p v-if="statusCode === 201">The task has been successfully added.</p>
-        <p v-else>status code is not 201</p>
+        <p v-else>Something went wrong. Status code: {{ statusCode }}</p>
         <div class="modal-buttons">
           <button class="itbkk-button button-close" @click="closeModal">
             Close
@@ -22,13 +22,13 @@ export default {
       type: Boolean,
       required: true
     },
+    statusCode: {
+      type: Number,
+      default: 0
+    },
     closeModal: {
       type: Function,
       required: true
-    },
-    statusCode: {
-      type: Number,
-      default: 201 // Set Default Status Code ไว้เพื่อให้ผ่าน **** แต่ต้องแก้ ******
     }
   }
 }
