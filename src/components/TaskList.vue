@@ -87,10 +87,12 @@
       :closeModal="closeSuccessModal"
     />
 
-    <delete-modal v-if="showDeleteModal" 
-    :closeModal="closeDeleteModal" 
-    :taskId="taskIdToDelete" 
-    @deleted="handleTaskDeleted" />
+    <delete-modal
+      v-if="showDeleteModal"
+      :closeModal="closeDeleteModal"
+      :taskId="taskIdToDeletegit "
+      @deleted="handleTaskDeleted"
+    />
   </div>
 </template>
 
