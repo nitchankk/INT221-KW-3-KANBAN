@@ -4,7 +4,7 @@
       <div class="modal-content">
         <h2 class="modal-title">Add Task</h2>
 
-        <form @submit.prevent="saveTask">
+        <form @submit.prevent="handleSaveTask">
           <div class="form-group">
             <label for="title">Title:</label>
             <input
@@ -39,11 +39,7 @@
               v-model="taskDetails.status"
               class="itbkk-status"
             >
-              <option
-                v-for="statusOption in statusOptions"
-                :key="statusOption"
-                :value="statusOption"
-              >
+              <option v-for="statusOption in statusOptions" :key="statusOption" :value="statusOption">
                 {{ statusOption }}
               </option>
             </select>
@@ -89,30 +85,31 @@ export default {
     }
   },
   methods: {
-    async saveTask() {
+    async handleSaveTask() {
       try {
-        const newTask = await FetchUtils.postData('tasks', this.taskDetails)
+        const newTask = await FetchUtils.postData('tasks', this.taskDetails);
 
-        this.$emit('save', newTask)
+        this.$emit('save', newTask);
 
         this.taskDetails = {
           title: '',
           description: '',
           assignees: '',
           status: 'No Status'
-        }
+        };
 
-        this.closeModal()
+        this.closeModal();
       } catch (error) {
-        console.error('Error saving task:', error)
+        console.error('Error saving task:', error);
       }
     },
     cancelModal() {
-      this.closeModal()
+      this.closeModal();
     }
   }
 }
 </script>
+
 
 <style scoped>
 .modal-wrapper {
