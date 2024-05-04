@@ -79,6 +79,7 @@
       @save="saveTask"
       @cancel="cancelAdd"
       :closeModal="closeModal"
+      :statusCode="statusCode"
     />
 
     <status-modal
@@ -103,6 +104,8 @@ import TaskModal from './TaskModal.vue'
 import AddModal from './AddModal.vue'
 import DeleteModal from './DeleteModal.vue'
 import StatusModal from './StatusModal.vue'
+import FetchUtils from '../lib/fetchUtils'
+
 // State variables
 const tasks = ref([])
 const selectedTask = ref(null)
@@ -171,12 +174,21 @@ const handleAddTask = () => {
   showAddModal.value = true
 }
 // Function to handle saving a new task
-const saveTask = (newTask) => {
-  tasks.value.push(newTask)
-  showAddModal.value = false
-  showSuccessModal.value = true
-  statusCode.value = 201
-  tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
+const saveTask = async (newTask) => {
+  try {
+    const response = await FetchUtils.postData('tasks', newTask)
+    statusCode.value = response.statusCode
+
+    if (response.statusCode === 201) {
+      showSuccessModal.value = true
+    }
+
+    tasks.value.push(response.data)
+    showAddModal.value = false
+    tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
+  } catch (error) {
+    console.error('Error saving task:', error)
+  }
 }
 // Function to handle canceling the addition of a new task
 const cancelAdd = () => {

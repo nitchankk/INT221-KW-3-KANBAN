@@ -39,7 +39,11 @@
               v-model="taskDetails.status"
               class="itbkk-status"
             >
-              <option v-for="statusOption in statusOptions" :key="statusOption" :value="statusOption">
+              <option
+                v-for="statusOption in statusOptions"
+                :key="statusOption"
+                :value="statusOption"
+              >
                 {{ statusOption }}
               </option>
             </select>
@@ -87,29 +91,33 @@ export default {
   methods: {
     async handleSaveTask() {
       try {
-        const newTask = await FetchUtils.postData('tasks', this.taskDetails);
-
-        this.$emit('save', newTask);
-
-        this.taskDetails = {
-          title: '',
-          description: '',
-          assignees: '',
-          status: 'No Status'
-        };
-
-        this.closeModal();
+        const { success, data, statusCode } = await FetchUtils.postData(
+          'tasks',
+          this.taskDetails
+        )
+        if (success && statusCode === 201) {
+          console.log('The task has been successfully added', statusCode)
+          this.$emit('save', data)
+          this.taskDetails = {
+            title: '',
+            description: '',
+            assignees: '',
+            status: 'No Status'
+          }
+          this.closeModal()
+        } else {
+          console.error('Something went wrong while adding the task')
+        }
       } catch (error) {
-        console.error('Error saving task:', error);
+        console.error('Error saving task:', error)
       }
     },
     cancelModal() {
-      this.closeModal();
+      this.closeModal()
     }
   }
 }
 </script>
-
 
 <style scoped>
 .modal-wrapper {
