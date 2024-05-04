@@ -90,7 +90,7 @@
     <delete-modal
       v-if="showDeleteModal"
       :closeModal="closeDeleteModal"
-      :taskId="taskIdToDeletegit "
+      :taskId="taskIdToDelete"
       @deleted="handleTaskDeleted"
     />
   </div>
@@ -110,7 +110,7 @@ const showAddModal = ref(false)
 const showDeleteModal = ref(false)
 const showSuccessModal = ref(false)
 const statusCode = ref(null)
-const taskIdToDelete = ref(null)
+const taskIdToDelete = ref([])
 // Use the route hook to get the current route
 const route = useRoute()
 // Function to format dates
