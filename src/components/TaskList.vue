@@ -234,5 +234,55 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* สไตล์ตามที่คุณให้มา */
-</style>
+table-container {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 1200px;
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  border: 1px solid #e2e8f0;
+  padding: 12px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #edf2f7;
+  font-weight: bold;
+}
+
+.itbkk-status {
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.itbkk-status[data-status='To Do'] {
+  background-color: #f67c5e;
+  color: #333;
+}
+
+.itbkk-status[data-status='Doing'] {
+  background-color: #f6e05e;
+  color: #333;
+}
+
+.itbkk-status[data-status='Done'] {
+  background-color: #68d391;
+  color: #333;
+}
+
+.itbkk-status[data-status='No Status'] {
+  background-color: #f5f5f5;
+  color: #888;
+  font-style: italic;
+}</style>
