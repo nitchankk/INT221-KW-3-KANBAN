@@ -6,9 +6,19 @@
           <h2 class="modal-title">ADD TASK SUCCESS!</h2>
           <p>The task has been successfully added.</p>
         </div>
+        <div v-else-if="statusCode === 200">
+          <h2 class="modal-title" style="color: #f67c5e">DELETE SUCCESS!</h2>
+          <p>The task has been successfully deleted.</p>
+        </div>
         <p v-else>Something went wrong. Status code: {{ statusCode }}</p>
         <div class="modal-buttons">
-          <button class="itbkk-button button-close" @click="closeModal">
+          <button
+            class="itbkk-button button-close"
+            :style="{
+              backgroundColor: statusCode === 200 ? '#f67c5e' : '#68d391'
+            }"
+            @click="closeModal"
+          >
             Close
           </button>
         </div>
@@ -78,11 +88,11 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  color: #fff;
 }
 
 .button-close {
   background-color: #68d391;
-  color: #fff;
 }
 
 .button-close:hover {

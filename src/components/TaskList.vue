@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1 class="text-2xl font-bold text-green-600 text-center">
-      IT Bangmod Kradan Kanban by kw-3
-    </h1>
+    <h1 class="text-2xl font-bold">IT Bangmod Kradan Kanban by kw-3</h1>
     <div id="app">
       <div class="table-container">
         <table class="table">
@@ -51,12 +49,31 @@
               >
                 {{ getStatusLabel(task.status) }}
               </td>
-              <td class="border px-4 py-2">
+              <td class="border px-4 py-2" style="width: 70px">
                 <button
                   @click="openDeleteModal(task.taskId)"
-                  class="text-red-500"
+                  style="
+                    border: none;
+                    background: none;
+                    padding: 0;
+                    margin-right: 10px;
+                  "
                 >
-                  Delete
+                  <img
+                    src="../assets/delete1.png"
+                    alt="Delete Icon"
+                    style="width: 30px; height: 30px"
+                  />
+                </button>
+                <button
+                  @click="openEditModal(task.taskId)"
+                  style="border: none; background: none; padding: 0"
+                >
+                  <img
+                    src="../assets/edit.png"
+                    alt="Edit Icon"
+                    style="width: 30px; height: 30px"
+                  />
                 </button>
               </td>
             </tr>
@@ -105,7 +122,6 @@ import DeleteModal from './DeleteModal.vue'
 import StatusModal from './StatusModal.vue'
 import FetchUtils from '../lib/fetchUtils'
 
-// State variables
 const tasks = ref([])
 const selectedTask = ref(null)
 const showAddModal = ref(false)
@@ -113,18 +129,18 @@ const showDeleteModal = ref(false)
 const showSuccessModal = ref(false)
 const statusCode = ref(null)
 const taskIdToDelete = ref([])
-// Use the route hook to get the current route
+
 const route = useRoute()
-// Function to format dates
+
 const formatLocalDate = (dateString) => {
   const date = new Date(dateString)
   return date.toLocaleString('en-GB')
 }
-// Compute timezone
+
 const timezone = computed(
   () => Intl.DateTimeFormat().resolvedOptions().timeZone
 )
-// Fetch tasks from the API
+
 const fetchTasks = async () => {
   try {
     const response = await fetch('http://localhost:8080/itb-kk/v1/tasks')
@@ -134,17 +150,17 @@ const fetchTasks = async () => {
     console.error('Error fetching tasks:', error)
   }
 }
-// Compute sorted tasks based on creation date
+
 const sortedTasks = computed(() => {
   return tasks.value.sort(
     (a, b) => new Date(a.createdOn) - new Date(b.createdOn)
   )
 })
-// Function to get status labels
+
 const getStatusLabel = (status) => {
   return status === 'ToDo' ? 'To Do' : status
 }
-// Function to open the modal and fetch task details
+
 const openModal = async (taskId) => {
   if (!taskId) {
     console.error('Task ID is invalid or missing.')
@@ -160,7 +176,7 @@ const openModal = async (taskId) => {
     console.error('Error fetching task details:', error)
   }
 }
-// Function to handle a task click event
+
 const handleTaskClick = (taskId) => {
   if (taskId) {
     openModal(taskId)
@@ -168,54 +184,57 @@ const handleTaskClick = (taskId) => {
     console.error('Invalid taskId:', taskId)
   }
 }
-// Function to handle adding a new task
+
 const handleAddTask = () => {
   showAddModal.value = true
 }
-// Function to handle saving a new task
+
 const handleTaskSaved = (savedTask) => {
   tasks.value.push(savedTask)
   showAddModal.value = false
   tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
 }
-// Function to handle canceling the addition of a new task
+
 const cancelAdd = () => {
   showAddModal.value = false
 }
-// Function to close the modal
+
 const closeModal = () => {
   selectedTask.value = null
 }
-// Function to open delete modal
+
 const openDeleteModal = (taskId) => {
   taskIdToDelete.value = taskId
   showDeleteModal.value = true
 }
-// Function to handle task deletion
+
 const handleTaskDeleted = (deletedTaskId) => {
   tasks.value = tasks.value.filter((task) => task.taskId !== deletedTaskId)
   closeDeleteModal()
+  // Show success modal after deletion
+  showSuccessModal.value = true
+  statusCode.value = 200 // You can set your own success status code here
 }
-// Function to close delete modal
+
 const closeDeleteModal = () => {
   showDeleteModal.value = false
 }
-// Function to close success modal
+
 const closeSuccessModal = () => {
   showSuccessModal.value = false
 }
-// Function to handle the show status modal event
+
 const handleShowStatusModal = (status) => {
   if (status === 201) {
     showSuccessModal.value = true
     statusCode.value = status
   }
 }
-// Fetch tasks on component mount
+
 onMounted(() => {
   fetchTasks()
 })
-// Fetch task details based on route parameters (taskId) when the component mounts
+
 onMounted(() => {
   const taskId = route.params.taskId
   if (taskId) {
@@ -225,6 +244,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+#app {
+  width: 1500px;
+  margin: 0 auto;
+}
+
 table-container {
   margin: 0 auto;
   width: 80%;
