@@ -239,10 +239,15 @@ const handleShowStatusModal = (status) => {
   }
 }
 
-const openEditModal = (taskId) => {
-  taskToEdit.value = tasks.value.find((task) => task.taskId === taskId)
-  if (taskToEdit.value) {
-    showEditModal.value = true
+const openEditModal = async (taskId) => {
+  try {
+    const data = await FetchUtils.fetchData('tasks', taskId) // Pass taskId as second parameter
+    taskToEdit.value = data
+    if (taskToEdit.value) {
+      showEditModal.value = true
+    }
+  } catch (error) {
+    console.error('Error fetching task details:', error)
   }
 }
 

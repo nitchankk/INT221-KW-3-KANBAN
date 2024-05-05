@@ -1,12 +1,18 @@
 const baseUrl = 'http://localhost:8080/itb-kk/v1'
 
-const fetchData = async (url) => {
+const fetchData = async (url, taskId = null) => {
   try {
-    const response = await fetch(`${baseUrl}/${url}`)
+    const response = await fetch(
+      taskId ? `${baseUrl}/${url}/${taskId}` : `${baseUrl}/${url}`
+    )
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
-    return await response.json()
+    const responseData = await response.json()
+    if (taskId) {
+      responseData.taskId = taskId
+    }
+    return responseData
   } catch (error) {
     console.error('Error fetching data:', error)
     throw error

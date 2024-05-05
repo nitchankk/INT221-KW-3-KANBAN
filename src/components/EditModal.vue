@@ -97,7 +97,6 @@ const props = defineProps({
 const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done'])
 const editedTask = ref(null)
 
-// Ensure that editedTask includes all properties of the task being edited
 if (props.task) {
   editedTask.value = { ...props.task }
 }
@@ -114,7 +113,7 @@ const handleEditTask = async () => {
 
     // Make API request to update the task
     const response = await FetchUtils.putData(
-      `tasks/${props.task.taskId}`,
+      `tasks/${props.task.taskId}`, // Ensure taskId is properly accessed here
       updatedTask
     )
 
