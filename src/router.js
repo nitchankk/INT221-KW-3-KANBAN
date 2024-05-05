@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 
 // Import Test.vue
-import Test from './components/Test.vue'
+import Test from './components/test/Test.vue'
 
 const routes = [
   {

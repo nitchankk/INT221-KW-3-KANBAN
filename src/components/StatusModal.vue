@@ -10,7 +10,10 @@
           <h2 class="modal-title" style="color: #f67c5e">DELETE SUCCESS!</h2>
           <p>The task has been successfully deleted.</p>
         </div>
-        <p v-else>Something went wrong. Status code: {{ statusCode }}</p>
+        <div v-else>
+          <h2 class="modal-title" style="color: red">ERROR!</h2>
+          <p>Something went wrong. Status code: {{ statusCode }}</p>
+        </div>
         <div class="modal-buttons">
           <button
             class="itbkk-button button-close"
@@ -35,13 +38,15 @@ export default {
       required: true
     },
     statusCode: {
-      type: Number,
-      default: 0
+      type: Number
     },
     closeModal: {
       type: Function,
       required: true
     }
+  },
+  updated() {
+    console.log('Received status code:', this.statusCode)
   }
 }
 </script>

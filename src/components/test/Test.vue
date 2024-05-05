@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import ModalComponent from '../components/ModalComponent.vue'
+import ModalComponent from './ModalComponent.vue'
 
 const isModalOpened = ref(false)
 

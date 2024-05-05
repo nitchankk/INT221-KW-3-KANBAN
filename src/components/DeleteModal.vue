@@ -35,12 +35,17 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['deleted', 'showSuccessModal']) // Add 'showSuccessModal' to emitted events
 
 const confirmDelete = async () => {
   try {
-    await FetchUtils.deleteData(`tasks/${props.taskId}`)
-    emit('deleted', props.taskId)
+    const response = await FetchUtils.deleteData(`tasks/${props.taskId}`)
+    const statusCode = response.statusCode
+    console.log('Deletion status code:', statusCode)
+    emit('deleted', props.taskId, statusCode) // Emit 'deleted' event
+    if (statusCode === 200) {
+      emit('showSuccessModal') // Emit 'showSuccessModal' event
+    }
     props.closeModal()
   } catch (error) {
     console.error('Error deleting task:', error)

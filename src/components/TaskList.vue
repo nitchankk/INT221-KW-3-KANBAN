@@ -112,11 +112,11 @@
       @deleted="handleTaskDeleted"
     />
     <edit-modal
-  v-if="showEditModal"
-  :task="taskToEdit"
-  :closeModal="closeEditModal"
-  :onTaskUpdated="onTaskUpdated"
-/>
+      v-if="showEditModal"
+      :task="taskToEdit"
+      :closeModal="closeEditModal"
+      :onTaskUpdated="onTaskUpdated"
+    />
   </div>
 </template>
 
@@ -217,12 +217,13 @@ const openDeleteModal = (taskId) => {
   showDeleteModal.value = true
 }
 
-const handleTaskDeleted = (deletedTaskId) => {
+const handleTaskDeleted = (deletedTaskId, receivedStatusCode) => {
+  console.log('Received deletion status code:', receivedStatusCode)
+  statusCode.value = receivedStatusCode // Set statusCode here
   tasks.value = tasks.value.filter((task) => task.taskId !== deletedTaskId)
   closeDeleteModal()
   // Show success modal after deletion
   showSuccessModal.value = true
-  statusCode.value = 200 // You can set your own success status code here
 }
 
 const closeDeleteModal = () => {
@@ -234,29 +235,33 @@ const closeSuccessModal = () => {
 }
 
 const handleShowStatusModal = (status) => {
-  if (status === 201) {
+  if (status === 201 || status === 200) {
+    // If the status is 201 or 200, show the success modal
     showSuccessModal.value = true
     statusCode.value = status
   }
 }
 
 const openEditModal = (taskId) => {
-  taskToEdit.value = tasks.value.find(task => task.taskId === taskId);
+  taskToEdit.value = tasks.value.find((task) => task.taskId === taskId)
   if (taskToEdit.value) {
-    showEditModal.value = true;
-  }
-};
-
-const closeEditModal = () => {
-  showEditModal.value = false;
-};
-
-const onTaskUpdated = (updatedTask) => {
-  const taskIndex = tasks.value.findIndex(task => task.taskId === updatedTask.taskId);
-  if (taskIndex !== -1) {
-    tasks.value[taskIndex] = updatedTask;
+    showEditModal.value = true
   }
 }
+
+const closeEditModal = () => {
+  showEditModal.value = false
+}
+
+const onTaskUpdated = (updatedTask) => {
+  const taskIndex = tasks.value.findIndex(
+    (task) => task.taskId === updatedTask.taskId
+  )
+  if (taskIndex !== -1) {
+    tasks.value[taskIndex] = updatedTask
+  }
+}
+
 onMounted(() => {
   fetchTasks()
 })
