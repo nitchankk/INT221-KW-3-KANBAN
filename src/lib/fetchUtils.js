@@ -58,21 +58,6 @@ const putData = async (url, data) => {
   }
 }
 
-/*const deleteData = async (url) => {
-  try {
-    const response = await fetch(`${baseUrl}/${url}`, {
-      method: 'DELETE'
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-    return await response.json()
-  } catch (error) {
-    console.error('Error deleting data:', error)
-    throw error
-  }
-}*/
-
 const deleteData = async (url) => {
   try {
     const response = await fetch(`${baseUrl}/${url}`, {

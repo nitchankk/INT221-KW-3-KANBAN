@@ -128,6 +128,7 @@ import AddModal from './AddModal.vue'
 import DeleteModal from './DeleteModal.vue'
 import StatusModal from './StatusModal.vue'
 import EditModal from './EditModal.vue'
+import FetchUtils from '../lib/fetchUtils'
 
 const tasks = ref([])
 const selectedTask = ref(null)
@@ -152,8 +153,7 @@ const timezone = computed(
 
 const fetchTasks = async () => {
   try {
-    const response = await fetch('http://localhost:8080/itb-kk/v1/tasks')
-    const data = await response.json()
+    const data = await FetchUtils.fetchData('tasks')
     tasks.value = data
   } catch (error) {
     console.error('Error fetching tasks:', error)
@@ -176,10 +176,7 @@ const openModal = async (taskId) => {
     return
   }
   try {
-    const response = await fetch(
-      `http://localhost:8080/itb-kk/v1/tasks/${taskId}`
-    )
-    const data = await response.json()
+    const data = await FetchUtils.fetchData(`tasks/${taskId}`)
     selectedTask.value = data
   } catch (error) {
     console.error('Error fetching task details:', error)
