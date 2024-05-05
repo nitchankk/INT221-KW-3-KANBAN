@@ -111,6 +111,12 @@
       :taskId="taskIdToDelete"
       @deleted="handleTaskDeleted"
     />
+    <edit-modal
+  v-if="showEditModal"
+  :task="taskToEdit"
+  :closeModal="closeEditModal"
+  :onTaskUpdated="onTaskUpdated"
+/>
   </div>
 </template>
 
@@ -121,7 +127,7 @@ import TaskModal from './TaskModal.vue'
 import AddModal from './AddModal.vue'
 import DeleteModal from './DeleteModal.vue'
 import StatusModal from './StatusModal.vue'
-import FetchUtils from '../lib/fetchUtils'
+import EditModal from './EditModal.vue'
 
 const tasks = ref([])
 const selectedTask = ref(null)
@@ -129,7 +135,9 @@ const showAddModal = ref(false)
 const showDeleteModal = ref(false)
 const showSuccessModal = ref(false)
 const statusCode = ref(null)
-const taskIdToDelete = ref([])
+const taskIdToDelete = ref(null)
+const showEditModal = ref(false)
+const taskToEdit = ref(null)
 
 const route = useRoute()
 
@@ -232,6 +240,23 @@ const handleShowStatusModal = (status) => {
   }
 }
 
+const openEditModal = (taskId) => {
+  taskToEdit.value = tasks.value.find(task => task.taskId === taskId);
+  if (taskToEdit.value) {
+    showEditModal.value = true;
+  }
+};
+
+const closeEditModal = () => {
+  showEditModal.value = false;
+};
+
+const onTaskUpdated = (updatedTask) => {
+  const taskIndex = tasks.value.findIndex(task => task.taskId === updatedTask.taskId);
+  if (taskIndex !== -1) {
+    tasks.value[taskIndex] = updatedTask;
+  }
+}
 onMounted(() => {
   fetchTasks()
 })
