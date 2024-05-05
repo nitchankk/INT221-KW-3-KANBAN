@@ -76,10 +76,9 @@
 
     <add-modal
       v-if="showAddModal"
-      @save="saveTask"
-      @cancel="cancelAdd"
-      :closeModal="closeModal"
-      :statusCode="statusCode"
+      @taskSaved="handleTaskSaved"
+      @showStatusModal="handleShowStatusModal"
+      :closeModal="cancelAdd"
     />
 
     <status-modal
@@ -174,21 +173,10 @@ const handleAddTask = () => {
   showAddModal.value = true
 }
 // Function to handle saving a new task
-const saveTask = async (newTask) => {
-  try {
-    const response = await FetchUtils.postData('tasks', newTask)
-    statusCode.value = response.statusCode
-
-    if (response.statusCode === 201) {
-      showSuccessModal.value = true
-    }
-
-    tasks.value.push(response.data)
-    showAddModal.value = false
-    tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
-  } catch (error) {
-    console.error('Error saving task:', error)
-  }
+const handleTaskSaved = (savedTask) => {
+  tasks.value.push(savedTask)
+  showAddModal.value = false
+  tasks.value.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
 }
 // Function to handle canceling the addition of a new task
 const cancelAdd = () => {
@@ -215,6 +203,13 @@ const closeDeleteModal = () => {
 // Function to close success modal
 const closeSuccessModal = () => {
   showSuccessModal.value = false
+}
+// Function to handle the show status modal event
+const handleShowStatusModal = (status) => {
+  if (status === 201) {
+    showSuccessModal.value = true
+    statusCode.value = status
+  }
 }
 // Fetch tasks on component mount
 onMounted(() => {

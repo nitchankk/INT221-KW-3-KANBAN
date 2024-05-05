@@ -97,7 +97,8 @@ export default {
         )
         if (success && statusCode === 201) {
           console.log('The task has been successfully added', statusCode)
-          this.$emit('save', data)
+          this.$emit('taskSaved', data) // Emit 'taskSaved' event with saved task data
+          this.$emit('showStatusModal', statusCode) // Emit 'showStatusModal' event to show the status modal
           this.taskDetails = {
             title: '',
             description: '',

@@ -2,8 +2,10 @@
   <div class="modal-wrapper" v-if="showModal">
     <div class="modal">
       <div class="modal-content">
-        <h2 class="modal-title">Success!</h2>
-        <p v-if="statusCode === 201">The task has been successfully added.</p>
+        <div v-if="statusCode === 201">
+          <h2 class="modal-title">ADD TASK SUCCESS!</h2>
+          <p>The task has been successfully added.</p>
+        </div>
         <p v-else>Something went wrong. Status code: {{ statusCode }}</p>
         <div class="modal-buttons">
           <button class="itbkk-button button-close" @click="closeModal">
