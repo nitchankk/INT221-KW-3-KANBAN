@@ -49,9 +49,9 @@
               >
                 {{ getStatusLabel(task.status) }}
               </td>
-              <td class="border px-4 py-2" style="width: 70px">
+              <td class="border px-4 py-2" style="width: 80px">
                 <button
-                  @click="openDeleteModal(task.taskId)"
+                  @click="openEditModal(task.taskId)"
                   style="
                     border: none;
                     background: none;
@@ -60,18 +60,19 @@
                   "
                 >
                   <img
-                    src="../assets/delete1.png"
-                    alt="Delete Icon"
+                    src="../assets/edit.png"
+                    alt="Edit Icon"
                     style="width: 30px; height: 30px"
                   />
                 </button>
+
                 <button
-                  @click="openEditModal(task.taskId)"
+                  @click="openDeleteModal(task.taskId)"
                   style="border: none; background: none; padding: 0"
                 >
                   <img
-                    src="../assets/edit.png"
-                    alt="Edit Icon"
+                    src="../assets/delete2.png"
+                    alt="Delete Icon"
                     style="width: 30px; height: 30px"
                   />
                 </button>
