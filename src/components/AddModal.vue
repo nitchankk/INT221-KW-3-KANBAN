@@ -50,11 +50,16 @@
           </div>
 
           <div class="modal-buttons">
-            <button class="itbkk-button itbkk-button-confirm" type="submit">
+            <button
+              class="itbkk-button-confirm itbkk-button"
+              type="submit"
+              :class="{ disabled: isSaveDisabled }"
+              :disabled="isSaveDisabled" 
+            >
               Save
             </button>
             <button
-              class="itbkk-button itbkk-button-cancel"
+              class="itbkk-button-cancel itbkk-button"
               type="button"
               @click="cancelModal"
             >
@@ -88,6 +93,12 @@ export default {
       statusOptions: ['No Status', 'To Do', 'Doing', 'Done']
     }
   },
+  computed: {
+    // ฟังก์ชันคำนวณเพื่อตรวจสอบว่า Save ควรเป็น disabled หรือไม่
+    isSaveDisabled() {
+      return !this.taskDetails.title.trim();
+    }
+  },
   methods: {
     async handleSaveTask() {
       try {
@@ -97,8 +108,8 @@ export default {
         )
         if (success && statusCode === 201) {
           console.log('The task has been successfully added', statusCode)
-          this.$emit('taskSaved', data) // Emit 'taskSaved' event with saved task data
-          this.$emit('showStatusModal', statusCode) // Emit 'showStatusModal' event to show the status modal
+          this.$emit('taskSaved', data)
+          this.$emit('showStatusModal', statusCode)
           this.taskDetails = {
             title: '',
             description: '',
@@ -203,5 +214,9 @@ textarea {
 .itbkk-button-confirm:hover,
 .itbkk-button-cancel:hover {
   opacity: 0.8;
+}
+.disabled {
+  background-color: gray; /* เปลี่ยนสีตามความเหมาะสม */
+  cursor: not-allowed;
 }
 </style>
