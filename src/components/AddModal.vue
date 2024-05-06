@@ -54,7 +54,7 @@
               class="itbkk-button-confirm itbkk-button"
               type="submit"
               :class="{ disabled: isSaveDisabled }"
-              :disabled="isSaveDisabled" 
+              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     isSaveDisabled() {
-      return !this.taskDetails.title.trim();
+      return !this.taskDetails.title.trim()
     }
   },
   methods: {
@@ -186,6 +186,7 @@ input[type='text'] {
 textarea {
   width: 500px;
   height: 200px;
+  resize: none;
 }
 
 .modal-buttons {

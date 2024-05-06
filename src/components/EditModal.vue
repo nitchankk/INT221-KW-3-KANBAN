@@ -24,6 +24,9 @@
               id="description"
               v-model="editedTask.description"
               class="itbkk-description"
+              :placeholder="
+                editedTask.description ? '' : 'No Description Provided'
+              "
             ></textarea>
           </div>
 
@@ -35,6 +38,7 @@
               id="assignees"
               v-model="editedTask.assignees"
               class="itbkk-assignees"
+              :placeholder="editedTask.assignees ? '' : 'Unassigned'"
             />
           </div>
 
@@ -57,21 +61,6 @@
           </div>
 
           <!-- Display timezone, created date, and updated date -->
-          <div class="details-container">
-            <div class="details-group">
-              <strong>Timezone:</strong> {{ timezone }}
-            </div>
-            <div class="details-group">
-              <strong>Created Date:</strong>
-              {{ formatLocalDate(task.createdOn) }}
-            </div>
-            <div class="details-group">
-              <strong>Updated Date:</strong>
-              {{ formatLocalDate(task.updatedOn) }}
-            </div>
-          </div>
-
-          <!-- Modal Buttons -->
           <div class="modal-buttons">
             <button
               class="itbkk-button itbkk-button-confirm"
@@ -88,6 +77,21 @@
             >
               Cancel
             </button>
+          </div>
+
+          <!-- Details Container -->
+          <div class="details-container">
+            <div class="details-group">
+              <strong>Timezone:</strong> {{ timezone }}
+              <p>
+                <strong>Created Date:</strong>
+                {{ formatLocalDate(task.createdOn) }}
+              </p>
+              <p>
+                <strong>Updated Date:</strong>
+                {{ formatLocalDate(task.updatedOn) }}
+              </p>
+            </div>
           </div>
         </form>
       </div>
@@ -221,7 +225,16 @@ select {
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
-  width: 100%;
+}
+
+input[type='text'] {
+  width: 500px;
+}
+
+textarea {
+  width: 500px;
+  height: 200px;
+  resize: none;
 }
 
 .modal-buttons {
@@ -252,19 +265,30 @@ select {
 }
 
 .details-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px;
+  height: 90px;
   text-align: right;
+  background-color: #ffffffb7;
 }
 
 .details-group {
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 13px;
+  padding: 10px;
 }
 
 .disabled {
-  background-color: gray; /* เปลี่ยนสีตามความเหมาะสม */
+  background-color: gray;
   cursor: not-allowed;
+}
+
+.itbkk-description::placeholder,
+.itbkk-assignees::placeholder {
+  font-style: italic;
 }
 </style>
