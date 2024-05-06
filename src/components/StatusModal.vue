@@ -10,6 +10,10 @@
           <h2 class="modal-title" style="color: #f67c5e">DELETE SUCCESS!</h2>
           <p>The task has been successfully deleted.</p>
         </div>
+        <div v-else-if="statusCode === 404">
+          <h2 class="modal-title" style="color: #f67c5e">DELETE SUCCESS!</h2>
+          <p>An error has occurred, the task does not exist</p>
+        </div>
         <div v-else>
           <h2 class="modal-title" style="color: red">ERROR!</h2>
           <p>Something went wrong. Status code: {{ statusCode }}</p>
