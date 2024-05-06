@@ -154,9 +154,8 @@ const handleEditTask = async () => {
       props.onTaskUpdated(response.data)
       props.closeModal()
       if (response.statusCode === 200) {
-        emit('showSuccessModal', response.statusCode)
+        emit('editSuccess', response.statusCode) // Pass any necessary data
         console.log(response.statusCode)
-        emit('editSuccess')
         props.closeModal()
       }
     } else {
