@@ -57,7 +57,9 @@ const putData = async (url, data) => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
-    return await response.json()
+    const responseData = await response.json()
+    console.log('Data updated successfully! Status code:', response.status)
+    return { success: true, data: responseData, statusCode: response.status }
   } catch (error) {
     console.error('Error updating data:', error)
     throw error
@@ -73,7 +75,6 @@ const deleteData = async (url) => {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
     const responseData = await response.json()
-    // Assuming you want to handle 204 status code as successful
     if (response.status === 200) {
       console.log('Data deleted successfully! Status code:', response.status)
       return { success: true, data: responseData, statusCode: response.status }

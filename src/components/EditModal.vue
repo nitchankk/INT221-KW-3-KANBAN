@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from 'vue'
+import { ref, computed, defineProps, defineEmits } from 'vue'
 import FetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
@@ -118,8 +118,10 @@ const props = defineProps({
   }
 })
 
-const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done'])
+const emit = defineEmits(['showSuccessModal']) // Add 'showSuccessModal' to emitted events
+
 const editedTask = ref(null)
+const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done']) // Define statusOptions here
 
 if (props.task) {
   editedTask.value = { ...props.task }
@@ -149,10 +151,14 @@ const handleEditTask = async () => {
       updatedTask
     )
 
-    if (response) {
+    if (response && response.success) {
       // If update is successful, refresh the task data and close the modal
-      props.onTaskUpdated(response)
+      props.onTaskUpdated(response.data)
       props.closeModal()
+      if (response.statusCode === 200) {
+        emit('showSuccessModal', response.statusCode)
+        console.log(response.statusCode)
+      }
     } else {
       console.error('Failed to update task')
     }
