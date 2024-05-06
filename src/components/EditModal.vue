@@ -56,11 +56,27 @@
             </select>
           </div>
 
+          <!-- Display timezone, created date, and updated date -->
+          <div class="details-container">
+            <div class="details-group">
+              <strong>Timezone:</strong> {{ timezone }}
+            </div>
+            <div class="details-group">
+              <strong>Created Date:</strong>
+              {{ formatLocalDate(task.createdOn) }}
+            </div>
+            <div class="details-group">
+              <strong>Updated Date:</strong>
+              {{ formatLocalDate(task.updatedOn) }}
+            </div>
+          </div>
+
           <!-- Modal Buttons -->
           <div class="modal-buttons">
             <button
               class="itbkk-button itbkk-button-confirm"
               type="submit"
+              :class="{ disabled: isSaveDisabled }"
               :disabled="isSaveDisabled"
             >
               Save
@@ -80,38 +96,38 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from 'vue';
-import FetchUtils from '../lib/fetchUtils';
+import { ref, computed, defineProps } from 'vue'
+import FetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
   task: {
     type: Object,
-    required: true,
+    required: true
   },
   closeModal: {
     type: Function,
-    required: true,
+    required: true
   },
   onTaskUpdated: {
     type: Function,
-    required: true,
-  },
-});
+    required: true
+  }
+})
 
-const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done']);
-const editedTask = ref(null);
+const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done'])
+const editedTask = ref(null)
 
 if (props.task) {
-  editedTask.value = { ...props.task };
+  editedTask.value = { ...props.task }
 }
 
 // Compute the initial state of the task to compare later
-const initialTask = JSON.parse(JSON.stringify(props.task));
+const initialTask = JSON.parse(JSON.stringify(props.task))
 
 const isSaveDisabled = computed(() => {
   // Check if the editedTask is different from the initialTask
-  return JSON.stringify(editedTask.value) === JSON.stringify(initialTask);
-});
+  return JSON.stringify(editedTask.value) === JSON.stringify(initialTask)
+})
 
 const handleEditTask = async () => {
   try {
@@ -120,30 +136,41 @@ const handleEditTask = async () => {
       description: editedTask.value.description,
       assignees: editedTask.value.assignees,
       status: editedTask.value.status,
-      updatedOn: new Date().toISOString(), // Set updated date to now
-    };
+      updatedOn: new Date().toISOString() // Set updated date to now
+    }
 
     // Make API request to update the task
     const response = await FetchUtils.putData(
       `tasks/${props.task.taskId}`, // Ensure taskId is properly accessed here
       updatedTask
-    );
+    )
 
     if (response) {
       // If update is successful, refresh the task data and close the modal
-      props.onTaskUpdated(response);
-      props.closeModal();
+      props.onTaskUpdated(response)
+      props.closeModal()
     } else {
-      console.error('Failed to update task');
+      console.error('Failed to update task')
     }
   } catch (error) {
-    console.error('Error updating task:', error);
+    console.error('Error updating task:', error)
   }
-};
+}
 
 const cancelModal = () => {
-  props.closeModal();
-};
+  props.closeModal()
+}
+
+// Function to format local date
+const formatLocalDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleString('en-GB')
+}
+
+// Compute timezone
+const timezone = computed(
+  () => Intl.DateTimeFormat().resolvedOptions().timeZone
+)
 </script>
 
 <style scoped>
@@ -228,10 +255,16 @@ select {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  text-align: right;
 }
 
 .details-group {
   margin-bottom: 10px;
   font-size: 14px;
+}
+
+.disabled {
+  background-color: gray; /* เปลี่ยนสีตามความเหมาะสม */
+  cursor: not-allowed;
 }
 </style>
