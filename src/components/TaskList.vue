@@ -57,7 +57,6 @@
                     background: none;
                     padding: 0;
                     margin-right: 10px;
-                  
                   "
                 >
                   <img
@@ -118,6 +117,7 @@
       :task="taskToEdit"
       :closeModal="closeEditModal"
       :onTaskUpdated="onTaskUpdated"
+      @editSuccess="handleEditSuccess"
     />
   </div>
 </template>
@@ -137,6 +137,9 @@ const selectedTask = ref(null)
 const showAddModal = ref(false)
 const showDeleteModal = ref(false)
 const showSuccessModal = ref(false)
+const handleEditSuccess = () => {
+  showSuccessModal.value = true
+}
 const statusCode = ref(null)
 const taskIdToDelete = ref(null)
 const showEditModal = ref(false)

@@ -117,9 +117,7 @@ const props = defineProps({
     required: true
   }
 })
-
-const emit = defineEmits(['showSuccessModal']) // Add 'showSuccessModal' to emitted events
-
+const emit = defineEmits(['editSuccess'])
 const editedTask = ref(null)
 const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done']) // Define statusOptions here
 
@@ -158,6 +156,8 @@ const handleEditTask = async () => {
       if (response.statusCode === 200) {
         emit('showSuccessModal', response.statusCode)
         console.log(response.statusCode)
+        emit('editSuccess')
+        props.closeModal()
       }
     } else {
       console.error('Failed to update task')
