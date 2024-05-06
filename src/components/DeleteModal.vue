@@ -42,7 +42,7 @@ const confirmDelete = async () => {
     const response = await FetchUtils.deleteData(`tasks/${props.taskId}`)
     const statusCode = response.statusCode
     console.log('Deletion status code:', statusCode)
-    emit('deleted', props.taskId, statusCode) // Emit 'deleted' event
+    emit('deleted', props.taskId, statusCode, 'delete')
     if (statusCode === 200) {
       emit('showSuccessModal') // Emit 'showSuccessModal' event
     }

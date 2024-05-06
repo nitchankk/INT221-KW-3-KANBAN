@@ -104,6 +104,7 @@
       :showModal="showSuccessModal"
       :statusCode="statusCode"
       :closeModal="closeSuccessModal"
+      :operationType="operationType"
     />
 
     <delete-modal
@@ -141,6 +142,7 @@ const statusCode = ref(null)
 const taskIdToDelete = ref(null)
 const showEditModal = ref(false)
 const taskToEdit = ref(null)
+const operationType = ref(null)
 
 const route = useRoute()
 
@@ -213,6 +215,7 @@ const closeModal = () => {
 
 const openDeleteModal = (taskId) => {
   taskIdToDelete.value = taskId
+  operationType.value = 'delete' // Set operationType to 'delete' when opening delete modal
   showDeleteModal.value = true
 }
 
@@ -246,6 +249,7 @@ const openEditModal = async (taskId) => {
     const data = await FetchUtils.fetchData('tasks', taskId)
     taskToEdit.value = data
     if (taskToEdit.value) {
+      operationType.value = 'edit' // Set operationType to 'edit' when opening edit modal
       showEditModal.value = true
     }
   } catch (error) {

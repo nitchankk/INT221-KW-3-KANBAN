@@ -6,9 +6,13 @@
           <h2 class="modal-title">ADD TASK SUCCESS!</h2>
           <p>The task has been successfully added.</p>
         </div>
-        <div v-else-if="statusCode === 200">
+        <div v-if="statusCode === 200 && operationType === 'delete'">
           <h2 class="modal-title" style="color: #f67c5e">DELETE SUCCESS!</h2>
           <p>The task has been successfully deleted.</p>
+        </div>
+        <div v-else-if="operationType === 'edit'">
+          <h2 class="modal-title" style="color: #22a052">EDIT SUCCESS!</h2>
+          <p>The task has been successfully edited.</p>
         </div>
         <div v-else-if="statusCode === 404">
           <h2 class="modal-title" style="color: #f67c5e">EXISTED?</h2>
@@ -43,6 +47,10 @@ export default {
     },
     statusCode: {
       type: Number
+    },
+    operationType: {
+      type: String,
+      required: true
     },
     closeModal: {
       type: Function,

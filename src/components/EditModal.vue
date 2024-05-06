@@ -155,7 +155,7 @@ const handleEditTask = async () => {
       props.closeModal()
       if (response.statusCode === 200) {
         console.log('StatusCode', response.statusCode)
-        emit('editSuccess', response.statusCode) // Emit the event with status code
+        emit('editSuccess', response.statusCode, 'edit') // Emit the event with status code
       }
     } else {
       console.error('Failed to update task')
