@@ -58,7 +58,11 @@
 
           <!-- Modal Buttons -->
           <div class="modal-buttons">
-            <button class="itbkk-button itbkk-button-confirm" type="submit">
+            <button
+              class="itbkk-button itbkk-button-confirm"
+              type="submit"
+              :disabled="isSaveDisabled"
+            >
               Save
             </button>
             <button
@@ -76,30 +80,38 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue'
-import FetchUtils from '../lib/fetchUtils'
+import { ref, computed, defineProps } from 'vue';
+import FetchUtils from '../lib/fetchUtils';
 
 const props = defineProps({
   task: {
     type: Object,
-    required: true
+    required: true,
   },
   closeModal: {
     type: Function,
-    required: true
+    required: true,
   },
   onTaskUpdated: {
     type: Function,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done'])
-const editedTask = ref(null)
+const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done']);
+const editedTask = ref(null);
 
 if (props.task) {
-  editedTask.value = { ...props.task }
+  editedTask.value = { ...props.task };
 }
+
+// Compute the initial state of the task to compare later
+const initialTask = JSON.parse(JSON.stringify(props.task));
+
+const isSaveDisabled = computed(() => {
+  // Check if the editedTask is different from the initialTask
+  return JSON.stringify(editedTask.value) === JSON.stringify(initialTask);
+});
 
 const handleEditTask = async () => {
   try {
@@ -108,30 +120,30 @@ const handleEditTask = async () => {
       description: editedTask.value.description,
       assignees: editedTask.value.assignees,
       status: editedTask.value.status,
-      updatedOn: new Date().toISOString() // Set updated date to now
-    }
+      updatedOn: new Date().toISOString(), // Set updated date to now
+    };
 
     // Make API request to update the task
     const response = await FetchUtils.putData(
       `tasks/${props.task.taskId}`, // Ensure taskId is properly accessed here
       updatedTask
-    )
+    );
 
     if (response) {
       // If update is successful, refresh the task data and close the modal
-      props.onTaskUpdated(response)
-      props.closeModal()
+      props.onTaskUpdated(response);
+      props.closeModal();
     } else {
-      console.error('Failed to update task')
+      console.error('Failed to update task');
     }
   } catch (error) {
-    console.error('Error updating task:', error)
+    console.error('Error updating task:', error);
   }
-}
+};
 
 const cancelModal = () => {
-  props.closeModal()
-}
+  props.closeModal();
+};
 </script>
 
 <style scoped>

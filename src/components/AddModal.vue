@@ -94,7 +94,6 @@ export default {
     }
   },
   computed: {
-    // ฟังก์ชันคำนวณเพื่อตรวจสอบว่า Save ควรเป็น disabled หรือไม่
     isSaveDisabled() {
       return !this.taskDetails.title.trim();
     }

@@ -57,6 +57,7 @@
                     background: none;
                     padding: 0;
                     margin-right: 10px;
+                  
                   "
                 >
                   <img
@@ -69,6 +70,7 @@
                 <button
                   @click="openDeleteModal(task.taskId)"
                   style="border: none; background: none; padding: 0"
+                  class="itbkk-button-action"
                 >
                   <img
                     src="../assets/delete2.png"
