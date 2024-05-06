@@ -137,9 +137,6 @@ const selectedTask = ref(null)
 const showAddModal = ref(false)
 const showDeleteModal = ref(false)
 const showSuccessModal = ref(false)
-const handleEditSuccess = () => {
-  showSuccessModal.value = true
-}
 const statusCode = ref(null)
 const taskIdToDelete = ref(null)
 const showEditModal = ref(false)
@@ -246,7 +243,7 @@ const handleShowStatusModal = (status) => {
 
 const openEditModal = async (taskId) => {
   try {
-    const data = await FetchUtils.fetchData('tasks', taskId) // Pass taskId as second parameter
+    const data = await FetchUtils.fetchData('tasks', taskId)
     taskToEdit.value = data
     if (taskToEdit.value) {
       showEditModal.value = true
@@ -269,6 +266,11 @@ const onTaskUpdated = (updatedTask) => {
   }
 }
 
+const handleEditSuccess = (status) => {
+  console.log('Received status code after edit:', status)
+  statusCode.value = status
+  showSuccessModal.value = true
+}
 onMounted(() => {
   fetchTasks()
 })

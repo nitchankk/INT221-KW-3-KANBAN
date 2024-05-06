@@ -154,9 +154,8 @@ const handleEditTask = async () => {
       props.onTaskUpdated(response.data)
       props.closeModal()
       if (response.statusCode === 200) {
-        emit('editSuccess', response.statusCode) // Pass any necessary data
-        console.log(response.statusCode)
-        props.closeModal()
+        console.log('StatusCode', response.statusCode)
+        emit('editSuccess', response.statusCode) // Emit the event with status code
       }
     } else {
       console.error('Failed to update task')
@@ -164,10 +163,6 @@ const handleEditTask = async () => {
   } catch (error) {
     console.error('Error updating task:', error)
   }
-}
-
-const cancelModal = () => {
-  props.closeModal()
 }
 
 // Function to format local date
