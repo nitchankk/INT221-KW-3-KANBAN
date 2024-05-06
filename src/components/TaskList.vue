@@ -6,7 +6,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="border px-4 py-2">
+              <th class="border px-4 py-2 itbkk-button-add">
                 <button
                   @click="handleAddTask"
                   style="border: none; background: none; padding: 0"
