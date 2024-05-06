@@ -73,7 +73,7 @@
             <button
               class="itbkk-button itbkk-button-cancel"
               type="button"
-              @click="cancelModal"
+              @click="closeModal"
             >
               Cancel
             </button>
