@@ -2,7 +2,7 @@
   <div class="modal-wrapper" v-if="showModal">
     <div class="modal">
       <div class="modal-content">
-        <div v-if="statusCode === 201">
+        <div v-if="statusCode === 201 && operationType === 'add'">
           <h2 class="modal-title">ADD TASK SUCCESS!</h2>
           <p>The task has been successfully added.</p>
         </div>
@@ -10,7 +10,7 @@
           <h2 class="modal-title" style="color: #f67c5e">DELETE SUCCESS!</h2>
           <p>The task has been successfully deleted.</p>
         </div>
-        <div v-else-if="operationType === 'edit'">
+        <div v-else-if="statusCode === 200 && operationType === 'edit'">
           <h2 class="modal-title" style="color: #22a052">EDIT SUCCESS!</h2>
           <p>The task has been successfully edited.</p>
         </div>
@@ -18,10 +18,10 @@
           <h2 class="modal-title" style="color: #f67c5e">EXISTED?</h2>
           <p>An error has occurred, the task does not exist</p>
         </div>
-        <div v-else>
+        <!-- <div v-else>
           <h2 class="modal-title" style="color: red">ERROR!</h2>
           <p>Something went wrong. Status code: {{ statusCode }}</p>
-        </div>
+        </div> -->
         <div class="modal-buttons">
           <button
             class="itbkk-button button-close"

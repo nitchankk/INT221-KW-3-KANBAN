@@ -142,7 +142,7 @@ const statusCode = ref(null)
 const taskIdToDelete = ref(null)
 const showEditModal = ref(false)
 const taskToEdit = ref(null)
-const operationType = ref(null)
+const operationType = ref('')
 
 const route = useRoute()
 
@@ -197,6 +197,7 @@ const handleTaskClick = (taskId) => {
 
 const handleAddTask = () => {
   showAddModal.value = true
+  operationType.value = 'add'
 }
 
 const handleTaskSaved = (savedTask) => {
