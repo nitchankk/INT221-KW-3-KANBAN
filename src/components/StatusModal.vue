@@ -59,6 +59,7 @@ export default {
   },
   updated() {
     console.log('Received status code:', this.statusCode)
+    console.log('operationType:', this.operationType)
   }
 }
 </script>
