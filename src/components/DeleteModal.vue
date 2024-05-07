@@ -3,7 +3,8 @@
     <div class="modal">
       <div class="modal-content">
         <h2 class="modal-title">DELETE TASK</h2>
-        <p>Are you sure you want to delete this task?</p>
+        <p>Are you sure you want to delete column  "{{ taskIndex }}" 
+          <br> "{{ taskTitle }}" ?</p>
         <div class="modal-buttons">
           <button
             class="itbkk-button itbkk-button-confirm"
@@ -30,6 +31,14 @@ const props = defineProps({
     required: true
   },
   taskId: {
+    type: Number,
+    required: true
+  },
+  taskTitle: {
+    type: String,
+    required: true
+  },
+  taskIndex: {
     type: Number,
     required: true
   }

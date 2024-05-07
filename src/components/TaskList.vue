@@ -108,11 +108,13 @@
     />
 
     <delete-modal
-      v-if="showDeleteModal"
-      :closeModal="closeDeleteModal"
-      :taskId="taskIdToDelete"
-      @deleted="handleTaskDeleted"
-    />
+  v-if="showDeleteModal"
+  :closeModal="closeDeleteModal"
+  :taskId="taskIdToDelete"
+  :taskTitle="taskTitleToDelete"
+  :taskIndex="taskIndexToDelete"
+  @deleted="handleTaskDeleted"
+/>
     <edit-modal
       v-if="showEditModal"
       :task="taskToEdit"
@@ -143,6 +145,9 @@ const taskIdToDelete = ref(null)
 const showEditModal = ref(false)
 const taskToEdit = ref(null)
 const operationType = ref('')
+const taskTitleToDelete = ref(null)
+const taskIndexToDelete = ref(null)
+
 
 const route = useRoute()
 
@@ -215,9 +220,14 @@ const closeModal = () => {
 }
 
 const openDeleteModal = (taskId) => {
+  const task = tasks.value.find((task) => task.taskId === taskId)
+  if (task) {
   taskIdToDelete.value = taskId
-  operationType.value = 'delete' // Set operationType to 'delete' when opening delete modal
+  taskTitleToDelete.value = task.title 
+  taskIndexToDelete.value = tasks.value.indexOf(task) + 1 
+  operationType.value = 'delete' 
   showDeleteModal.value = true
+  }
 }
 
 const handleTaskDeleted = (deletedTaskId, receivedStatusCode) => {
