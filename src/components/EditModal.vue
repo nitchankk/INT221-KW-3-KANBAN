@@ -273,7 +273,7 @@ textarea {
   width: 250px;
   height: 90px;
   text-align: right;
-  background-color: #ffffffb7;
+  background-color: #ffffffd2;
 }
 
 .details-group {

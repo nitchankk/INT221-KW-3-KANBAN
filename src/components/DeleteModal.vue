@@ -2,7 +2,7 @@
   <div class="modal-wrapper">
     <div class="modal">
       <div class="modal-content">
-        <h2 class="modal-title">Delete Task</h2>
+        <h2 class="modal-title">DELETE TASK</h2>
         <p>Are you sure you want to delete this task?</p>
         <div class="modal-buttons">
           <button
