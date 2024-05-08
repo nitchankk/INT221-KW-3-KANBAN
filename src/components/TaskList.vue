@@ -69,9 +69,9 @@
               </td>
               <td
                 class="border px-4 py-2 itbkk-status"
-                :data-status="task.status"
+                :data-status="task.statusName"
               >
-                {{ getStatusLabel(task.status) }}
+                {{ getStatusLabel(task.statusName) }}
               </td>
               <td class="border px-4 py-2" style="width: 60px">
                 <div class="action-buttons">

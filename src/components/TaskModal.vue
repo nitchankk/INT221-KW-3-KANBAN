@@ -50,7 +50,7 @@
           <div class="status-box">
             <strong>Status</strong>
             <p class="itbkk-status">
-              <template v-if="task.status">{{ task.status }}</template>
+              <template v-if="task.statusName">{{ task.statusName }}</template>
               <template v-else><i class="no-data">Unassigned</i></template>
             </p>
           </div>

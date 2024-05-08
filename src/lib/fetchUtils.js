@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8080/itb-kk/v1'
+const baseUrl = 'http://localhost:8080/itb-kk/v2'
 
 const fetchData = async (url, taskId = null) => {
   try {
