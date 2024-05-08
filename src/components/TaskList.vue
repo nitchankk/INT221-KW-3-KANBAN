@@ -63,7 +63,6 @@
               <td class="border px-4 py-2" style="width: 60px">
                 <div class="action-buttons">
                   <button
-                    @click="toggleActionButtons"
                     style="border: none; background: none; padding: 0"
                     class="itbkk-button-action"
                   >
@@ -167,7 +166,6 @@ const taskToEdit = ref(null)
 const operationType = ref('')
 const taskTitleToDelete = ref(null)
 const taskIndexToDelete = ref(null)
-const showActionButtons = ref(false)
 
 const route = useRoute()
 
@@ -307,10 +305,6 @@ const handleEditSuccess = (status) => {
   showSuccessModal.value = true
 }
 
-const toggleActionButtons = () => {
-  showActionButtons.value = !showActionButtons.value
-}
-
 onMounted(() => {
   fetchTasks()
 })
@@ -384,7 +378,7 @@ table-container {
 }
 
 .action-buttons {
-  display: flex;
+  text-align: center;
 }
 
 .action-button {

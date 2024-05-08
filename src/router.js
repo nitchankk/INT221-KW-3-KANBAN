@@ -3,6 +3,7 @@ import App from './App.vue'
 
 // Import Test.vue
 import Test from './components/test/Test.vue'
+import StatusTable from './v2/StatusTable.vue'
 
 const routes = [
   {
@@ -11,18 +12,21 @@ const routes = [
   },
   {
     path: '/task/:taskId',
-    component:() => import('./components/TaskList.vue')
+    component: () => import('./components/TaskList.vue')
   },
   {
     path: '/test',
-    component: Test
+    component: () => import('./components/test/Test.vue')
+  },
+  {
+    path: '/status',
+    component: StatusTable // Add a route for StatusTable.vue
   },
   {
     path: '/',
     redirect: '/task',
     component: App
   }
-  
 ]
 
 const router = createRouter({
