@@ -47,7 +47,7 @@
             <label for="status">Status:</label>
             <select
               id="status"
-              v-model="editedTask.status"
+              v-model="editedTask.statusName"
               class="itbkk-status"
             >
               <option
