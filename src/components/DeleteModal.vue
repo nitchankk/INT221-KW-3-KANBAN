@@ -3,14 +3,16 @@
     <div class="modal">
       <div class="modal-content">
         <h2 class="modal-title">DELETE TASK</h2>
-        <p>Are you sure you want to delete column  "{{ taskIndex }}" 
-          <br> "{{ taskTitle }}" ?</p>
+        <p class="itbkk-message">
+          Do you want to delete the task number "{{ taskIndex }}" <br />
+          "{{ taskTitle }}" ?
+        </p>
         <div class="modal-buttons">
           <button
             class="itbkk-button itbkk-button-confirm"
             @click="confirmDelete"
           >
-            Delete
+            Confirm
           </button>
           <button class="itbkk-button itbkk-button-cancel" @click="cancelModal">
             Cancel

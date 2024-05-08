@@ -21,30 +21,17 @@
               <th class="border px-4 py-2">Title</th>
               <th class="border px-4 py-2">Assignees</th>
               <th class="border px-4 py-2" style="width: 100px">Status</th>
-              <th class="border px-4 py-2" style="text-align: center">
-                <button
-                  @click="toggleActionButtons"
+              <th class="border px-4 py-2" style="width: 70px">
+                <img
+                  src="../assets/menu-bar.png"
+                  alt="Action Icon"
                   style="
-                    border: none;
-                    background: none;
-                    padding: 0;
-                    font-size: x-large;
-                    font-weight: bold;
-                    color: grey;
+                    width: 25px;
+                    height: 25px;
+                    display: block;
+                    margin: 0 auto;
                   "
-                  class="itbkk-button-action"
-                >
-                  <img
-                    src="../assets/menu-bar.png"
-                    alt="Action Icon"
-                    style="
-                      width: 25px;
-                      height: 25px;
-                      display: block;
-                      margin: 0 auto;
-                    "
-                  />
-                </button>
+                />
               </th>
             </tr>
           </thead>
@@ -75,7 +62,11 @@
               </td>
               <td class="border px-4 py-2" style="width: 60px">
                 <div class="action-buttons">
-                  <div v-if="showActionButtons" class="action-button-options">
+                  <button
+                    @click="toggleActionButtons"
+                    style="border: none; background: none; padding: 0"
+                    class="itbkk-button-action"
+                  >
                     <button
                       @click="openEditModal(task.taskId)"
                       style="
@@ -89,7 +80,7 @@
                       <img
                         src="../assets/edit.png"
                         alt="Edit Icon"
-                        style="width: 25px; height: 25px"
+                        style="width: 30px; height: 30px"
                       />
                     </button>
 
@@ -101,10 +92,10 @@
                       <img
                         src="../assets/delete2.png"
                         alt="Delete Icon"
-                        style="width: 25px; height: 25px"
+                        style="width: 30px; height: 30px"
                       />
                     </button>
-                  </div>
+                  </button>
                 </div>
               </td>
             </tr>
