@@ -3,7 +3,7 @@ import App from './App.vue'
 
 // Import Test.vue
 import Test from './components/test/Test.vue'
-import StatusTable from './v2/StatusTable.vue'
+import StatusTable from './v2/StatusList.vue'
 
 const routes = [
   {

@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>IT Bangmod Kradan Kanban by kw-3</h1>
+    <h2>Task List</h2>
     <div id="app">
       <div class="manage-status">
         <button class="itbkk-manage-status">Manage Status</button>
@@ -319,7 +320,7 @@ onMounted(() => {
 
 <style scoped>
 #app {
-  width: 1500px;
+  width: 1200px;
   margin: 0 auto;
 }
 
@@ -346,8 +347,16 @@ table-container {
 }
 
 .table th {
-  background-color: #edf2f7;
+  background-color: #d3e7fc;
   font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ebebeb;
+}
+
+tbody tr:hover {
+  background-color: #acc1ca;
 }
 
 .itbkk-status {
