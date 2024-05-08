@@ -1,12 +1,15 @@
 <template>
   <div>
-    <h1 class="text-2xl font-bold">IT Bangmod Kradan Kanban by kw-3</h1>
+    <h1>IT Bangmod Kradan Kanban by kw-3</h1>
     <div id="app">
+      <div class="manage-status">
+        <button class="itbkk-manage-status">Manage Status</button>
+      </div>
       <div class="table-container">
         <table class="table">
           <thead>
             <tr>
-              <th class="border px-4 py-2 itbkk-button-add">
+              <th class="itbkk-button-add" style="width: 40px">
                 <button
                   @click="handleAddTask"
                   style="border: none; background: none; padding: 0"
@@ -18,10 +21,10 @@
                   />
                 </button>
               </th>
-              <th class="border px-4 py-2">Title</th>
-              <th class="border px-4 py-2">Assignees</th>
-              <th class="border px-4 py-2" style="width: 100px">Status</th>
-              <th class="border px-4 py-2" style="width: 70px">
+              <th style="width: 600px">Title</th>
+              <th style="width: 200px">Assignees</th>
+              <th style="width: 100px">Status</th>
+              <th style="width: 70px">
                 <img
                   src="../assets/menu-bar.png"
                   alt="Action Icon"
@@ -42,10 +45,7 @@
               class="itbkk-item"
             >
               <td class="border px-4 py-2">{{ index + 1 }}</td>
-              <td
-                class="border px-4 py-2 itbkk-title"
-                @click="handleTaskClick(task.taskId)"
-              >
+              <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
                 {{ task.title }}
               </td>
               <td
@@ -362,22 +362,22 @@ table-container {
   text-transform: uppercase;
 }
 
-.itbkk-status[data-status='To Do'] {
+.itbkk-status[data-status='TO DO'] {
   background-color: #f67c5e;
   color: #333;
 }
 
-.itbkk-status[data-status='Doing'] {
+.itbkk-status[data-status='DOING'] {
   background-color: #f6e05e;
   color: #333;
 }
 
-.itbkk-status[data-status='Done'] {
+.itbkk-status[data-status='DONE'] {
   background-color: #68d391;
   color: #333;
 }
 
-.itbkk-status[data-status='No Status'] {
+.itbkk-status[data-status='NO STATUS'] {
   background-color: #f5f5f5;
   color: #888;
   font-style: italic;
@@ -393,5 +393,54 @@ table-container {
   background: none;
   padding: 0;
   margin-right: 10px;
+}
+.manage-status {
+  text-align: right; /* Align to the right */
+  margin: 10px;
+}
+
+.manage-status button {
+  background-color: #aebac4;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.manage-status button:hover {
+  background-color: #276fad;
+}
+
+.manage-status button:focus {
+  outline: none;
+}
+
+.manage-status button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.itbkk-button-add button:hover {
+  transform: translateY(1px);
+}
+
+.itbkk-button-add button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.itbkk-button-action button:hover {
+  transform: translateY(1px);
+}
+
+.itbkk-button-action button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
