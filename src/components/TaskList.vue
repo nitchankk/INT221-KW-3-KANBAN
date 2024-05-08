@@ -20,7 +20,7 @@
               </th>
               <th class="border px-4 py-2">Title</th>
               <th class="border px-4 py-2">Assignees</th>
-              <th class="border px-4 py-2">Status</th>
+              <th class="border px-4 py-2" style="width: 100px">Status</th>
               <th class="border px-4 py-2" style="text-align: center">
                 <button
                   @click="toggleActionButtons"
@@ -84,6 +84,7 @@
                         padding: 0;
                         margin-right: 10px;
                       "
+                      class="itbkk-button-edit"
                     >
                       <img
                         src="../assets/edit.png"
@@ -95,7 +96,7 @@
                     <button
                       @click="openDeleteModal(task.taskId)"
                       style="border: none; background: none; padding: 0"
-                      class="itbkk-button-action"
+                      class="itbkk-button-delete"
                     >
                       <img
                         src="../assets/delete2.png"
