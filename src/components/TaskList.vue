@@ -4,7 +4,9 @@
     <h2>Task List</h2>
     <div id="app">
       <div class="manage-status">
-        <button class="itbkk-manage-status">Manage Status</button>
+        <button @click="goToStatusManagement" class="itbkk-manage-status">
+          Manage Status
+        </button>
       </div>
       <div class="table-container">
         <table class="table">
@@ -304,6 +306,10 @@ const handleEditSuccess = (status) => {
   console.log('Received status code after edit:', status)
   statusCode.value = status
   showSuccessModal.value = true
+}
+
+const goToStatusManagement = () => {
+  window.location.href = '/status'
 }
 
 onMounted(() => {

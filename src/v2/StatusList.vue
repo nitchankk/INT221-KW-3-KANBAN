@@ -1,49 +1,76 @@
 <template>
-  <div class="status-table">
+  <div>
     <h1>IT Bangmod Kradan Kanban by kw-3</h1>
-    <h2>Status Manager</h2>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 20px"></th>
-            <th style="width: 150px">Name</th>
-            <th style="width: 400px">Description</th>
-            <th style="width: 80px">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(status, index) in statuses" :key="status.id">
-            <td class="itbkk-status" style="text-align: centerg">
-              {{ index + 1 }}
-            </td>
-            <td class="itbkk-status">{{ status.statusName }}</td>
-            <td>{{ status.statusDescription }}</td>
-            <td>
-              <div class="action-buttons">
+    <div id="app">
+      <h2>Status Manager</h2>
+      <div class="back-home">
+        <button @click="backToHomePage" class="itbkk-button-home">HOME</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th
+                class="itbkk-button-add"
+                style="width: 30px; text-align: center"
+              >
                 <button
                   @click="clickStatus"
-                  style="margin-right: 15px"
-                  class="itbkk-button-action"
+                  style="border: none; background: none; padding: 0"
                 >
                   <img
-                    src="../assets/pencil.png"
-                    alt="EditStatus"
-                    class="action-icon"
+                    src="../assets/add-status.png"
+                    alt="Add Icon"
+                    style="width: 25px; height: 25px"
                   />
                 </button>
-                <button @click="clickStatus" class="itbkk-button-action">
-                  <img
-                    src="../assets/delete-status.png"
-                    alt="DeleteStatus"
-                    class="action-icon"
-                  />
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </th>
+              <th style="width: 150px">Name</th>
+              <th style="width: 400px">Description</th>
+              <th style="width: 80px; text-align: center">
+                <img
+                  src="../assets/file.png"
+                  alt="Add Icon"
+                  style="width: 25px; height: 25px"
+                />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(status, index) in statuses" :key="status.id">
+              <td class="itbkk-status" style="text-align: center">
+                {{ index + 1 }}
+              </td>
+              <td class="itbkk-status">{{ status.statusName }}</td>
+              <td>{{ status.statusDescription }}</td>
+              <td>
+                <div class="action-buttons">
+                  <button @click="clickStatus" class="itbkk-button-action">
+                    <button
+                      style="margin-right: 15px"
+                      class="itbkk-button-action"
+                    >
+                      <img
+                        src="../assets/pencil.png"
+                        alt="EditStatus"
+                        class="action-icon"
+                      />
+                    </button>
+                    <button @click="clickStatus" class="itbkk-button-action">
+                      <img
+                        src="../assets/delete-status.png"
+                        alt="DeleteStatus"
+                        class="action-icon"
+                      />
+                    </button>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -60,20 +87,23 @@ async function fetchData() {
     statuses.value = responseData
   } catch (error) {
     console.error('Error fetching status data:', error)
-    // Handle error if necessary
   }
 }
 
 const clickStatus = () => {
-  console.log('Hello CLicked')
+  console.log('อย่ากดเล่น ไปทำงาน')
+}
+
+const backToHomePage = () => {
+  window.location.href = '/task'
 }
 
 onMounted(fetchData)
 </script>
 
 <style scoped>
-.status-table {
-  width: 1500px;
+#app {
+  width: 1200px;
   margin: 0 auto;
 }
 
@@ -137,5 +167,55 @@ tbody tr:hover {
   height: 25px;
   display: block;
   margin: 0 auto;
+}
+
+.back-home {
+  text-align: right;
+  margin: 10px;
+}
+
+.back-home button {
+  background-color: #276fad;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.back-home button:hover {
+  background-color: #aebac4;
+}
+
+.back-home button:focus {
+  outline: none;
+}
+
+.back-home button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.itbkk-button-add button:hover {
+  transform: translateY(1px);
+}
+
+.itbkk-button-add button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.itbkk-button-action button:hover {
+  transform: translateY(1px);
+}
+
+.itbkk-button-action button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>

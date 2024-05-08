@@ -20,7 +20,7 @@ const routes = [
   },
   {
     path: '/status',
-    component: StatusTable // Add a route for StatusTable.vue
+    component: () => import('./v2/StatusList.vue')
   },
   {
     path: '/',
