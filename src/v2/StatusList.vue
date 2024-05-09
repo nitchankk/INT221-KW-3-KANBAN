@@ -31,7 +31,7 @@
               <th style="width: 80px; text-align: center">
                 <img
                   src="../assets/file.png"
-                  alt="Add Icon"
+                  alt="Action Icon"
                   style="width: 25px; height: 25px"
                 />
               </th>
