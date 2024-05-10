@@ -62,13 +62,13 @@ const props = defineProps({
   isAddOpen: Boolean
 })
 
-const emit = defineEmits(['closeModal', 'statusAdded']) // Add statusAdded event
+const emit = defineEmits(['closeModal', 'statusAdded'])
 
 const statusName = ref('')
 const statusDescription = ref('')
 
 const closeModal = () => {
-  statusName.value = '' // Reset input fields when modal is closed
+  statusName.value = ''
   statusDescription.value = ''
   emit('closeModal')
 }
@@ -80,14 +80,13 @@ const addStatus = async () => {
       statusDescription: statusDescription.value
     }
     const response = await fetchUtils.postData('statuses', newStatus)
-    console.log('Response status code:', response.statusCode) // Log status code
+    console.log('Response status code:', response.statusCode)
     if (response.success) {
       closeModal()
-      emit('statusAdded') // Emit statusAdded event when status is added
+      emit('statusAdded')
     }
   } catch (error) {
     console.error('Error adding status:', error)
-    // Optionally show error message to user
   }
 }
 </script>
