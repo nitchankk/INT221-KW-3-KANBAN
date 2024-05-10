@@ -1,0 +1,92 @@
+<template>
+  <div class="fixed inset-0 flex items-center justify-center" v-if="isAddOpen">
+    <div class="fixed inset-0 bg-black opacity-50"></div>
+    <div class="bg-white rounded-lg p-6 max-w-md w-full relative z-10">
+      <h2 class="text-lg font-semibold mb-4">Add Status</h2>
+      <form @submit.prevent="addStatus">
+        <div class="mb-4">
+          <label for="statusName" class="block font-semibold mb-1 text-left"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="statusName"
+            v-model.trim="statusName"
+            class="w-full border rounded-md p-2 font-medium"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="statusDescription"
+            class="block font-semibold mb-1 text-left"
+            >Description</label
+          >
+          <textarea
+            id="statusDescription"
+            v-model.trim="statusDescription"
+            class="w-full border rounded-md p-2 font-medium"
+            rows="4"
+          ></textarea>
+        </div>
+        <div class="flex justify-end">
+          <button
+            type="button"
+            class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2"
+            @click="closeModal"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            :class="[
+              'px-4 py-2 rounded-md',
+              !statusName.trim()
+                ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+            ]"
+            :disabled="!statusName.trim()"
+          >
+            Add Status
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { defineProps, defineEmits, ref } from 'vue'
+import fetchUtils from '../lib/fetchUtils'
+
+const props = defineProps({
+  isAddOpen: Boolean
+})
+
+const emit = defineEmits(['closeModal', 'statusAdded']) // Add statusAdded event
+
+const statusName = ref('')
+const statusDescription = ref('')
+
+const closeModal = () => {
+  statusName.value = '' // Reset input fields when modal is closed
+  statusDescription.value = ''
+  emit('closeModal')
+}
+
+const addStatus = async () => {
+  try {
+    const newStatus = {
+      statusName: statusName.value,
+      statusDescription: statusDescription.value
+    }
+    const response = await fetchUtils.postData('statuses', newStatus)
+    if (response.success) {
+      closeModal()
+      emit('statusAdded') // Emit statusAdded event when status is added
+    }
+  } catch (error) {
+    console.error('Error adding status:', error)
+    // Optionally show error message to user
+  }
+}
+</script>

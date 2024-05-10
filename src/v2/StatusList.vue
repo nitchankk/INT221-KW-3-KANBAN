@@ -15,7 +15,7 @@
                 style="width: 30px; text-align: center"
               >
                 <button
-                  @click="openModal"
+                  @click="openAddModal"
                   style="border: none; background: none; padding: 0"
                 >
                   <img
@@ -24,20 +24,17 @@
                     style="width: 25px; height: 25px"
                   />
                 </button>
-                <ModalComponent :isOpen="isOpen" @closeModal="handleModalClose">
-                  <!-- Your modal content goes here -->
+                <AddStatusModal
+                  :isAddOpen="isAddOpen"
+                  @closeModal="handleModalClose"
+                  @statusAdded="handleStatusAdded"
+                >
                   <h2>Add Status</h2>
-                </ModalComponent>
+                </AddStatusModal>
               </th>
               <th style="width: 150px">Name</th>
               <th style="width: 400px">Description</th>
-              <th style="width: 80px; text-align: center">
-                <img
-                  src="../assets/file.png"
-                  alt="Action Icon"
-                  style="width: 25px; height: 25px"
-                />
-              </th>
+              <th style="width: 80px">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -93,6 +90,10 @@ async function fetchData() {
   }
 }
 
+const handleStatusAdded = () => {
+  fetchData() // Refresh status data when a status is added
+}
+
 const clickStatus = () => {
   console.log('อย่ากดเล่น ไปทำงาน')
 }
@@ -100,20 +101,21 @@ const clickStatus = () => {
 const backToHomePage = () => {
   window.location.href = '/task'
 }
-import ModalComponent from './ModalComponent.vue'
 
-let isOpen = ref(false)
+import AddStatusModal from './AddStatusModal.vue'
 
-const openModal = () => {
-  isOpen.value = true
+let isAddOpen = ref(false)
+
+const openAddModal = () => {
+  isAddOpen.value = true
 }
 
 const closeModal = () => {
-  isOpen.value = false
+  isAddOpen.value = false
 }
 
 const handleModalClose = () => {
-  isOpen.value = false
+  isAddOpen.value = false
 }
 onMounted(fetchData)
 </script>
