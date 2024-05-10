@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>IT Bangmod Kradan Kanban by kw-3</h1>
-    <h2>Task List</h2>
+    <h1 class="text-3xl font-bold">IT Bangmod Kradan Kanban by kw-3</h1>
+    <h2 class="text-2xl">Task List</h2>
     <div id="app">
       <div class="manage-status">
         <button @click="goToStatusManagement" class="itbkk-manage-status">
@@ -12,7 +12,10 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="itbkk-button-add" style="width: 40px">
+              <th
+                class="itbkk-button-add"
+                style="width: 50px; text-align: center"
+              >
                 <button
                   @click="handleAddTask"
                   style="border: none; background: none; padding: 0"
@@ -47,7 +50,9 @@
               :key="task.taskId"
               class="itbkk-item"
             >
-              <td class="border px-4 py-2">{{ index + 1 }}</td>
+              <td class="border px-4 py-2" style="text-align: center">
+                {{ index + 1 }}
+              </td>
               <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
                 {{ task.title }}
               </td>
@@ -63,7 +68,7 @@
               >
                 {{ getStatusLabel(task.statusName) }}
               </td>
-              <td class="border px-4 py-2" style="width: 60px">
+              <td class="border px-4 py-2" style="width: 100px">
                 <div class="action-buttons">
                   <button
                     style="border: none; background: none; padding: 0"

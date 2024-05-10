@@ -1,12 +1,11 @@
 <template>
   <div>
-    <h1>IT Bangmod Kradan Kanban by kw-3</h1>
+    <h1 class="text-3xl font-bold">IT Bangmod Kradan Kanban by kw-3</h1>
     <div id="app">
-      <h2>Status Manager</h2>
+      <h2 class="text-2xl">Status Manager</h2>
       <div class="back-home">
         <button @click="backToHomePage" class="itbkk-button-home">HOME</button>
       </div>
-
       <div class="table-container">
         <table>
           <thead>
@@ -16,7 +15,7 @@
                 style="width: 30px; text-align: center"
               >
                 <button
-                  @click="clickStatus"
+                  @click="openModal"
                   style="border: none; background: none; padding: 0"
                 >
                   <img
@@ -25,6 +24,10 @@
                     style="width: 25px; height: 25px"
                   />
                 </button>
+                <ModalComponent :isOpen="isOpen" @closeModal="handleModalClose">
+                  <!-- Your modal content goes here -->
+                  <h2>Add Status</h2>
+                </ModalComponent>
               </th>
               <th style="width: 150px">Name</th>
               <th style="width: 400px">Description</th>
@@ -97,7 +100,21 @@ const clickStatus = () => {
 const backToHomePage = () => {
   window.location.href = '/task'
 }
+import ModalComponent from './ModalComponent.vue'
 
+let isOpen = ref(false)
+
+const openModal = () => {
+  isOpen.value = true
+}
+
+const closeModal = () => {
+  isOpen.value = false
+}
+
+const handleModalClose = () => {
+  isOpen.value = false
+}
 onMounted(fetchData)
 </script>
 
