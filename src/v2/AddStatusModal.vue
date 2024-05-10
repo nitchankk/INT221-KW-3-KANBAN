@@ -80,6 +80,7 @@ const addStatus = async () => {
       statusDescription: statusDescription.value
     }
     const response = await fetchUtils.postData('statuses', newStatus)
+    console.log('Response status code:', response.statusCode) // Log status code
     if (response.success) {
       closeModal()
       emit('statusAdded') // Emit statusAdded event when status is added
