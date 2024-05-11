@@ -68,7 +68,7 @@
     </div>
     <AddStatusModal
       :isAddOpen="isAddOpen"
-      @closeModal="handleModalClose"
+      @closeModal="closeModal"
       @statusAdded="handleStatusAdded"
     >
       <h2>Add Status</h2>
@@ -121,10 +121,6 @@ const openAddModal = () => {
 const closeModal = () => {
   isAddOpen.value = false
   isEditOpen.value = false
-}
-
-const handleModalClose = () => {
-  isAddOpen.value = false
 }
 
 // Edit ----------------------------------------------------------
