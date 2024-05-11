@@ -75,7 +75,7 @@
     </AddStatusModal>
     <EditStatusModal
       :isOpen="isEditOpen"
-      @modal-close="closeModal"
+      @closeModal="closeModal"
       @submit="submitHandler"
     >
     </EditStatusModal>
