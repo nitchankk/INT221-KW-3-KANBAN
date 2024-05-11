@@ -46,10 +46,10 @@
               <td>{{ status.statusDescription }}</td>
               <td>
                 <div class="action-buttons">
-                  <button @click="clickStatus" class="itbkk-button-action">
+                  <button class="itbkk-button-action">
                     <button
                       style="margin-right: 15px"
-                      class="itbkk-button-action"
+                      class="itbkk-button-edit"
                     >
                       <img
                         src="../assets/pencil.png"
@@ -91,7 +91,7 @@ async function fetchData() {
 }
 
 const handleStatusAdded = () => {
-  fetchData() // Refresh status data when a status is added
+  fetchData()
 }
 
 const clickStatus = () => {
