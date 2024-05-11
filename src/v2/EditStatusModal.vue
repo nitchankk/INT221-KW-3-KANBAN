@@ -85,7 +85,6 @@ watch(
 )
 
 const isSaveDisabled = computed(() => {
-  // Check if the edited status is different from the initial status
   return (
     JSON.stringify(editedStatus.value) === JSON.stringify(initialStatus.value)
   )
