@@ -40,8 +40,13 @@
               Cancel
             </button>
             <button
+              :disabled="saveDisabled"
               type="submit"
-              class="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
+              class="px-4 py-2 rounded-md"
+              :class="{
+                'bg-gray-400 text-gray-600 cursor-not-allowed': isSaveDisabled,
+                'bg-blue-500 text-white hover:bg-blue-600': !isSaveDisabled
+              }"
             >
               Save
             </button>
@@ -53,7 +58,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, watch } from 'vue'
+import { defineProps, defineEmits, ref, watch, computed } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
@@ -64,17 +69,27 @@ const props = defineProps({
 const emit = defineEmits(['closeModal'])
 
 const editedStatus = ref({ statusName: '', statusDescription: '' })
+const initialStatus = ref({ statusName: '', statusDescription: '' })
 
 watch(
   () => props.statusData,
   (newValue) => {
     if (newValue) {
       editedStatus.value = { ...newValue }
+      initialStatus.value = { ...newValue }
     } else {
       editedStatus.value = { statusName: '', statusDescription: '' }
+      initialStatus.value = { statusName: '', statusDescription: '' }
     }
   }
 )
+
+const isSaveDisabled = computed(() => {
+  // Check if the edited status is different from the initial status
+  return (
+    JSON.stringify(editedStatus.value) === JSON.stringify(initialStatus.value)
+  )
+})
 
 function saveChanges() {
   console.log('Save changes function called')
