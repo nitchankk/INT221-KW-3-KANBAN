@@ -40,7 +40,7 @@
               Cancel
             </button>
             <button
-              :disabled="saveDisabled"
+              :disabled="isSaveDisabled"
               type="submit"
               class="px-4 py-2 rounded-md"
               :class="{
