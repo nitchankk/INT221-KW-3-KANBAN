@@ -1,18 +1,12 @@
 <template>
-  <div
-    v-if="isOpen"
-    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-  >
-    <div class="modal-container bg-white w-80 mx-auto rounded-lg shadow-lg">
-      <div class="modal-header p-4 font-bold">
-        <slot name="header">Edit Status</slot>
-      </div>
-      <div class="modal-body p-4" v-if="editedStatus">
+  <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center">
+    <div class="fixed inset-0 bg-black opacity-50"></div>
+    <div class="bg-white rounded-lg p-6 max-w-md w-full relative z-10">
+      <h2 class="text-lg font-semibold mb-4">Edit Status</h2>
+      <div v-if="editedStatus">
         <form @submit.prevent="saveChanges">
           <div class="mb-4">
-            <label
-              for="statusName"
-              class="block text-sm font-medium text-gray-700"
+            <label for="statusName" class="block font-semibold mb-1 text-left"
               >Name:</label
             >
             <input
@@ -20,34 +14,34 @@
               type="text"
               id="statusName"
               name="statusName"
-              class="mt-1 p-2 w-full border-gray-300 rounded-md"
+              class="w-full border rounded-md p-2 font-medium"
             />
           </div>
           <div class="mb-4">
             <label
               for="statusDescription"
-              class="block text-sm font-medium text-gray-700"
+              class="block font-semibold mb-1 text-left"
               >Description:</label
             >
             <textarea
               v-model="editedStatus.statusDescription"
               id="statusDescription"
               name="statusDescription"
-              rows="3"
-              class="mt-1 p-2 w-full border-gray-300 rounded-md"
+              rows="4"
+              class="w-full border rounded-md p-2 font-medium"
             ></textarea>
           </div>
-          <div class="text-right">
+          <div class="flex justify-end">
             <button
               type="button"
               @click="emit('closeModal')"
-              class="px-4 py-2 mr-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              class="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
             >
               Save
             </button>
@@ -60,6 +54,7 @@
 
 <script setup>
 import { defineProps, defineEmits, ref, watch } from 'vue'
+import fetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
   isOpen: Boolean,
@@ -85,6 +80,15 @@ function saveChanges() {
   console.log('Save changes function called')
   console.log('Event:', event)
   console.log('Edited status:', editedStatus.value)
+  fetchUtils
+    .putData('statuses', editedStatus.value)
+    .then((response) => {
+      console.log('Status updated successfully:', response)
+      emit('closeModal')
+    })
+    .catch((error) => {
+      console.error('Error updating status:', error)
+    })
 }
 </script>
 
