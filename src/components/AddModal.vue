@@ -105,7 +105,7 @@ export default {
           'tasks',
           this.taskDetails
         )
-        if (success && statusCode === 201) {
+        if (success && statusCode === 200) {
           console.log('The task has been successfully added', statusCode)
           this.$emit('taskSaved', data)
           this.$emit('showStatusModal', statusCode)
