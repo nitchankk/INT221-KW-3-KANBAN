@@ -1,56 +1,55 @@
+<script setup>
+import { defineProps, defineEmits, ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+
+const props = defineProps({
+  isOpen: Boolean
+})
+
+const emit = defineEmits(['modal-close'])
+
+const target = ref(null)
+onClickOutside(target, () => emit('modal-close'))
+</script>
+
 <template>
-  <div v-if="isOpen" class="edit-status-modal">
-    <div class="modal-content">
-      <h2>Edit here</h2>
-      <button @click="closeModal">Cancel</button>
+  <div v-if="isOpen" class="modal-mask">
+    <div class="modal-wrapper">
+      <div class="modal-container" ref="target">
+        <div class="modal-header">
+          <slot name="header"> default header </slot>
+        </div>
+        <div class="modal-body">
+          <slot name="content"> default content </slot>
+        </div>
+        <div class="modal-footer">
+          <slot name="footer">
+            <div>
+              <button @click.stop="emit('modal-close')">Submit</button>
+            </div>
+          </slot>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-
-const openModal = () => {
-  isOpen.value = true
-}
-
-const closeModal = () => {
-  isOpen.value = false
-}
-</script>
-
 <style scoped>
-.edit-status-modal {
+.modal-mask {
   position: fixed;
+  z-index: 9998;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
-
-.modal-content {
+.modal-container {
+  width: 300px;
+  margin: 150px auto;
+  padding: 20px 30px;
   background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-button {
-  margin-top: 10px;
-  background-color: #ccc;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #ddd;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 }
 </style>

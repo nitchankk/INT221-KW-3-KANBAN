@@ -24,13 +24,6 @@
                     style="width: 25px; height: 25px"
                   />
                 </button>
-                <AddStatusModal
-                  :isAddOpen="isAddOpen"
-                  @closeModal="handleModalClose"
-                  @statusAdded="handleStatusAdded"
-                >
-                  <h2>Add Status</h2>
-                </AddStatusModal>
               </th>
               <th style="width: 150px">Name</th>
               <th style="width: 400px">Description</th>
@@ -50,6 +43,7 @@
                     <button
                       style="margin-right: 15px"
                       class="itbkk-button-edit"
+                      @click="openEditModal"
                     >
                       <img
                         src="../assets/pencil.png"
@@ -72,6 +66,19 @@
         </table>
       </div>
     </div>
+    <AddStatusModal
+      :isAddOpen="isAddOpen"
+      @closeModal="handleModalClose"
+      @statusAdded="handleStatusAdded"
+    >
+      <h2>Add Status</h2>
+    </AddStatusModal>
+    <EditStatusModal
+      :isOpen="isEditOpen"
+      @modal-close="closeModal"
+      @submit="submitHandler"
+    >
+    </EditStatusModal>
   </div>
 </template>
 
@@ -102,6 +109,7 @@ const backToHomePage = () => {
   window.location.href = '/task'
 }
 
+// Add ----------------------------------------------------------
 import AddStatusModal from './AddStatusModal.vue'
 
 let isAddOpen = ref(false)
@@ -112,10 +120,25 @@ const openAddModal = () => {
 
 const closeModal = () => {
   isAddOpen.value = false
+  isEditOpen.value = false
 }
 
 const handleModalClose = () => {
   isAddOpen.value = false
+}
+
+// Edit ----------------------------------------------------------
+
+import EditStatusModal from './EditStatusModal.vue'
+
+const isEditOpen = ref(false)
+
+const openEditModal = () => {
+  isEditOpen.value = true
+}
+
+const submitHandler = () => {
+  //here you do whatever
 }
 onMounted(fetchData)
 </script>
