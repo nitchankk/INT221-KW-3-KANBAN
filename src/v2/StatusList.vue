@@ -43,7 +43,7 @@
                     <button
                       style="margin-right: 15px"
                       class="itbkk-button-edit"
-                      @click="openEditModal"
+                      @click="openEditModal(status)"
                     >
                       <img
                         src="../assets/pencil.png"
@@ -77,6 +77,7 @@
       :isOpen="isEditOpen"
       @closeModal="closeModal"
       @submit="handleStatusEdited"
+      :statusData="selectedStatus"
     >
     </EditStatusModal>
   </div>
@@ -128,11 +129,13 @@ const handleStatusAdded = () => {
 import EditStatusModal from './EditStatusModal.vue'
 
 const isEditOpen = ref(false)
+const selectedStatus = ref(null)
 
-const openEditModal = () => {
+const openEditModal = (status) => {
+  selectedStatus.value = { ...status }
+  console.log(selectedStatus.value) // Log the selectedStatus here
   isEditOpen.value = true
 }
-
 const handleStatusEdited = () => {
   //here you do whatever
 }
