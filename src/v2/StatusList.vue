@@ -76,7 +76,7 @@
     <EditStatusModal
       :isOpen="isEditOpen"
       @closeModal="closeModal"
-      @submit="submitHandler"
+      @submit="handleStatusEdited"
     >
     </EditStatusModal>
   </div>
@@ -95,10 +95,6 @@ async function fetchData() {
   } catch (error) {
     console.error('Error fetching status data:', error)
   }
-}
-
-const handleStatusAdded = () => {
-  fetchData()
 }
 
 const clickStatus = () => {
@@ -123,6 +119,10 @@ const closeModal = () => {
   isEditOpen.value = false
 }
 
+const handleStatusAdded = () => {
+  fetchData()
+}
+
 // Edit ----------------------------------------------------------
 
 import EditStatusModal from './EditStatusModal.vue'
@@ -133,7 +133,7 @@ const openEditModal = () => {
   isEditOpen.value = true
 }
 
-const submitHandler = () => {
+const handleStatusEdited = () => {
   //here you do whatever
 }
 onMounted(fetchData)

@@ -1,55 +1,43 @@
+<template>
+  <div
+    v-if="isOpen"
+    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+  >
+    <div class="modal-container bg-white w-80 mx-auto rounded-lg shadow-lg">
+      <div class="modal-header p-4 font-bold">
+        <slot name="header">Edit Status</slot>
+      </div>
+      <div class="modal-body p-4">
+        <slot name="content">Default Content</slot>
+      </div>
+      <div class="modal-footer p-4">
+        <slot name="footer">
+          <div class="text-right">
+            <button
+              @click.stop="emit('closeModal')"
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </div>
+        </slot>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   isOpen: Boolean
 })
 
 const emit = defineEmits(['closeModal'])
-
-const target = ref(null)
-onClickOutside(target, () => emit('closeModal'))
 </script>
 
-<template>
-  <div v-if="isOpen" class="modal-mask">
-    <div class="modal-wrapper">
-      <div class="modal-container" ref="target">
-        <div class="modal-header">
-          <slot name="header"> default header </slot>
-        </div>
-        <div class="modal-body">
-          <slot name="content"> default content </slot>
-        </div>
-        <div class="modal-footer">
-          <slot name="footer">
-            <div>
-              <button @click.stop="emit('closeModal')">Submit</button>
-            </div>
-          </slot>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <style scoped>
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
 .modal-container {
-  width: 300px;
-  margin: 150px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  max-width: 80%;
 }
 </style>
