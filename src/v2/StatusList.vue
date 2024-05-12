@@ -51,7 +51,7 @@
                         class="action-icon"
                       />
                     </button>
-                    <button @click="clickStatus" class="itbkk-button-action">
+                    <button @click="openDeleteModal(status)">
                       <img
                         src="../assets/delete-status.png"
                         alt="DeleteStatus"
@@ -80,6 +80,14 @@
       :statusData="selectedStatus"
     >
     </EditStatusModal>
+    <DeleteStatusModal
+      :isOpen="isDeleteOpen"
+      @closeModal="closeModal"
+      @submit="handleDelete"
+      :statusIdToDelete="selectedStatusIdToDelete"
+      @statusDeleted="fetchData"
+    >
+    </DeleteStatusModal>
   </div>
 </template>
 
@@ -98,10 +106,6 @@ async function fetchData() {
   }
 }
 
-const clickStatus = () => {
-  console.log('อย่ากดเล่น ไปทำงาน')
-}
-
 const backToHomePage = () => {
   window.location.href = '/task'
 }
@@ -118,6 +122,7 @@ const openAddModal = () => {
 const closeModal = () => {
   isAddOpen.value = false
   isEditOpen.value = false
+  isDeleteOpen.value = false
 }
 
 const handleStatusAdded = () => {
@@ -133,11 +138,28 @@ const selectedStatus = ref(null)
 
 const openEditModal = (status) => {
   selectedStatus.value = { ...status }
-  console.log(selectedStatus.value) // Log the selectedStatus here
+  console.log(selectedStatus.value)
   isEditOpen.value = true
 }
 const handleStatusEdited = () => {
-  //here you do whatever
+  fetchData()
+}
+
+// Delete --------------------------------------------------------
+import DeleteStatusModal from './DeleteStatusModal.vue'
+
+const isDeleteOpen = ref(false)
+
+const selectedStatusIdToDelete = ref(null)
+
+const openDeleteModal = (statusId) => {
+  console.log('Status ID to delete:', statusId)
+  selectedStatusIdToDelete.value = statusId
+  isDeleteOpen.value = true
+}
+
+const handleDelete = () => {
+  fetchData()
 }
 onMounted(fetchData)
 </script>
