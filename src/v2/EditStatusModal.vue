@@ -100,7 +100,7 @@ const saveChanges = async () => {
     if (response.success) {
       console.log('Status updated successfully:', response.data)
       emit('closeModal')
-      emit('statusEdited') // Emit statusEdited event after successful update
+      emit('statusEdited') 
     } else {
       console.error('Failed to update status:', response.data)
     }
