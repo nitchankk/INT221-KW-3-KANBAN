@@ -45,6 +45,11 @@ const deleteStatus = async () => {
       return
     }
 
+    if (props.statusIdToDelete === 1) {
+      console.error('The "No Status" status cannot be deleted')
+      return
+    }
+
     const response = await fetchUtils.deleteData(
       `statuses/${props.statusIdToDelete}`
     )
