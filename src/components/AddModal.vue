@@ -39,12 +39,14 @@
               v-model="taskDetails.statusName"
               class="itbkk-status"
             >
+              <option v-if="statuses.length === 0" value="" disabled>Loading...</option>
               <option
-                v-for="statusOption in statusOptions"
-                :key="statusOption"
-                :value="statusOption"
+                v-else
+                v-for="status in statuses"
+                :key="status.statusId"
+                :value="status.statusName"
               >
-                {{ statusOption }}
+                {{ status.statusName }}
               </option>
             </select>
           </div>
@@ -90,7 +92,7 @@ export default {
         assignees: '',
         status: 'No Status'
       },
-      statusOptions: ['No Status', 'To Do', 'Doing', 'Done']
+      statuses: []
     }
   },
   computed: {
@@ -126,10 +128,19 @@ export default {
     cancelModal() {
       this.closeModal()
     }
+  },
+  async created() {
+    try {
+      const data = await FetchUtils.fetchData('statuses')
+      this.statuses = data
+    } catch (error) {
+      console.error('Error fetching statuses:', error)
+    }
   }
 }
 </script>
 
+<!-- Existing styles -->
 <style scoped>
 .modal-wrapper {
   position: fixed;

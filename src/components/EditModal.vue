@@ -1,3 +1,4 @@
+<!-- EditModal.vue -->
 <template>
   <div class="modal-wrapper">
     <div class="modal">
@@ -45,17 +46,15 @@
           <!-- Status Select -->
           <div class="form-group">
             <label for="status">Status:</label>
-            <select
-              id="status"
-              v-model="editedTask.statusName"
-              class="itbkk-status"
-            >
+            <select id="status" v-model="editedTask.statusName" class="itbkk-status">
+              <option v-if="statuses.length === 0" value="" disabled>Loading...</option>
               <option
-                v-for="statusOption in statusOptions"
-                :key="statusOption"
-                :value="statusOption"
+                v-else
+                v-for="status in statuses"
+                :key="status.statusId"
+                :value="status.statusName"
               >
-                {{ statusOption }}
+                {{ status.statusName }}
               </option>
             </select>
           </div>
@@ -100,7 +99,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps, defineEmits } from 'vue'
+import { ref, computed, defineProps, defineEmits, onMounted } from 'vue'
 import FetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
@@ -119,7 +118,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['editSuccess'])
 const editedTask = ref(null)
-const statusOptions = ref(['No Status', 'To Do', 'Doing', 'Done']) // Define statusOptions here
+const statuses = ref([])
 
 if (props.task) {
   editedTask.value = { ...props.task }
@@ -145,7 +144,7 @@ const handleEditTask = async () => {
 
     // Make API request to update the task
     const response = await FetchUtils.putData(
-      `tasks/${props.task.taskId}`, // Ensure taskId is properly accessed here
+      `tasks/${props.task.taskId}`,
       updatedTask
     )
 
@@ -154,14 +153,21 @@ const handleEditTask = async () => {
       props.onTaskUpdated(response.data)
       props.closeModal()
       if (response.statusCode === 200) {
-        console.log('StatusCode', response.statusCode)
-        emit('editSuccess', response.statusCode, 'edit') // Emit the event with status code
+        // Emit the event with status code
+        emit('editSuccess', response.statusCode, 'edit')
+        
+        // Show status message
+        console.log('Task updated successfully.')
       }
     } else {
       console.error('Failed to update task')
+      // Show status message
+      console.error('Failed to update task. Please try again.')
     }
   } catch (error) {
     console.error('Error updating task:', error)
+    // Show status message
+    console.error('An error occurred while updating the task.')
   }
 }
 
@@ -175,6 +181,20 @@ const formatLocalDate = (dateString) => {
 const timezone = computed(
   () => Intl.DateTimeFormat().resolvedOptions().timeZone
 )
+
+const fetchStatuses = async () => {
+  try {
+    const data = await FetchUtils.fetchData('statuses')
+    statuses.value = data
+  } catch (error) {
+    console.error('Error fetching statuses:', error)
+  }
+}
+
+// Fetch statuses when the component is mounted
+onMounted(() => {
+  fetchStatuses()
+})
 </script>
 
 <style scoped>
