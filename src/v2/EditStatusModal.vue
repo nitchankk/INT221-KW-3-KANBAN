@@ -67,7 +67,7 @@ const props = defineProps({
   selectedStatusIdToEdit: Number
 })
 
-const emit = defineEmits(['closeModal', 'statusEdited']) 
+const emit = defineEmits(['closeModal', 'statusEdited'])
 
 const editedStatus = ref({ statusName: '', statusDescription: '' })
 const initialStatus = ref({ statusName: '', statusDescription: '' })
@@ -100,7 +100,7 @@ const saveChanges = async () => {
     if (response.success) {
       console.log('Status updated successfully:', response.data)
       emit('closeModal')
-      emit('statusEdited') 
+      emit('statusEdited') // Emit statusEdited event after successful update
     } else {
       console.error('Failed to update status:', response.data)
     }

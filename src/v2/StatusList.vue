@@ -76,7 +76,7 @@
     <EditStatusModal
       :isOpen="isEditOpen"
       @closeModal="closeModal"
-      @submit="handleStatusEdited"
+      @statusEdited="handleStatusEdited"
       :statusData="selectedStatus"
       :selectedStatusIdToEdit="selectedStatusIdToEdit"
     >
@@ -141,7 +141,7 @@ const selectedStatusIdToEdit = ref(null)
 const openEditModal = (status) => {
   selectedStatus.value = { ...status }
   console.log('Object to edit', selectedStatus.value)
-  selectedStatusIdToEdit.value = status.statusId 
+  selectedStatusIdToEdit.value = status.statusId
   console.log('Id to edit', selectedStatusIdToEdit.value)
   isEditOpen.value = true
 }
@@ -157,8 +157,8 @@ const isDeleteOpen = ref(false)
 const selectedStatusIdToDelete = ref(null)
 
 const openDeleteModal = (status) => {
-  console.log('Status ID to delete:', status.statusId) 
-  selectedStatusIdToDelete.value = status.statusId 
+  console.log('Status ID to delete:', status.statusId)
+  selectedStatusIdToDelete.value = status.statusId
   isDeleteOpen.value = true
 }
 
