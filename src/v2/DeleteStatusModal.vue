@@ -41,6 +41,7 @@ const props = defineProps({
 const emit = defineEmits(['closeModal', 'statusDeleted'])
 
 const showToast = ref(false)
+const showToastMessage = ref('')
 
 const closeModal = () => {
   emit('closeModal')
@@ -49,13 +50,11 @@ const closeModal = () => {
 const deleteStatus = async () => {
   try {
     if (typeof props.statusIdToDelete === 'undefined') {
-      console.error('Status ID to delete is not defined')
-      return
+      throw new Error('Status ID to delete is not defined')
     }
 
     if (props.statusIdToDelete === 1) {
-      console.error('The "No Status" status cannot be deleted')
-      return
+      throw new Error('The "No Status" status cannot be deleted')
     }
 
     const response = await fetchUtils.deleteData(
@@ -67,10 +66,12 @@ const deleteStatus = async () => {
       showToast.value = true
       closeModal()
     } else {
-      console.error('Error deleting status:', response.data.message)
+      throw new Error(response.data.message)
     }
   } catch (error) {
-    console.error('Error deleting status:', error)
+    console.error('Error deleting status:', error.message)
+    showToast.value = true
+    showToastMessage.value = 'An error has occurred, the status does not exist.'
   }
 }
 </script>

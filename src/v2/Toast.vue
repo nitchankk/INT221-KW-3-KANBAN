@@ -2,7 +2,7 @@
   <transition name="slide-fade">
     <div
       v-if="show"
-      class="toast fixed top-10 right-10 bg-red-500 text-white px-6 py-3 rounded-md flex items-center"
+      class="toast fixed top-10 left-10 bg-green-500 text-white px-6 py-3 rounded-md flex items-center"
     >
       <span>{{ message }}</span>
       <button
@@ -44,7 +44,7 @@ export default {
       if (newVal) {
         setTimeout(() => {
           this.closeToast()
-        }, 3000) 
+        }, 3000)
       }
     }
   }
