@@ -1,4 +1,3 @@
-<!-- EditModal.vue -->
 <template>
   <div class="modal-wrapper">
     <div class="modal">
@@ -117,12 +116,18 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['editSuccess'])
-const editedTask = ref(null)
+const editedTask = ref({
+  title: '',
+  description: '',
+  assignees: '',
+  statusName: '' // Add status property
+})
 const statuses = ref([])
 
 if (props.task) {
   editedTask.value = { ...props.task }
 }
+
 
 // Compute the initial state of the task to compare later
 const initialTask = JSON.parse(JSON.stringify(props.task))
@@ -138,8 +143,8 @@ const handleEditTask = async () => {
       title: editedTask.value.title,
       description: editedTask.value.description,
       assignees: editedTask.value.assignees,
-      status: editedTask.value.status,
-      updatedOn: new Date().toISOString() // Set updated date to now
+      statusName: editedTask.value.statusName, // Include statusName
+      updatedOn: new Date().toISOString()
     }
 
     // Make API request to update the task
@@ -153,24 +158,18 @@ const handleEditTask = async () => {
       props.onTaskUpdated(response.data)
       props.closeModal()
       if (response.statusCode === 200) {
-        // Emit the event with status code
         emit('editSuccess', response.statusCode, 'edit')
-        
-        // Show status message
         console.log('Task updated successfully.')
       }
     } else {
       console.error('Failed to update task')
-      // Show status message
       console.error('Failed to update task. Please try again.')
     }
   } catch (error) {
     console.error('Error updating task:', error)
-    // Show status message
     console.error('An error occurred while updating the task.')
   }
 }
-
 // Function to format local date
 const formatLocalDate = (dateString) => {
   const date = new Date(dateString)
