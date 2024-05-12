@@ -63,10 +63,11 @@ import fetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
   isOpen: Boolean,
-  statusData: Object
+  statusData: Object,
+  selectedStatusIdToEdit: Number
 })
 
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(['closeModal', 'statusEdited']) 
 
 const editedStatus = ref({ statusName: '', statusDescription: '' })
 const initialStatus = ref({ statusName: '', statusDescription: '' })
@@ -92,10 +93,14 @@ const isSaveDisabled = computed(() => {
 
 const saveChanges = async () => {
   try {
-    const response = await fetchUtils.postData('statuses', editedStatus.value)
+    const response = await fetchUtils.putData(
+      `statuses/${props.selectedStatusIdToEdit}`,
+      editedStatus.value
+    )
     if (response.success) {
       console.log('Status updated successfully:', response.data)
       emit('closeModal')
+      emit('statusEdited') 
     } else {
       console.error('Failed to update status:', response.data)
     }

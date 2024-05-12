@@ -78,6 +78,7 @@
       @closeModal="closeModal"
       @submit="handleStatusEdited"
       :statusData="selectedStatus"
+      :selectedStatusIdToEdit="selectedStatusIdToEdit"
     >
     </EditStatusModal>
     <DeleteStatusModal
@@ -135,10 +136,13 @@ import EditStatusModal from './EditStatusModal.vue'
 
 const isEditOpen = ref(false)
 const selectedStatus = ref(null)
+const selectedStatusIdToEdit = ref(null)
 
 const openEditModal = (status) => {
   selectedStatus.value = { ...status }
-  console.log(selectedStatus.value)
+  console.log('Object to edit', selectedStatus.value)
+  selectedStatusIdToEdit.value = status.statusId 
+  console.log('Id to edit', selectedStatusIdToEdit.value)
   isEditOpen.value = true
 }
 const handleStatusEdited = () => {
@@ -153,8 +157,8 @@ const isDeleteOpen = ref(false)
 const selectedStatusIdToDelete = ref(null)
 
 const openDeleteModal = (status) => {
-  console.log('Status ID to delete:', status.statusId) // Corrected property access
-  selectedStatusIdToDelete.value = status.statusId // Corrected property access
+  console.log('Status ID to delete:', status.statusId) 
+  selectedStatusIdToDelete.value = status.statusId 
   isDeleteOpen.value = true
 }
 
