@@ -83,9 +83,8 @@
     <DeleteStatusModal
       :isOpen="isDeleteOpen"
       @closeModal="closeModal"
-      @submit="handleDelete"
+      @statusDeleted="handleDelete"
       :statusIdToDelete="selectedStatusIdToDelete"
-      @statusDeleted="fetchData"
     >
     </DeleteStatusModal>
   </div>

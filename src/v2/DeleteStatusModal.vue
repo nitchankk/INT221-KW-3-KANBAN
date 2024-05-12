@@ -21,11 +21,17 @@
       </div>
     </div>
   </div>
+  <Toast
+    :show="showToast"
+    message="The status has been deleted"
+    @close="showToast = false"
+  />
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, ref } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
+import Toast from './Toast.vue'
 
 const props = defineProps({
   isOpen: Boolean,
@@ -33,6 +39,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['closeModal', 'statusDeleted'])
+
+const showToast = ref(false)
 
 const closeModal = () => {
   emit('closeModal')
@@ -56,6 +64,7 @@ const deleteStatus = async () => {
     if (response.success) {
       console.log('Status deleted successfully!')
       emit('statusDeleted')
+      showToast.value = true
       closeModal()
     } else {
       console.error('Error deleting status:', response.data.message)
