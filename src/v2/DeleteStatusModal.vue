@@ -29,7 +29,7 @@ import fetchUtils from '../lib/fetchUtils'
 
 const props = defineProps({
   isOpen: Boolean,
-  statusIdToDelete: Object
+  statusIdToDelete: Number
 })
 
 const emit = defineEmits(['closeModal', 'statusDeleted'])

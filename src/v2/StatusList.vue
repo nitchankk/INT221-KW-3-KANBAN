@@ -84,7 +84,7 @@
       :isOpen="isDeleteOpen"
       @closeModal="closeModal"
       @submit="handleDelete"
-      :statusIdToDelete="selectedStatusToDelete"
+      :statusIdToDelete="selectedStatusIdToDelete"
       @statusDeleted="fetchData"
     >
     </DeleteStatusModal>
@@ -150,11 +150,11 @@ import DeleteStatusModal from './DeleteStatusModal.vue'
 
 const isDeleteOpen = ref(false)
 
-const selectedStatusToDelete = ref(null)
+const selectedStatusIdToDelete = ref(null)
 
-const openDeleteModal = (statusId) => {
-  console.log('Status ID to delete:', statusId)
-  selectedStatusToDelete.value = statusId
+const openDeleteModal = (status) => {
+  console.log('Status ID to delete:', status.statusId) // Corrected property access
+  selectedStatusIdToDelete.value = status.statusId // Corrected property access
   isDeleteOpen.value = true
 }
 
