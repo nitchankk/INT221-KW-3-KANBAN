@@ -71,7 +71,6 @@
       @closeModal="closeModal"
       @statusAdded="handleStatusAdded"
     >
-      <h2>Add Status</h2>
     </AddStatusModal>
     <EditStatusModal
       :isOpen="isEditOpen"
