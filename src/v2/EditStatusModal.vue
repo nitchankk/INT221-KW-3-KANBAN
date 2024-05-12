@@ -90,19 +90,18 @@ const isSaveDisabled = computed(() => {
   )
 })
 
-function saveChanges() {
-  console.log('Save changes function called')
-  console.log('Event:', event)
-  console.log('Edited status:', editedStatus.value)
-  fetchUtils
-    .putData('statuses', editedStatus.value)
-    .then((response) => {
-      console.log('Status updated successfully:', response)
+const saveChanges = async () => {
+  try {
+    const response = await fetchUtils.postData('statuses', editedStatus.value)
+    if (response.success) {
+      console.log('Status updated successfully:', response.data)
       emit('closeModal')
-    })
-    .catch((error) => {
-      console.error('Error updating status:', error)
-    })
+    } else {
+      console.error('Failed to update status:', response.data)
+    }
+  } catch (error) {
+    console.error('Error updating status:', error)
+  }
 }
 </script>
 
