@@ -10,7 +10,6 @@
     >
       <span v-if="statusCode === 200">The status has been deleted</span>
       <span v-else-if="statusCode === 404">The status does not exist</span>
-      <!-- Updated message for 404 status -->
       <button
         class="ml-4 bg-transparent text-white cursor-pointer"
         @click="closeToast"
@@ -39,7 +38,7 @@ export default {
     }
   },
   mounted() {
-    if (this.show && this.statusCode === 200) {
+    if (this.show) {
       setTimeout(() => {
         this.closeToast()
       }, 3000)
@@ -47,7 +46,7 @@ export default {
   },
   watch: {
     show(newVal) {
-      if (newVal && this.statusCode === 200) {
+      if (newVal) {
         setTimeout(() => {
           this.closeToast()
         }, 3000)

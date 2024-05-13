@@ -72,7 +72,12 @@ const deleteStatus = async () => {
     }
   } catch (error) {
     console.error('Error deleting status:', error.message)
-    console.log(statusCode.value)
+    if (error.message.includes('404')) {
+      statusCode.value = 404
+      console.log(statusCode.value)
+      showToast.value = true
+      closeModal()
+    }
   }
 }
 </script>
