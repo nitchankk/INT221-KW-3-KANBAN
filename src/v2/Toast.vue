@@ -10,7 +10,7 @@
           statusCode === 200 && operationType === 'edit',
         'bg-red-500 text-white':
           statusCode === 200 && operationType === 'delete',
-        'bg-orange-500 text-white': statusCode === 404
+        'bg-orange-500 text-white': statusCode === 404 || statusCode === 500
       }"
     >
       <span v-if="statusCode === 200 && operationType === 'add'"
@@ -21,6 +21,9 @@
       >
       <span v-if="statusCode === 200 && operationType === 'delete'"
         >The status has been deleted</span
+      >
+      <span v-if="statusCode === 500 && operationType === 'delete'"
+        >The status is being use by task</span
       >
       <span v-else-if="statusCode === 404">The status does not exist</span>
       <button

@@ -53,20 +53,21 @@ const closeModal = () => {
 
 const deleteStatus = async () => {
   operationType.value = 'delete'
-  console.log("OpeartionType", operationType.value)
+  console.log('OpeartionType', operationType.value)
   try {
     if (typeof props.statusIdToDelete === 'undefined') {
       throw new Error('Status ID to delete is not defined')
     }
 
     if (props.statusIdToDelete === 1) {
+      alert('The "No Status" status cannot be deleted')
       throw new Error('The "No Status" status cannot be deleted')
     }
 
     const response = await fetchUtils.deleteData(
       `statuses/${props.statusIdToDelete}`
     )
-    statusCode.value = response.statusCode 
+    statusCode.value = response.statusCode
     if (response.success) {
       console.log('Status deleted successfully!', statusCode.value)
       emit('statusDeleted')
@@ -79,6 +80,12 @@ const deleteStatus = async () => {
     console.error('Error deleting status:', error.message)
     if (error.message.includes('404')) {
       statusCode.value = 404
+      console.log(statusCode.value)
+      showToast.value = true
+      closeModal()
+    }
+    if (error.message.includes('500')) {
+      statusCode.value = 500
       console.log(statusCode.value)
       showToast.value = true
       closeModal()

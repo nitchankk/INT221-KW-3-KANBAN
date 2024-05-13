@@ -88,4 +88,35 @@ const deleteData = async (url) => {
   }
 }
 
-export default { fetchData, postData, putData, deleteData }
+const deleteAndTransferData = async (url, newId) => {
+  try {
+    const response = await fetch(`${baseUrl}/${url}/${newId}`, {
+      method: 'DELETE'
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const responseData = await response.json()
+    if (response.status === 200) {
+      console.log(
+        'Data deleted and transferred successfully! Status code:',
+        response.status
+      )
+      return { success: true, data: responseData, statusCode: response.status }
+    } else {
+      // handle other successful responses if needed
+      return { success: true, data: responseData, statusCode: response.status }
+    }
+  } catch (error) {
+    console.error('Error deleting and transferring data:', error)
+    throw error
+  }
+}
+
+export default {
+  fetchData,
+  postData,
+  putData,
+  deleteData,
+  deleteAndTransferData
+}
