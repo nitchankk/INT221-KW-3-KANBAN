@@ -106,6 +106,12 @@ const saveChanges = async () => {
   operationType.value = 'edit'
   console.log('OpeartionType', operationType.value)
   try {
+    if (props.selectedStatusIdToEdit === 1) {
+      alert('The "No Status" status cannot be edited')
+      emit('closeModal')
+      throw new Error('The "No Status" status cannot be edited')
+    }
+
     const response = await fetchUtils.putData(
       `statuses/${props.selectedStatusIdToEdit}`,
       editedStatus.value

@@ -61,6 +61,7 @@ const deleteStatus = async () => {
 
     if (props.statusIdToDelete === 1) {
       alert('The "No Status" status cannot be deleted')
+      closeModal()
       throw new Error('The "No Status" status cannot be deleted')
     }
 
