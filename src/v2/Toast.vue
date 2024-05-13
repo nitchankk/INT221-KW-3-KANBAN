@@ -8,7 +8,9 @@
         'bg-red-500 text-white': statusCode === 404
       }"
     >
-      <span v-if="statusCode === 200">The status has been deleted</span>
+      <span v-if="statusCode === 200 && operationType === 'delete'"
+        >The status has been deleted</span
+      >
       <span v-else-if="statusCode === 404">The status does not exist</span>
       <button
         class="ml-4 bg-transparent text-white cursor-pointer"
@@ -30,6 +32,10 @@ export default {
     statusCode: {
       type: Number,
       required: true
+    },
+    operationType: {
+      type: String,
+      default: null
     }
   },
   methods: {

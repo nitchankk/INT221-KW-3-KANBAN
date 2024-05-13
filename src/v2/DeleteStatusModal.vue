@@ -24,6 +24,7 @@
   <Toast
     :show="showToast"
     :statusCode="statusCode"
+    :operationType="operationType"
     @close="showToast = false"
   />
 </template>
@@ -44,11 +45,15 @@ const showToast = ref(false)
 
 const statusCode = ref(0)
 
+const operationType = ref(null)
+
 const closeModal = () => {
   emit('closeModal')
 }
 
 const deleteStatus = async () => {
+  operationType.value = 'delete'
+  console.log("OpeartionType", operationType.value)
   try {
     if (typeof props.statusIdToDelete === 'undefined') {
       throw new Error('Status ID to delete is not defined')
