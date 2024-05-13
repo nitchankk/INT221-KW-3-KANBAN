@@ -45,8 +45,14 @@
           <!-- Status Select -->
           <div class="form-group">
             <label for="status">Status:</label>
-            <select id="status" v-model="editedTask.statusName" class="itbkk-status">
-              <option v-if="statuses.length === 0" value="" disabled>Loading...</option>
+            <select
+              id="status"
+              v-model="editedTask.statusName"
+              class="itbkk-status"
+            >
+              <option v-if="statuses.length === 0" value="" disabled>
+                Loading...
+              </option>
               <option
                 v-else
                 v-for="status in statuses"
@@ -128,7 +134,6 @@ if (props.task) {
   editedTask.value = { ...props.task }
 }
 
-
 // Compute the initial state of the task to compare later
 const initialTask = JSON.parse(JSON.stringify(props.task))
 
@@ -164,10 +169,12 @@ const handleEditTask = async () => {
     } else {
       console.error('Failed to update task')
       console.error('Failed to update task. Please try again.')
+      alert('Failed to edit task. Please try again.')
     }
   } catch (error) {
     console.error('Error updating task:', error)
     console.error('An error occurred while updating the task.')
+    alert('Error to updating task. Please try again.')
   }
 }
 // Function to format local date

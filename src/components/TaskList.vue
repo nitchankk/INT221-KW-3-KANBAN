@@ -12,53 +12,95 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="itbkk-button-add" style="width: 50px; text-align: center">
-                <button @click="handleAddTask" style="border: none; background: none; padding: 0">
-                  <img src="../assets/add.png" alt="Add Icon" style="width: 30px; height: 30px" />
+              <th
+                class="itbkk-button-add"
+                style="width: 50px; text-align: center"
+              >
+                <button
+                  @click="handleAddTask"
+                  style="border: none; background: none; padding: 0"
+                >
+                  <img
+                    src="../assets/add.png"
+                    alt="Add Icon"
+                    style="width: 30px; height: 30px"
+                  />
                 </button>
               </th>
               <th style="width: 600px">Title</th>
               <th style="width: 200px">Assignees</th>
               <th style="width: 100px">Status</th>
               <th style="width: 70px">
-                <img src="../assets/menu-bar.png" alt="Action Icon" style="
+                <img
+                  src="../assets/menu-bar.png"
+                  alt="Action Icon"
+                  style="
                     width: 25px;
                     height: 25px;
                     display: block;
                     margin: 0 auto;
-                  " />
+                  "
+                />
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(task, index) in sortedTasks" :key="task.taskId" class="itbkk-item">
+            <tr
+              v-for="(task, index) in sortedTasks"
+              :key="task.taskId"
+              class="itbkk-item"
+            >
               <td class="border px-4 py-2" style="text-align: center">
                 {{ index + 1 }}
               </td>
               <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
                 {{ task.title }}
               </td>
-              <td class="border px-4 py-2 itbkk-assignees" :style="{ fontStyle: task.assignees ? 'normal' : 'italic' }">
+              <td
+                class="border px-4 py-2 itbkk-assignees"
+                :style="{ fontStyle: task.assignees ? 'normal' : 'italic' }"
+              >
                 {{ task.assignees || 'Unassigned' }}
               </td>
-              <td class="border px-4 py-2 itbkk-status" :data-status="task.statusName">
+              <td
+                class="border px-4 py-2 itbkk-status"
+                :data-status="task.statusName"
+              >
                 {{ getStatusLabel(task.statusName, statuses) }}
               </td>
               <td class="border px-4 py-2" style="width: 100px">
                 <div class="action-buttons">
-                  <button style="border: none; background: none; padding: 0" class="itbkk-button-action">
-                    <button @click="openEditModal(task.taskId)" style="
+                  <button
+                    style="border: none; background: none; padding: 0"
+                    class="itbkk-button-action"
+                  >
+                    <button
+                      @click="openEditModal(task.taskId)"
+                      style="
                         border: none;
                         background: none;
                         padding: 0;
                         margin-right: 10px;
-                      " class="itbkk-button-edit">
-                      <img src="../assets/edit.png" alt="Edit Icon" style="width: 30px; height: 30px" />
+                      "
+                      class="itbkk-button-edit"
+                    >
+                      <img
+                        src="../assets/edit.png"
+                        alt="Edit Icon"
+                        style="width: 30px; height: 30px"
+                      />
                     </button>
 
-                    <button @click="openDeleteModal(task.taskId)" style="border: none; background: none; padding: 0"
-                      class="itbkk-button-delete">
-                      <img src="../assets/delete2.png" alt="Delete Icon" style="width: 30px; height: 30px" />
+                    <button
+                      @click="openDeleteModal(task.taskId)"
+                      style="border: none; background: none; padding: 0"
+                      class="itbkk-button-delete"
+                    >
+                      <img
+                        src="../assets/delete2.png"
+                        alt="Delete Icon"
+                        style="width: 30px; height: 30px"
+                      />
                     </button>
                   </button>
                 </div>
@@ -69,20 +111,44 @@
       </div>
     </div>
 
-    <task-modal v-if="selectedTask" :task="selectedTask" :timezone="timezone"
-      :createdDate="formatLocalDate(selectedTask.createdOn)" :updatedDate="formatLocalDate(selectedTask.updatedOn)"
-      :closeModal="closeModal" />
+    <task-modal
+      v-if="selectedTask"
+      :task="selectedTask"
+      :timezone="timezone"
+      :createdDate="formatLocalDate(selectedTask.createdOn)"
+      :updatedDate="formatLocalDate(selectedTask.updatedOn)"
+      :closeModal="closeModal"
+    />
 
-    <add-modal v-if="showAddModal" @taskSaved="handleTaskSaved" @showStatusModal="handleShowStatusModal"
-      :closeModal="cancelAdd" />
+    <add-modal
+      v-if="showAddModal"
+      @taskSaved="handleTaskSaved"
+      @showStatusModal="handleShowStatusModal"
+      :closeModal="cancelAdd"
+    />
 
-    <status-modal :showModal="showSuccessModal" :statusCode="statusCode" :closeModal="closeSuccessModal"
-      :operationType="operationType" />
+    <status-modal
+      :showModal="showSuccessModal"
+      :statusCode="statusCode"
+      :closeModal="closeSuccessModal"
+      :operationType="operationType"
+    />
 
-    <delete-modal v-if="showDeleteModal" :closeModal="closeDeleteModal" :taskId="taskIdToDelete"
-      :taskTitle="taskTitleToDelete" :taskIndex="taskIndexToDelete" @deleted="handleTaskDeleted" />
-    <edit-modal v-if="showEditModal" :task="taskToEdit" :closeModal="closeEditModal" :onTaskUpdated="onTaskUpdated"
-      @editSuccess="handleEditSuccess" />
+    <delete-modal
+      v-if="showDeleteModal"
+      :closeModal="closeDeleteModal"
+      :taskId="taskIdToDelete"
+      :taskTitle="taskTitleToDelete"
+      :taskIndex="taskIndexToDelete"
+      @deleted="handleTaskDeleted"
+    />
+    <edit-modal
+      v-if="showEditModal"
+      :task="taskToEdit"
+      :closeModal="closeEditModal"
+      :onTaskUpdated="onTaskUpdated"
+      @editSuccess="handleEditSuccess"
+    />
   </div>
 </template>
 
@@ -146,7 +212,7 @@ const sortedTasks = computed(() => {
 })
 
 const getStatusLabel = (statusName, statuses) => {
-  const status = statuses.find(s => s.statusName === statusName)
+  const status = statuses.find((s) => s.statusName === statusName)
   return status ? status.statusName : 'No Status'
 }
 
@@ -225,6 +291,7 @@ const openEditModal = async (taskId) => {
     }
   } catch (error) {
     console.error('Error fetching task details:', error)
+    alert('Failed to edit task. Please try again.')
   }
 }
 const closeEditModal = () => {
@@ -256,7 +323,6 @@ onMounted(() => {
     openModal(taskId)
   }
 })
-
 </script>
 <style scoped>
 #app {
