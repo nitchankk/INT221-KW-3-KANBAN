@@ -52,11 +52,18 @@
       </form>
     </div>
   </div>
+  <Toast
+    :show="showToast"
+    :statusCode="statusCode"
+    :operationType="operationType"
+    @close="showToast = false"
+  />
 </template>
 
 <script setup>
 import { defineProps, defineEmits, ref } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
+import Toast from './Toast.vue'
 
 const props = defineProps({
   isAddOpen: Boolean
@@ -66,6 +73,9 @@ const emit = defineEmits(['closeModal', 'statusAdded'])
 
 const statusName = ref('')
 const statusDescription = ref('')
+const statusCode = ref(0)
+const operationType = ref(null)
+const showToast = ref(false)
 
 const closeModal = () => {
   statusName.value = ''
@@ -74,19 +84,24 @@ const closeModal = () => {
 }
 
 const addStatus = async () => {
+  operationType.value = 'add'
+  console.log('OpeartionType', operationType.value)
   try {
     const newStatus = {
       statusName: statusName.value,
       statusDescription: statusDescription.value
     }
     const response = await fetchUtils.postData('statuses', newStatus)
-    console.log('Response status code:', response.statusCode)
+    statusCode.value = response.statusCode
+    console.log('Response status code:', statusCode.value)
     if (response.success) {
       closeModal()
       emit('statusAdded')
+      showToast.value = true
     }
   } catch (error) {
     console.error('Error adding status:', error)
+    showToast.value = true
   }
 }
 </script>

@@ -8,6 +8,12 @@
         'bg-red-500 text-white': statusCode === 404
       }"
     >
+      <span v-if="statusCode === 200 && operationType === 'add'"
+        >The status has been added</span
+      >
+      <span v-if="statusCode === 200 && operationType === 'edit'"
+        >The status has been updated</span
+      >
       <span v-if="statusCode === 200 && operationType === 'delete'"
         >The status has been deleted</span
       >

@@ -66,7 +66,7 @@ const deleteStatus = async () => {
     const response = await fetchUtils.deleteData(
       `statuses/${props.statusIdToDelete}`
     )
-    statusCode.value = response.statusCode // Assign value to outer ref variable
+    statusCode.value = response.statusCode 
     if (response.success) {
       console.log('Status deleted successfully!', statusCode.value)
       emit('statusDeleted')

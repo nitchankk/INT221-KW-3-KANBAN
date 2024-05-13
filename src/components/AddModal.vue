@@ -39,7 +39,9 @@
               v-model="taskDetails.statusName"
               class="itbkk-status"
             >
-              <option v-if="statuses.length === 0" value="" disabled>Loading...</option>
+              <option v-if="statuses.length === 0" value="" disabled>
+                Loading...
+              </option>
               <option
                 v-else
                 v-for="status in statuses"
@@ -90,7 +92,7 @@ export default {
         title: '',
         description: '',
         assignees: '',
-        status: 'No Status'
+        statusName: 'NO STATUS'
       },
       statuses: []
     }
