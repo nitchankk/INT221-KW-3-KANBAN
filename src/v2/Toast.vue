@@ -2,9 +2,15 @@
   <transition name="slide-fade">
     <div
       v-if="show"
-      class="toast fixed top-10 left-10 bg-green-500 text-white px-6 py-3 rounded-md flex items-center"
+      class="toast fixed top-10 left-10 px-6 py-3 rounded-md flex items-center"
+      :class="{
+        'bg-green-500 text-white': statusCode === 200,
+        'bg-red-500 text-white': statusCode === 404
+      }"
     >
-      <span>The status has been deleted</span>
+      <span v-if="statusCode === 200">The status has been deleted</span>
+      <span v-else-if="statusCode === 404">The status does not exist</span>
+      <!-- Updated message for 404 status -->
       <button
         class="ml-4 bg-transparent text-white cursor-pointer"
         @click="closeToast"
@@ -33,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    if (this.show) {
+    if (this.show && this.statusCode === 200) {
       setTimeout(() => {
         this.closeToast()
       }, 3000)
@@ -41,7 +47,7 @@ export default {
   },
   watch: {
     show(newVal) {
-      if (newVal) {
+      if (newVal && this.statusCode === 200) {
         setTimeout(() => {
           this.closeToast()
         }, 3000)

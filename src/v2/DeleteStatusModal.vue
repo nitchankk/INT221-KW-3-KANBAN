@@ -21,7 +21,11 @@
       </div>
     </div>
   </div>
-  <Toast :show="showToast" @close="showToast = false" />
+  <Toast
+    :show="showToast"
+    :statusCode="statusCode"
+    @close="showToast = false"
+  />
 </template>
 
 <script setup>
@@ -37,6 +41,8 @@ const props = defineProps({
 const emit = defineEmits(['closeModal', 'statusDeleted'])
 
 const showToast = ref(false)
+
+const statusCode = ref(0)
 
 const closeModal = () => {
   emit('closeModal')
@@ -55,8 +61,9 @@ const deleteStatus = async () => {
     const response = await fetchUtils.deleteData(
       `statuses/${props.statusIdToDelete}`
     )
+    statusCode.value = response.statusCode // Assign value to outer ref variable
     if (response.success) {
-      console.log('Status deleted successfully!')
+      console.log('Status deleted successfully!', statusCode.value)
       emit('statusDeleted')
       showToast.value = true
       closeModal()
@@ -65,7 +72,7 @@ const deleteStatus = async () => {
     }
   } catch (error) {
     console.error('Error deleting status:', error.message)
-    showToast.value = true
+    console.log(statusCode.value)
   }
 }
 </script>
