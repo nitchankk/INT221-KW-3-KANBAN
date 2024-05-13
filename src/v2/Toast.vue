@@ -4,7 +4,7 @@
       v-if="show"
       class="toast fixed top-10 left-10 bg-green-500 text-white px-6 py-3 rounded-md flex items-center"
     >
-      <span>{{ message }}</span>
+      <span>The status has been deleted</span>
       <button
         class="ml-4 bg-transparent text-white cursor-pointer"
         @click="closeToast"
@@ -22,8 +22,8 @@ export default {
       type: Boolean,
       required: true
     },
-    message: {
-      type: String,
+    statusCode: {
+      type: Number,
       required: true
     }
   },

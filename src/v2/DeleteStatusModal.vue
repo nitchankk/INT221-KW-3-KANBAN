@@ -21,11 +21,7 @@
       </div>
     </div>
   </div>
-  <Toast
-    :show="showToast"
-    message="The status has been deleted"
-    @close="showToast = false"
-  />
+  <Toast :show="showToast" @close="showToast = false" />
 </template>
 
 <script setup>
@@ -41,7 +37,6 @@ const props = defineProps({
 const emit = defineEmits(['closeModal', 'statusDeleted'])
 
 const showToast = ref(false)
-const showToastMessage = ref('')
 
 const closeModal = () => {
   emit('closeModal')
@@ -71,7 +66,6 @@ const deleteStatus = async () => {
   } catch (error) {
     console.error('Error deleting status:', error.message)
     showToast.value = true
-    showToastMessage.value = 'An error has occurred, the status does not exist.'
   }
 }
 </script>
