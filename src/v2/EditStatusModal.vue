@@ -55,11 +55,18 @@
       </div>
     </div>
   </div>
+  <Toast
+    :show="showToast"
+    :statusCode="statusCode"
+    :operationType="operationType"
+    @close="showToast = false"
+  />
 </template>
 
 <script setup>
 import { defineProps, defineEmits, ref, watch, computed } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
+import Toast from './Toast.vue'
 
 const props = defineProps({
   isOpen: Boolean,
@@ -71,6 +78,10 @@ const emit = defineEmits(['closeModal', 'statusEdited'])
 
 const editedStatus = ref({ statusName: '', statusDescription: '' })
 const initialStatus = ref({ statusName: '', statusDescription: '' })
+
+const showToast = ref(false)
+const statusCode = ref(0)
+const operationType = ref(null)
 
 watch(
   () => props.statusData,
@@ -92,20 +103,34 @@ const isSaveDisabled = computed(() => {
 })
 
 const saveChanges = async () => {
+  operationType.value = 'edit'
+  console.log('OpeartionType', operationType.value)
   try {
     const response = await fetchUtils.putData(
       `statuses/${props.selectedStatusIdToEdit}`,
       editedStatus.value
     )
+    statusCode.value = response.statusCode
     if (response.success) {
-      console.log('Status updated successfully:', response.data)
+      console.log(
+        'Status updated successfully:',
+        response.data,
+        statusCode.value
+      )
       emit('closeModal')
-      emit('statusEdited') 
+      emit('statusEdited')
+      showToast.value = true
     } else {
       console.error('Failed to update status:', response.data)
     }
   } catch (error) {
-    console.error('Error updating status:', error)
+    console.error('Error updating status:', error.message)
+    if (error.message.includes('404')) {
+      statusCode.value = 404
+      console.log(statusCode.value)
+      showToast.value = true
+      emit('closeModal')
+    }
   }
 }
 </script>

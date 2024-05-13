@@ -4,8 +4,13 @@
       v-if="show"
       class="toast fixed top-10 left-10 px-6 py-3 rounded-md flex items-center"
       :class="{
-        'bg-green-500 text-white': statusCode === 200,
-        'bg-red-500 text-white': statusCode === 404
+        'bg-green-500 text-white':
+          statusCode === 200 && operationType === 'add',
+        'bg-blue-400 text-white':
+          statusCode === 200 && operationType === 'edit',
+        'bg-red-500 text-white':
+          statusCode === 200 && operationType === 'delete',
+        'bg-orange-500 text-white': statusCode === 404
       }"
     >
       <span v-if="statusCode === 200 && operationType === 'add'"
