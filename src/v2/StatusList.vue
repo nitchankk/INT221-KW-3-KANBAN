@@ -10,13 +10,11 @@
         <table>
           <thead>
             <tr>
-              <th
-                class="itbkk-button-add"
-                style="width: 30px; text-align: center"
-              >
+              <th style="width: 30px; text-align: center" class="add-icon">
                 <button
                   @click="openAddModal"
                   style="border: none; background: none; padding: 0"
+                  class="itbkk-button-add"
                 >
                   <img
                     src="../assets/add-status.png"
@@ -31,12 +29,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(status, index) in statuses" :key="status.id">
+            <tr
+              v-for="(status, index) in statuses"
+              :key="status.id"
+              class="itbkk-item"
+            >
               <td class="itbkk-status" style="text-align: center">
                 {{ index + 1 }}
               </td>
-              <td class="itbkk-status">{{ status.statusName }}</td>
-              <td class="itbkk-description" style="text-align: left">
+              <td class="itbkk-status-name">{{ status.statusName }}</td>
+              <td class="itbkk-status-description" style="text-align: left">
                 <span
                   v-if="status.statusDescription"
                   v-html="status.statusDescription"
@@ -62,7 +64,10 @@
                         class="action-icon"
                       />
                     </button>
-                    <button @click="openDeleteModal(status)">
+                    <button
+                      class="itbkk-button-delete"
+                      @click="openDeleteModal(status)"
+                    >
                       <img
                         src="../assets/delete-status.png"
                         alt="DeleteStatus"
@@ -277,11 +282,11 @@ tbody tr:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.itbkk-button-add button:hover {
+.add-icon button:hover {
   transform: translateY(1px);
 }
 
-.itbkk-button-add button:active {
+.add-icon button:active {
   transform: translateY(2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
