@@ -36,7 +36,18 @@
                 {{ index + 1 }}
               </td>
               <td class="itbkk-status">{{ status.statusName }}</td>
-              <td>{{ status.statusDescription }}</td>
+              <td class="itbkk-description" style="text-align: left">
+                <span
+                  v-if="status.statusDescription"
+                  v-html="status.statusDescription"
+                ></span>
+                <span
+                  v-else
+                  class="no-description"
+                  style="font-style: italic; color: #808080"
+                  >No description provided</span
+                >
+              </td>
               <td>
                 <div class="action-buttons">
                   <button class="itbkk-button-action">

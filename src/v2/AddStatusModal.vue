@@ -101,7 +101,8 @@ const addStatus = async () => {
     }
   } catch (error) {
     console.error('Error adding status:', error)
-    showToast.value = true
+    alert('An error has occurred, the status could not be added.')
+    closeModal()
   }
 }
 </script>
