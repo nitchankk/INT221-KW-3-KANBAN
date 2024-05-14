@@ -109,13 +109,23 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
+import { useRoute, useRouter } from 'vue-router'
 
 const statuses = ref([])
+const route = useRoute()
+const router = useRouter()
 
 async function fetchData() {
   try {
     const responseData = await fetchUtils.fetchData('statuses')
     statuses.value = responseData
+    
+    // Check if route has a status ID and validate it
+    const statusId = route.params.statusId
+    if (statusId && !statuses.value.some(status => status.statusId === statusId)) {
+      alert('404 Not Found: Status ID does not exist')
+      router.push('/status')
+    }
   } catch (error) {
     console.error('Error fetching status data:', error)
   }

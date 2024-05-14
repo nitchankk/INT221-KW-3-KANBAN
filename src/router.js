@@ -23,10 +23,14 @@ const routes = [
     component: () => import('./v2/StatusList.vue')
   },
   {
+    path: '/status/:statusId',
+    component: () => import('./v2/StatusList.vue')
+  },
+  {
     path: '/',
     redirect: '/task',
     component: App
-  }
+  },
 ]
 
 const router = createRouter({
