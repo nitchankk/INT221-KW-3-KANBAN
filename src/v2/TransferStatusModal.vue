@@ -3,14 +3,18 @@
     <div class="itbkk-message">
       <h2 class="text-lg font-semibold mb-4">Transfer and Delete</h2>
       <p class="text-left mb-4">
-        There are specified tasks using this status. Select an existing status
-        to transfer tasks:
+        There are tasks in
+        <span class="font-semibold">{{ defaultStatusName }}</span> status. In
+        order to delete this status, the system must transfer tasks in this
+        status to existing status.
       </p>
       <select
         v-model="selectedStatusId"
         class="mb-4 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:border-blue-500 sm:text-sm"
       >
-        <option disabled value="">Please select a status</option>
+        <option value="null" selected disabled hidden>
+          Select to transfer
+        </option>
         <option
           v-for="status in filteredStatuses"
           :key="status.statusId"
@@ -34,7 +38,7 @@
           class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-md itbkk-button-confirm"
           @click="transferStatus"
         >
-          Confirm
+          Transfer and Delete
         </button>
       </div>
     </div>
@@ -63,29 +67,31 @@ const showToast = ref(false)
 const statusCode = ref(0)
 const operationType = ref(null)
 const existingStatuses = ref([])
+const selectedStatusId = ref(null)
 
-const selectedStatusId = ref(null) // Initialize with null or any other default value you want
+const resetSelectedStatus = () => {
+  selectedStatusId.value = null
+}
 
 const closeModal = () => {
   emit('closeModal')
+  resetSelectedStatus()
 }
 
 const fetchExistingStatuses = async () => {
   try {
     const response = await fetchUtils.fetchData('statuses')
     existingStatuses.value = response
+    const operationType = 'transfer'
 
-    // Find the status object with the same ID as statusIdToTransfer
     const defaultStatus = existingStatuses.value.find(
       (status) => status.statusId === props.statusIdToTransfer
     )
 
-    // Set selectedStatusId to the statusIdToTransfer if found, otherwise set it to null
     selectedStatusId.value = defaultStatus ? defaultStatus.statusId : null
 
     console.log('Existing statuses:', existingStatuses.value)
 
-    // Iterate over the existing statuses array and log the properties of each status object
     existingStatuses.value.forEach((status) => {
       console.log('Status:', status)
       console.log('Status ID:', status.statusId)
@@ -156,6 +162,13 @@ const filteredStatuses = computed(() => {
     (status) => status.statusId !== props.statusIdToTransfer
   )
 })
+
+const defaultStatusName = computed(() => {
+  const defaultStatus = existingStatuses.value.find(
+    (status) => status.statusId === props.statusIdToTransfer
+  )
+  return defaultStatus ? defaultStatus.statusName : ''
+})
 </script>
 
 <style scoped>
@@ -173,7 +186,7 @@ const filteredStatuses = computed(() => {
 }
 
 .itbkk-message {
-  width: 300px;
+  width: 400px;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;

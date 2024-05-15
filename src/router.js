@@ -1,10 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 
-// Import Test.vue
-import Test from './components/test/Test.vue'
-import StatusTable from './v2/StatusList.vue'
-
 const routes = [
   {
     path: '/task',

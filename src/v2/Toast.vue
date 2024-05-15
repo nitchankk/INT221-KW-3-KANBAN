@@ -10,6 +10,9 @@
           statusCode === 200 && operationType === 'edit',
         'bg-red-500 text-white':
           statusCode === 200 && operationType === 'delete',
+        'bg-yellow-500 text-white':
+          statusCode === 200 && operationType === 'transfer',
+
         'bg-orange-500 text-white': statusCode === 404 || statusCode === 500
       }"
     >
@@ -21,6 +24,9 @@
       >
       <span v-if="statusCode === 200 && operationType === 'delete'"
         >The status has been deleted</span
+      >
+      <span v-if="statusCode === 200 && operationType === 'transfer'"
+        >The status is transfered</span
       >
       <span v-if="statusCode === 500 && operationType === 'delete'"
         >The status is being use by task</span
