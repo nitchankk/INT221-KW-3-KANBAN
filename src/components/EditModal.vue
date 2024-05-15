@@ -47,7 +47,7 @@
             <label for="status">Status:</label>
             <select
               id="status"
-              v-model="editedTask.name"
+              v-model="editedTask.status.name"
               class="itbkk-status"
             >
               <option v-if="statuses.length === 0" value="" disabled>
@@ -126,7 +126,7 @@ const editedTask = ref({
   title: '',
   description: '',
   assignees: '',
-  name: '' // Add status property
+  name: '' 
 })
 const statuses = ref([])
 
@@ -162,7 +162,7 @@ const handleEditTask = async () => {
       // If update is successful, refresh the task data and close the modal
       props.onTaskUpdated(response.data)
       props.closeModal()
-      if (response.statusCode === 200) {
+      if (response.statusCode === 201) {
         emit('editSuccess', response.statusCode, 'edit')
         console.log('Task updated successfully.')
       }

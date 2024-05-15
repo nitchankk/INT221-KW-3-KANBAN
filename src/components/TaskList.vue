@@ -211,9 +211,9 @@ const sortedTasks = computed(() => {
   )
 })
 
-const getStatusLabel = (statusName, statuses) => {
-  const status = statuses.find((s) => s.statusName === statusName)
-  return status ? status.statusName : 'No Status'
+const getStatusLabel = (name, statuses) => {
+  const status = statuses.find((s) => s.name === name)
+  return status ? status.name : 'No Status'
 }
 
 const openModal = async (id) => {
