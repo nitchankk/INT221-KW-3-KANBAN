@@ -88,8 +88,8 @@ const addStatus = async () => {
   console.log('OpeartionType', operationType.value)
   try {
     const newStatus = {
-      statusName: statusName.value,
-      statusDescription: statusDescription.value
+      name: statusName.value,
+      description: statusDescription.value
     }
     const response = await fetchUtils.postData('statuses', newStatus)
     statusCode.value = response.statusCode

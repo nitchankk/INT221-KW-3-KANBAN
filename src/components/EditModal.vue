@@ -47,7 +47,7 @@
             <label for="status">Status:</label>
             <select
               id="status"
-              v-model="editedTask.statusName"
+              v-model="editedTask.name"
               class="itbkk-status"
             >
               <option v-if="statuses.length === 0" value="" disabled>
@@ -56,10 +56,10 @@
               <option
                 v-else
                 v-for="status in statuses"
-                :key="status.statusId"
-                :value="status.statusName"
+                :key="status.id"
+                :value="status.name"
               >
-                {{ status.statusName }}
+                {{ status.name }}
               </option>
             </select>
           </div>
@@ -126,7 +126,7 @@ const editedTask = ref({
   title: '',
   description: '',
   assignees: '',
-  statusName: '' // Add status property
+  name: '' // Add status property
 })
 const statuses = ref([])
 
@@ -148,13 +148,13 @@ const handleEditTask = async () => {
       title: editedTask.value.title,
       description: editedTask.value.description,
       assignees: editedTask.value.assignees,
-      statusName: editedTask.value.statusName, // Include statusName
+      name: editedTask.value.name, // Include statusName
       updatedOn: new Date().toISOString()
     }
 
     // Make API request to update the task
     const response = await FetchUtils.putData(
-      `tasks/${props.task.taskId}`,
+      `tasks/${props.task.id}`,
       updatedTask
     )
 

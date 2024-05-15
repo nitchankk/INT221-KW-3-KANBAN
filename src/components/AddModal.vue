@@ -36,7 +36,7 @@
             <label for="status">Status:</label>
             <select
               id="status"
-              v-model="taskDetails.statusName"
+              v-model="taskDetails.name"
               class="itbkk-status"
             >
               <option v-if="statuses.length === 0" value="" disabled>
@@ -45,10 +45,10 @@
               <option
                 v-else
                 v-for="status in statuses"
-                :key="status.statusId"
-                :value="status.statusName"
+                :key="status.id"
+                :value="status.name"
               >
-                {{ status.statusName }}
+                {{ status.name }}
               </option>
             </select>
           </div>
@@ -92,7 +92,7 @@ export default {
         title: '',
         description: '',
         assignees: '',
-        statusName: 'NO STATUS'
+        name: 'NO STATUS'
       },
       statuses: []
     }

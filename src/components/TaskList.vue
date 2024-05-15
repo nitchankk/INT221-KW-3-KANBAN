@@ -47,13 +47,13 @@
           <tbody>
             <tr
               v-for="(task, index) in sortedTasks"
-              :key="task.taskId"
+              :key="task.id"
               class="itbkk-item"
             >
               <td class="border px-4 py-2" style="text-align: center">
                 {{ index + 1 }}
               </td>
-              <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
+              <td class="itbkk-title" @click="handleTaskClick(task.id)">
                 {{ task.title }}
               </td>
               <td
@@ -64,9 +64,9 @@
               </td>
               <td
                 class="border px-4 py-2 itbkk-status"
-                :data-status="task.statusName"
+                :data-status="task.name"
               >
-                {{ getStatusLabel(task.statusName, statuses) }}
+                {{ getStatusLabel(task.name, statuses) }}
               </td>
               <td class="border px-4 py-2" style="width: 100px">
                 <div class="action-buttons">
@@ -75,7 +75,7 @@
                     class="itbkk-button-action"
                   >
                     <button
-                      @click="openEditModal(task.taskId)"
+                      @click="openEditModal(task.id)"
                       style="
                         border: none;
                         background: none;
@@ -92,7 +92,7 @@
                     </button>
 
                     <button
-                      @click="openDeleteModal(task.taskId)"
+                      @click="openDeleteModal(task.id)"
                       style="border: none; background: none; padding: 0"
                       class="itbkk-button-delete"
                     >
@@ -137,7 +137,7 @@
     <delete-modal
       v-if="showDeleteModal"
       :closeModal="closeDeleteModal"
-      :taskId="taskIdToDelete"
+      :id="taskIdToDelete"
       :taskTitle="taskTitleToDelete"
       :taskIndex="taskIndexToDelete"
       @deleted="handleTaskDeleted"
@@ -216,23 +216,23 @@ const getStatusLabel = (statusName, statuses) => {
   return status ? status.statusName : 'No Status'
 }
 
-const openModal = async (taskId) => {
-  if (!taskId) {
+const openModal = async (id) => {
+  if (!id) {
     console.error('Task ID is invalid or missing.')
     return
   }
   try {
-    const data = await FetchUtils.fetchData(`tasks/${taskId}`)
+    const data = await FetchUtils.fetchData(`tasks/${id}`)
     selectedTask.value = data
   } catch (error) {
     console.error('Error fetching task details:', error)
   }
 }
-const handleTaskClick = (taskId) => {
-  if (taskId) {
-    openModal(taskId)
+const handleTaskClick = (id) => {
+  if (id) {
+    openModal(id)
   } else {
-    console.error('Invalid taskId:', taskId)
+    console.error('Invalid taskId:', id)
   }
 }
 const handleAddTask = () => {
@@ -250,10 +250,10 @@ const cancelAdd = () => {
 const closeModal = () => {
   selectedTask.value = null
 }
-const openDeleteModal = (taskId) => {
-  const task = tasks.value.find((task) => task.taskId === taskId)
+const openDeleteModal = (id) => {
+  const task = tasks.value.find((task) => task.id === id)
   if (task) {
-    taskIdToDelete.value = taskId
+    taskIdToDelete.value = id
     taskTitleToDelete.value = task.title
     taskIndexToDelete.value = tasks.value.indexOf(task) + 1
     operationType.value = 'delete'
@@ -263,7 +263,7 @@ const openDeleteModal = (taskId) => {
 const handleTaskDeleted = (deletedTaskId, receivedStatusCode) => {
   console.log('Received deletion status code:', receivedStatusCode)
   statusCode.value = receivedStatusCode // Set statusCode here
-  tasks.value = tasks.value.filter((task) => task.taskId !== deletedTaskId)
+  tasks.value = tasks.value.filter((task) => task.id !== deletedTaskId)
   closeDeleteModal()
   // Show success modal after deletion
   showSuccessModal.value = true
@@ -281,9 +281,9 @@ const handleShowStatusModal = (status) => {
     statusCode.value = status
   }
 }
-const openEditModal = async (taskId) => {
+const openEditModal = async (id) => {
   try {
-    const data = await FetchUtils.fetchData('tasks', taskId)
+    const data = await FetchUtils.fetchData('tasks', id)
     taskToEdit.value = data
     if (taskToEdit.value) {
       operationType.value = 'edit' // Set operationType to 'edit' when opening edit modal
@@ -299,7 +299,7 @@ const closeEditModal = () => {
 }
 const onTaskUpdated = (updatedTask) => {
   const taskIndex = tasks.value.findIndex(
-    (task) => task.taskId === updatedTask.taskId
+    (task) => task.id === updatedTask.id
   )
   if (taskIndex !== -1) {
     tasks.value[taskIndex] = updatedTask
@@ -318,9 +318,9 @@ onMounted(() => {
   fetchStatuses()
 })
 onMounted(() => {
-  const taskId = route.params.taskId
-  if (taskId) {
-    openModal(taskId)
+  const id = route.params.id
+  if (id) {
+    openModal(id)
   }
 })
 </script>

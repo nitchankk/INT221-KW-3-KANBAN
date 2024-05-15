@@ -17,11 +17,11 @@
         </option>
         <option
           v-for="status in filteredStatuses"
-          :key="status.statusId"
-          :value="status.statusId"
+          :key="status.id"
+          :value="status.id"
           class="py-2"
         >
-          {{ status.statusName }}
+          {{ status.name }}
         </option>
       </select>
 
@@ -85,17 +85,17 @@ const fetchExistingStatuses = async () => {
     const operationType = 'transfer'
 
     const defaultStatus = existingStatuses.value.find(
-      (status) => status.statusId === props.statusIdToTransfer
+      (status) => status.id === props.statusIdToTransfer
     )
 
-    selectedStatusId.value = defaultStatus ? defaultStatus.statusId : null
+    selectedStatusId.value = defaultStatus ? defaultStatus.id : null
 
     console.log('Existing statuses:', existingStatuses.value)
 
     existingStatuses.value.forEach((status) => {
       console.log('Status:', status)
-      console.log('Status ID:', status.statusId)
-      console.log('Status Name:', status.statusName)
+      console.log('Status ID:', status.id)
+      console.log('Status Name:', status.name)
     })
   } catch (error) {
     console.error('Error fetching existing statuses:', error)
@@ -159,15 +159,15 @@ const transferStatus = async () => {
 
 const filteredStatuses = computed(() => {
   return existingStatuses.value.filter(
-    (status) => status.statusId !== props.statusIdToTransfer
+    (status) => status.id !== props.statusIdToTransfer
   )
 })
 
 const defaultStatusName = computed(() => {
   const defaultStatus = existingStatuses.value.find(
-    (status) => status.statusId === props.statusIdToTransfer
+    (status) => status.id === props.statusIdToTransfer
   )
-  return defaultStatus ? defaultStatus.statusName : ''
+  return defaultStatus ? defaultStatus.name : ''
 })
 </script>
 
