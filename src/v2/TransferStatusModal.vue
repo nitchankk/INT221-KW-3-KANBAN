@@ -2,7 +2,20 @@
   <div class="modal-mask" v-if="isOpen">
     <div class="itbkk-message">
       <h2 class="text-lg font-semibold mb-4">Transfer and Delete</h2>
-      <p class="text-left mb-4">There are specified task using this status</p>
+      <p class="text-left mb-4">
+        There are specified tasks using this status. Select an existing status
+        to transfer tasks:
+      </p>
+      <select v-model="selectedStatusId" class="mb-4">
+        <option
+          v-for="status in existingStatuses"
+          :key="status.statusId"
+          :value="status.statusId"
+        >
+          {{ status.statusName }}
+        </option>
+      </select>
+
       <div class="flex justify-end">
         <button
           type="button"
@@ -30,7 +43,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue'
+import { defineProps, defineEmits, ref, onMounted } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
 import Toast from './Toast.vue'
 
@@ -42,35 +55,73 @@ const props = defineProps({
 const emit = defineEmits(['closeModal', 'statusTransfered'])
 
 const showToast = ref(false)
-
 const statusCode = ref(0)
-
 const operationType = ref(null)
+const selectedStatusId = ref(null)
+const existingStatuses = ref([])
 
 const closeModal = () => {
   emit('closeModal')
 }
 
+const fetchExistingStatuses = async () => {
+  try {
+    const response = await fetchUtils.fetchData('statuses')
+    existingStatuses.value = response
+
+    // Find the status object with the same ID as statusIdToTransfer
+    const defaultStatus = existingStatuses.value.find(
+      (status) => status.statusId === props.statusIdToTransfer
+    )
+
+    // Set selectedStatusId to the statusIdToTransfer if found, otherwise set it to null
+    selectedStatusId.value = defaultStatus ? defaultStatus.statusId : null
+
+    console.log('Existing statuses:', existingStatuses.value)
+
+    // Iterate over the existing statuses array and log the properties of each status object
+    existingStatuses.value.forEach((status) => {
+      console.log('Status:', status)
+      console.log('Status ID:', status.statusId)
+      console.log('Status Name:', status.statusName)
+    })
+  } catch (error) {
+    console.error('Error fetching existing statuses:', error)
+  }
+}
+
+onMounted(() => {
+  fetchExistingStatuses()
+})
+
 const transferStatus = async () => {
   operationType.value = 'transfer'
-  console.log('OpeartionType', operationType.value)
+  console.log('OperationType', operationType.value)
   try {
     if (typeof props.statusIdToTransfer === 'undefined') {
       throw new Error('Status ID to transfer is not defined')
     }
 
+    if (!selectedStatusId.value) {
+      throw new Error('Please select a status to transfer tasks')
+    }
+
     if (props.statusIdToTransfer === 1) {
       alert('The "No Status" status cannot be transferred')
       closeModal()
-      throw new Error('The "No Status" status cannot be transfer')
+      throw new Error('The "No Status" status cannot be transferred')
     }
 
-    const response = await fetchUtils.transferData(
-      `statuses/${props.statusIdToTransfer}`
+    const response = await fetchUtils.deleteAndTransferData(
+      `statuses/${props.statusIdToTransfer}`,
+      selectedStatusId.value
     )
     statusCode.value = response.statusCode
     if (response.success) {
-      console.log('Status transfered successfully!', statusCode.value)
+      console.log(
+        'Status transferred and deleted successfully!',
+        statusCode.value
+      )
       emit('statusTransfered')
       showToast.value = true
       closeModal()
@@ -78,7 +129,7 @@ const transferStatus = async () => {
       throw new Error(response.data.message)
     }
   } catch (error) {
-    console.error('Error transfer status:', error.message)
+    console.error('Error transferring status:', error.message)
     if (error.message.includes('404')) {
       statusCode.value = 404
       console.log(statusCode.value)
