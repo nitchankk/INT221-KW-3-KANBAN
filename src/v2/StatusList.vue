@@ -66,7 +66,7 @@
                     </button>
                     <button
                       class="itbkk-button-delete"
-                      @click="openDeleteModal(status)"
+                      @click="checkTasksBeforeDelete(status)"
                     >
                       <img
                         src="../assets/delete-status.png"
@@ -103,6 +103,13 @@
       :statusIdToDelete="selectedStatusIdToDelete"
     >
     </DeleteStatusModal>
+    <TransferStatusModal
+      :isOpen="isTransferOpen"
+      @closeModal="closeModal"
+      @statusTransfered="handleTransfer"
+      :statusIdToTransfer="selectedStatusIdToTransfer"
+    >
+    </TransferStatusModal>
   </div>
 </template>
 
@@ -112,17 +119,24 @@ import fetchUtils from '../lib/fetchUtils'
 import { useRoute, useRouter } from 'vue-router'
 
 const statuses = ref([])
+const tasks = ref([])
 const route = useRoute()
 const router = useRouter()
 
 async function fetchData() {
   try {
-    const responseData = await fetchUtils.fetchData('statuses')
-    statuses.value = responseData
-    
+    const statusData = await fetchUtils.fetchData('statuses')
+    statuses.value = statusData
+
+    const taskData = await fetchUtils.fetchData('tasks')
+    tasks.value = taskData
+
     // Check if route has a status ID and validate it
     const statusId = route.params.statusId
-    if (statusId && !statuses.value.some(status => status.statusId === statusId)) {
+    if (
+      statusId &&
+      !statuses.value.some((status) => status.statusId === statusId)
+    ) {
       alert('404 Not Found: Status ID does not exist')
       router.push('/status')
     }
@@ -148,6 +162,7 @@ const closeModal = () => {
   isAddOpen.value = false
   isEditOpen.value = false
   isDeleteOpen.value = false
+  isTransferOpen.value = false
 }
 
 const handleStatusAdded = () => {
@@ -189,6 +204,35 @@ const openDeleteModal = (status) => {
 const handleDelete = () => {
   fetchData()
 }
+
+// Transfer --------------------------------------------------------
+import TransferStatusModal from './TransferStatusModal.vue'
+const isTransferOpen = ref(false)
+
+const selectedStatusIdToTransfer = ref(null)
+
+const openTransferModal = (status) => {
+  console.log('Status ID to transfer:', status.statusId)
+  selectedStatusIdToTransfer.value = status.statusId
+  isTransferOpen.value = true
+}
+
+const handleTransfer = () => {
+  fetchData()
+}
+
+// Check if status is in use --------------------------------------
+const checkTasksBeforeDelete = (status) => {
+  const statusInUse = tasks.value.some(
+    (task) => task.statusName === status.statusName
+  )
+  if (statusInUse) {
+    openTransferModal(status)
+  } else {
+    openDeleteModal(status)
+  }
+}
+
 onMounted(fetchData)
 </script>
 
