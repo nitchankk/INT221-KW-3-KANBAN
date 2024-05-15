@@ -6,14 +6,14 @@
       <div v-if="editedStatus">
         <form @submit.prevent="saveChanges" class="itbkk-modal-status">
           <div class="mb-4">
-            <label for="statusName" class="block font-semibold mb-1 text-left"
+            <label for="name" class="block font-semibold mb-1 text-left"
               >Name:</label
             >
             <input
-              v-model="editedStatus.statusName"
+              v-model="editedStatus.name"
               type="text"
-              id="statusName"
-              name="statusName"
+              id="name"
+              name="name"
               class="w-full border rounded-md p-2 font-medium itbkk-status-name"
             />
           </div>
@@ -24,9 +24,9 @@
               >Description:</label
             >
             <textarea
-              v-model="editedStatus.statusDescription"
-              id="statusDescription"
-              name="statusDescription"
+              v-model="editedStatus.description"
+              id="description"
+              name="description"
               rows="4"
               class="w-full border rounded-md p-2 font-medium"
             ></textarea>
@@ -76,8 +76,8 @@ const props = defineProps({
 
 const emit = defineEmits(['closeModal', 'statusEdited'])
 
-const editedStatus = ref({ statusName: '', statusDescription: '' })
-const initialStatus = ref({ statusName: '', statusDescription: '' })
+const editedStatus = ref({ name: '', description: '' })
+const initialStatus = ref({ name: '', description: '' })
 
 const showToast = ref(false)
 const statusCode = ref(0)
@@ -90,8 +90,8 @@ watch(
       editedStatus.value = { ...newValue }
       initialStatus.value = { ...newValue }
     } else {
-      editedStatus.value = { statusName: '', statusDescription: '' }
-      initialStatus.value = { statusName: '', statusDescription: '' }
+      editedStatus.value = { name: '', description: '' }
+      initialStatus.value = { name: '', description: '' }
     }
   }
 )
