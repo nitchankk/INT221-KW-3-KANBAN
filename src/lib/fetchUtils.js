@@ -1,4 +1,5 @@
-const baseUrl = 'http://localhost:8080/itb-kk/v2'
+ 
+const baseUrl = import.meta.env.VITE_BASE_URL ; 
 
 const fetchData = async (url, taskId = null) => {
   try {
