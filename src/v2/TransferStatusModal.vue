@@ -6,11 +6,16 @@
         There are specified tasks using this status. Select an existing status
         to transfer tasks:
       </p>
-      <select v-model="selectedStatusId" class="mb-4">
+      <select
+        v-model="selectedStatusId"
+        class="mb-4 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:border-blue-500 sm:text-sm"
+      >
+        <option disabled value="">Please select a status</option>
         <option
-          v-for="status in existingStatuses"
+          v-for="status in filteredStatuses"
           :key="status.statusId"
           :value="status.statusId"
+          class="py-2"
         >
           {{ status.statusName }}
         </option>
@@ -43,7 +48,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, onMounted } from 'vue'
+import { defineProps, defineEmits, ref, onMounted, computed } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
 import Toast from './Toast.vue'
 
@@ -57,8 +62,9 @@ const emit = defineEmits(['closeModal', 'statusTransfered'])
 const showToast = ref(false)
 const statusCode = ref(0)
 const operationType = ref(null)
-const selectedStatusId = ref(null)
 const existingStatuses = ref([])
+
+const selectedStatusId = ref(null) // Initialize with null or any other default value you want
 
 const closeModal = () => {
   emit('closeModal')
@@ -144,6 +150,12 @@ const transferStatus = async () => {
     }
   }
 }
+
+const filteredStatuses = computed(() => {
+  return existingStatuses.value.filter(
+    (status) => status.statusId !== props.statusIdToTransfer
+  )
+})
 </script>
 
 <style scoped>
