@@ -341,7 +341,6 @@ table-container {
   border-collapse: collapse;
   width: 100%;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .table th,
@@ -406,7 +405,6 @@ tbody tr:hover {
 
 .manage-status {
   text-align: right;
-  /* Align to the right */
   margin: 10px;
 }
 
