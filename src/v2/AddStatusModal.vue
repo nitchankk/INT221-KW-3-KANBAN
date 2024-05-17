@@ -102,6 +102,16 @@ const isSaveDisabled = computed(() => {
 const addStatus = async () => {
   operationType.value = 'add'
   try {
+    const existingStatuses = await fetchUtils.fetchData('statuses')
+    const existingStatusNames = existingStatuses.map(
+      (status) => status.statusName
+    )
+
+    if (existingStatusNames.includes(statusName.value)) {
+      alert('Status name must be unique. Please enter a different name.')
+      return
+    }
+
     const newStatus = {
       statusName: statusName.value,
       statusDescription: statusDescription.value

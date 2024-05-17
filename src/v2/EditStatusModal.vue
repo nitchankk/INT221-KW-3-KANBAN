@@ -126,6 +126,18 @@ const saveChanges = async () => {
       throw new Error('The "No Status" status cannot be edited')
     }
 
+    const existingStatuses = await fetchUtils.fetchData('statuses')
+    const existingStatusNames = existingStatuses.map(
+      (status) => status.statusName
+    )
+
+    if (editedStatus.value.statusName !== initialStatus.value.statusName) {
+      if (existingStatusNames.includes(editedStatus.value.statusName)) {
+        alert('Status name must be unique. Please enter a different name.')
+        return
+      }
+    }
+
     const response = await fetchUtils.putData(
       `statuses/${props.selectedStatusIdToEdit}`,
       editedStatus.value
