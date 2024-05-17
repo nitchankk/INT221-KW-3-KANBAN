@@ -14,8 +14,14 @@
               type="text"
               id="statusName"
               name="statusName"
+              maxlength="50"
               class="w-full border rounded-md p-2 font-medium itbkk-status-name"
             />
+            <small
+              v-if="editedStatus.statusName.length > 50"
+              class="text-red-500"
+              >Name must be at most 50 characters long.</small
+            >
           </div>
           <div class="mb-4">
             <label
@@ -28,8 +34,14 @@
               id="statusDescription"
               name="statusDescription"
               rows="4"
+              maxlength="200"
               class="w-full border rounded-md p-2 font-medium"
             ></textarea>
+            <small
+              v-if="editedStatus.statusDescription.length > 200"
+              class="text-red-500"
+              >Description must be at most 200 characters long.</small
+            >
           </div>
           <div class="flex justify-end">
             <button
@@ -98,13 +110,15 @@ watch(
 
 const isSaveDisabled = computed(() => {
   return (
-    JSON.stringify(editedStatus.value) === JSON.stringify(initialStatus.value)
+    JSON.stringify(editedStatus.value) ===
+      JSON.stringify(initialStatus.value) ||
+    editedStatus.value.statusName.length > 50 ||
+    editedStatus.value.statusDescription.length > 200
   )
 })
 
 const saveChanges = async () => {
   operationType.value = 'edit'
-  console.log('OpeartionType', operationType.value)
   try {
     if (props.selectedStatusIdToEdit === 1) {
       alert('The "No Status" status cannot be edited')
@@ -118,11 +132,6 @@ const saveChanges = async () => {
     )
     statusCode.value = response.statusCode
     if (response.success) {
-      console.log(
-        'Status updated successfully:',
-        response.data,
-        statusCode.value
-      )
       emit('closeModal')
       emit('statusEdited')
       showToast.value = true
@@ -133,7 +142,6 @@ const saveChanges = async () => {
     console.error('Error updating status:', error.message)
     if (error.message.includes('404')) {
       statusCode.value = 404
-      console.log(statusCode.value)
       showToast.value = true
       emit('closeModal')
     }

@@ -29,7 +29,7 @@
               </th>
               <th style="width: 600px">Title</th>
               <th style="width: 200px">Assignees</th>
-              <th style="width: 100px">Status</th>
+              <th style="width: 120px">Status</th>
               <th style="width: 70px">
                 <img
                   src="../assets/menu-bar.png"
@@ -326,15 +326,17 @@ onMounted(() => {
 </script>
 <style scoped>
 #app {
-  width: 1200px;
+  width: 1500px;
   margin: 0 auto;
 }
 
-table-container {
+.table-container {
   margin: 0 auto;
   width: 80%;
-  max-width: 1200px;
-  overflow-x: auto;
+  max-width: 1500px;
+  overflow-x: hidden;
+  border-radius: 8px;
+  font-size: 19px;
 }
 
 .table {
