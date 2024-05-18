@@ -4,22 +4,22 @@ import App from './App.vue'
 const routes = [
   {
     path: '/task',
+    name: "taskView",
     component: () => import('./components/TaskList.vue')
   },
   {
     path: '/task/:taskId',
+    name: "taskDetail",
     component: () => import('./components/TaskList.vue')
   },
   {
-    path: '/test',
-    component: () => import('./components/test/Test.vue')
-  },
-  {
     path: '/status',
+    name: "statusView",
     component: () => import('./v2/StatusList.vue')
   },
   {
     path: '/status/:statusId',
+    name: "statusDetail",
     component: () => import('./v2/StatusList.vue')
   },
   {

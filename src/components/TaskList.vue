@@ -71,7 +71,7 @@
               <td class="border px-4 py-2" style="width: 100px">
                 <div class="action-buttons">
                   <button
-                    style="border: none; background: none; padding: 0"
+                    
                     class="itbkk-button-action"
                   >
                     <button
@@ -154,7 +154,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute , useRouter } from 'vue-router'
 import TaskModal from './TaskModal.vue'
 import AddModal from './AddModal.vue'
 import DeleteModal from './DeleteModal.vue'
@@ -177,6 +177,8 @@ const taskTitleToDelete = ref(null)
 const taskIndexToDelete = ref(null)
 
 const route = useRoute()
+const router = useRouter()
+
 
 const formatLocalDate = (dateString) => {
   const date = new Date(dateString)
@@ -311,7 +313,7 @@ const handleEditSuccess = (status) => {
   showSuccessModal.value = true
 }
 const goToStatusManagement = () => {
-  window.location.href = '/status'
+  router.push({name: "statusView"})
 }
 onMounted(() => {
   fetchTasks()
@@ -332,9 +334,9 @@ onMounted(() => {
 
 .table-container {
   margin: 0 auto;
-  width: 80%;
-  max-width: 1500px;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 1700px;
+  overflow-x: none;
   border-radius: 8px;
   font-size: 19px;
 }
