@@ -193,9 +193,19 @@ const fetchTasks = async () => {
   try {
     const data = await FetchUtils.fetchData('tasks')
     tasks.value = data
+    
+    const taskId = route.params.taskId
+    if (
+      taskId &&
+      !tasks.value.some((task) => task.taskId === taskId)
+    ) {
+      alert('404 Not Found: Status ID does not exist')
+      router.push('/task')
+    }
   } catch (error) {
     console.error('Error fetching tasks:', error)
   }
+  
 }
 
 const fetchStatuses = async () => {
