@@ -29,10 +29,6 @@ const routes = [
     redirect: '/task',
     component: App,
   },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/task', 
-  }
 ];
 
 const router = createRouter({

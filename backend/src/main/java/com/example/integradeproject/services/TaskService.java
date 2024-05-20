@@ -1,6 +1,7 @@
 package com.example.integradeproject.services;
 
 import com.example.integradeproject.dtos.NewTaskDTO;
+import com.example.integradeproject.dtos.TaskDTO;
 import com.example.integradeproject.entities.Task;
 import com.example.integradeproject.repositories.TaskRepository;
 import jakarta.transaction.Transactional;

@@ -29,39 +29,7 @@
               </th>
               <th style="width: 600px">Title</th>
               <th style="width: 200px">Assignees</th>
-              <th style="width: 120px; position: relative">
-                Status
-                <button
-                  @click="sortTasksByStatus"
-                  class="itbkk-button-sort"
-                  style="
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    border: none;
-                    background: none;
-                    padding: 0;
-                  "
-                >
-                  <img
-                    v-if="sortOrder === 0"
-                    src="../assets/sort.png"
-                    alt="Sort Icon"
-                  />
-                  <img
-                    v-else-if="sortOrder === 1"
-                    src="../assets/aesc.png"
-                    alt="Sort Ascending Icon"
-                  />
-                  <img
-                    v-else
-                    src="../assets/desc.png"
-                    alt="Sort Descending Icon"
-                  />
-                </button>
-              </th>
-
+              <th style="width: 100px">Status</th>
               <th style="width: 70px">
                 <img
                   src="../assets/menu-bar.png"
@@ -102,7 +70,10 @@
               </td>
               <td class="border px-4 py-2" style="width: 100px">
                 <div class="action-buttons">
-                  <button class="itbkk-button-action">
+                  <button
+                    style="border: none; background: none; padding: 0"
+                    class="itbkk-button-action"
+                  >
                     <button
                       @click="openEditModal(task.taskId)"
                       style="
@@ -183,7 +154,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute , useRouter  } from 'vue-router'
 import TaskModal from './TaskModal.vue'
 import AddModal from './AddModal.vue'
 import DeleteModal from './DeleteModal.vue'
@@ -204,11 +175,9 @@ const taskToEdit = ref(null)
 const operationType = ref('')
 const taskTitleToDelete = ref(null)
 const taskIndexToDelete = ref(null)
-
-const sortOrder = ref(0)
+const router = useRouter()
 
 const route = useRoute()
-const router = useRouter()
 
 const formatLocalDate = (dateString) => {
   const date = new Date(dateString)
@@ -223,12 +192,6 @@ const fetchTasks = async () => {
   try {
     const data = await FetchUtils.fetchData('tasks')
     tasks.value = data
-    
-    const taskId = route.params.taskId
-    if (taskId && !tasks.value.some((task) => task.taskId === taskId)) {
-      router.push('/task')
-    }
-
   } catch (error) {
     console.error('Error fetching tasks:', error)
   }
@@ -244,15 +207,9 @@ const fetchStatuses = async () => {
 }
 
 const sortedTasks = computed(() => {
-  let sorted = [...tasks.value]
-  if (sortOrder.value === 1) {
-    sorted.sort((a, b) => a.statusName.localeCompare(b.statusName))
-  } else if (sortOrder.value === 2) {
-    sorted.sort((a, b) => b.statusName.localeCompare(a.statusName))
-  } else {
-    sorted.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
-  }
-  return sorted
+  return tasks.value.sort(
+    (a, b) => new Date(a.createdOn) - new Date(b.createdOn)
+  )
 })
 
 const getStatusLabel = (statusName, statuses) => {
@@ -267,18 +224,10 @@ const openModal = async (taskId) => {
   }
   try {
     const data = await FetchUtils.fetchData(`tasks/${taskId}`)
-    if (data) {
-      selectedTask.value = data
-    } 
+    selectedTask.value = data
   } catch (error) {
-  console.error('Error fetching task details:', error)
-  if (error.status === 404) {
-  } else {
-    alert('The Request Task does not exist')
+    console.error('Error fetching task details:', error)
   }
-}
-
-
 }
 const handleTaskClick = (taskId) => {
   if (taskId) {
@@ -298,7 +247,6 @@ const handleTaskSaved = (savedTask) => {
 }
 const cancelAdd = () => {
   showAddModal.value = false
-  
 }
 const closeModal = () => {
   selectedTask.value = null
@@ -315,9 +263,10 @@ const openDeleteModal = (taskId) => {
 }
 const handleTaskDeleted = (deletedTaskId, receivedStatusCode) => {
   console.log('Received deletion status code:', receivedStatusCode)
-  statusCode.value = receivedStatusCode
+  statusCode.value = receivedStatusCode // Set statusCode here
   tasks.value = tasks.value.filter((task) => task.taskId !== deletedTaskId)
   closeDeleteModal()
+  // Show success modal after deletion
   showSuccessModal.value = true
 }
 const closeDeleteModal = () => {
@@ -328,6 +277,7 @@ const closeSuccessModal = () => {
 }
 const handleShowStatusModal = (status) => {
   if (status === 201 || status === 200) {
+    // If the status is 201 or 200, show the success modal
     showSuccessModal.value = true
     statusCode.value = status
   }
@@ -337,7 +287,7 @@ const openEditModal = async (taskId) => {
     const data = await FetchUtils.fetchData('tasks', taskId)
     taskToEdit.value = data
     if (taskToEdit.value) {
-      operationType.value = 'edit'
+      operationType.value = 'edit' // Set operationType to 'edit' when opening edit modal
       showEditModal.value = true
     }
   } catch (error) {
@@ -362,13 +312,8 @@ const handleEditSuccess = (status) => {
   showSuccessModal.value = true
 }
 const goToStatusManagement = () => {
-  router.push({ name: 'statusView' })
+  router.push({name: "statusView"})
 }
-
-const sortTasksByStatus = () => {
-  sortOrder.value = (sortOrder.value + 1) % 3
-}
-
 onMounted(() => {
   fetchTasks()
   fetchStatuses()
@@ -379,27 +324,25 @@ onMounted(() => {
     openModal(taskId)
   }
 })
-
 </script>
 <style scoped>
 #app {
-  width: 1500px;
+  width: 1200px;
   margin: 0 auto;
 }
 
-.table-container {
+table-container {
   margin: 0 auto;
-  width: 100%;
-  max-width: 1700px;
-  overflow-x: none;
-  border-radius: 8px;
-  font-size: 19px;
+  width: 80%;
+  max-width: 1200px;
+  overflow-x: auto;
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .table th,
@@ -464,10 +407,11 @@ tbody tr:hover {
 
 .manage-status {
   text-align: right;
+  /* Align to the right */
   margin: 10px;
 }
 
-.itbkk-manage-status {
+.manage-status button {
   background-color: #aebac4;
   color: #fff;
   padding: 12px 24px;
@@ -479,7 +423,6 @@ tbody tr:hover {
   text-transform: uppercase;
   transition: background-color 0.3s ease;
   text-align: center;
-  width: 120px;
 }
 
 .manage-status button:hover {
@@ -509,35 +452,6 @@ tbody tr:hover {
 }
 
 .itbkk-button-action button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-button-sort {
-  width: 35px;
-  height: 35px;
-}
-
-.itbkk-button-sort button:hover {
-  width: 35px;
-  height: 35px;
-}
-
-.itbkk-button-sort button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-button-sort img {
-  width: 100%;
-  height: 100%;
-}
-
-.itbkk-button-sort img:hover {
-  transform: translateY(1px);
-}
-
-.itbkk-button-sort img:active {
   transform: translateY(2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
