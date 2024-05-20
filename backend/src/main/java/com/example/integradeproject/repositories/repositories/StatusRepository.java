@@ -1,4 +1,4 @@
-package com.example.integradeproject.repositories;
+package com.example.integradeproject.repositories.repositories;
 
 import com.example.integradeproject.entities.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
