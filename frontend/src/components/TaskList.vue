@@ -215,6 +215,7 @@ const onTaskUpdated = (updatedTask) => {
 const handleEditSuccess = (status) => {
   console.log('Received status code after edit:', status)
   statusCode.value = status
+  console.log('Received status code:', statusCode)
   showSuccessModal.value = true
 }
 const goToStatusManagement = () => {
