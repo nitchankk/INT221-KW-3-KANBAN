@@ -70,7 +70,6 @@ const cancelModal = () => {
 </script>
 
 <style scoped>
-/* Styles for the modal */
 .modal-wrapper {
   position: fixed;
   top: 0;
@@ -127,5 +126,9 @@ const cancelModal = () => {
 .itbkk-button-confirm:hover,
 .itbkk-button-cancel:hover {
   opacity: 0.8;
+}
+
+.itbkk-message {
+  word-wrap: break-word;
 }
 </style>
