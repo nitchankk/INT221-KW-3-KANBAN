@@ -1,10 +1,18 @@
 package com.example.integradeproject.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+//@Getter
+//@Setter
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class NewTask2DTO {
+//    private Integer taskId ;
+//    private String title ;
+//    private String description ;
+//    private String assignees ;
+//    private String  statusName ;
 
 @Getter
 @Setter
@@ -12,11 +20,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewTask2DTO {
-    private Integer taskId ;
-    private String title ;
-    private String description ;
-    private String assignees ;
-    private String  statusName ;
+    private Integer taskId;
+    private String title;
+    private String description;
+    private String assignees;
+    private String statusName; // Changed the property name from statusName to statusName
+
+    // Getters and setters
 
 public void setTitle(String title){
     this.title = title;
