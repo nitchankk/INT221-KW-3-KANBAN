@@ -2,7 +2,7 @@
   <div class="modal-wrapper" v-if="showModal">
     <div class="modal">
       <div class="modal-content">
-        <div v-if="statusCode === 200 && operationType === 'add'">
+        <div v-if="statusCode === 201 && operationType === 'add'">
           <h2 class="modal-title">ADD TASK SUCCESS!</h2>
           <p>The task has been successfully added.</p>
         </div>

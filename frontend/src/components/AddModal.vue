@@ -104,7 +104,7 @@ export default {
         title: '',
         description: '',
         assignees: '',
-        statusName: 'NO STATUS'
+        statusName: 'No Status'
       },
       statuses: []
     }
@@ -126,7 +126,7 @@ export default {
           'tasks',
           this.taskDetails
         )
-        if (success && statusCode === 200) {
+        if (success && statusCode === 201) {
           console.log('The task has been successfully added', statusCode)
           this.$emit('taskSaved', data)
           this.$emit('showStatusModal', statusCode)
