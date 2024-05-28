@@ -66,45 +66,44 @@ public class StatusService {
 
 
 
+    @Transactional
     public Status updateByStatusId(Integer id, Status updatedStatus) {
-
-        // validate
-        if ( updatedStatus.getStatusName() == null || updatedStatus.getStatusName().trim().toLowerCase().isEmpty()) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST ,  "Name must not be null");
-        }
-        if (id == 1){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST ,  "No Status Cannot be changed");
-        }
-        if (id == 6){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST ,  "Done Cannot be changed");
-        }
-        boolean exists = statusRepository.existsByStatusName(updatedStatus.getStatusName());
-        if (exists) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Name must be unique. ");
-        }
-
-        StringBuilder error = new StringBuilder();
-        if (updatedStatus.getStatusName().length() > 50) {
-            error.append("name size must be between 0 and 50.");
-        }
-
-        if (updatedStatus.getStatusName().length() > 200) {
-            error.append("description size must be between 0 and 200.");
-        }
-        if (error.length() > 0) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, error.toString());
-        }
-
         Optional<Status> optionalStatus = statusRepository.findById(id);
         if (optionalStatus.isPresent()) {
             Status existingStatus = optionalStatus.get();
-            existingStatus.setName(updatedStatus.getStatusName());
-            existingStatus.setDescription(updatedStatus.getStatusDescription());
+
+            // Check if the status name has been modified
+            if (!existingStatus.getStatusName().equals(updatedStatus.getStatusName())) {
+                // If modified, perform uniqueness check
+                boolean exists = statusRepository.existsByStatusName(updatedStatus.getStatusName());
+                if (exists) {
+                    throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Status name must be unique.");
+                }
+            }
+
+            StringBuilder error = new StringBuilder();
+            if (updatedStatus.getStatusName().length() > 50) {
+                error.append("name size must be between 0 and 50.");
+            }
+
+            if (updatedStatus.getStatusDescription().length() > 200) {
+                error.append("description size must be between 0 and 200.");
+            }
+            if (error.length() > 0) {
+                throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, error.toString());
+            }
+
+            // Validate other fields if needed
+
+            // Update the status
+            existingStatus.setStatusName(updatedStatus.getStatusName());
+            existingStatus.setStatusDescription(updatedStatus.getStatusDescription());
             return statusRepository.save(existingStatus);
         } else {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Status not found with id: " + id);
         }
     }
+
 
     @Transactional
     public StatusDTO deleteById(Status id) {
