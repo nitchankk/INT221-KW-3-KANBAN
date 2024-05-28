@@ -72,9 +72,9 @@ public class StatusService {
         if (optionalStatus.isPresent()) {
             Status existingStatus = optionalStatus.get();
 
-            // Check if the status name has been modified
+            // Check status name ถูกแก้ไขไหม
             if (!existingStatus.getStatusName().equals(updatedStatus.getStatusName())) {
-                // If modified, perform uniqueness check
+                // ถ้าถูกแก้ไขจะเช็คจาก boolean
                 boolean exists = statusRepository.existsByStatusName(updatedStatus.getStatusName());
                 if (exists) {
                     throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Status name must be unique.");
@@ -92,8 +92,6 @@ public class StatusService {
             if (error.length() > 0) {
                 throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, error.toString());
             }
-
-            // Validate other fields if needed
 
             // Update the status
             existingStatus.setStatusName(updatedStatus.getStatusName());

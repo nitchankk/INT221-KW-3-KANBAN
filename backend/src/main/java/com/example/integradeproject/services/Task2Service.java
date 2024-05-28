@@ -94,7 +94,6 @@ public class Task2Service {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title cannot be null or empty");
         }
 
-        // Create instance
         Task2 task = new Task2();
         task.setTitle(newTask2DTO.getTitle());
         task.setDescription(newTask2DTO.getDescription());

@@ -24,9 +24,8 @@ public class NewTask2DTO {
     private String title;
     private String description;
     private String assignees;
-    private String statusName; // Changed the property name from statusName to statusName
+    private String statusName;
 
-    // Getters and setters
 
 public void setTitle(String title){
     this.title = title;
