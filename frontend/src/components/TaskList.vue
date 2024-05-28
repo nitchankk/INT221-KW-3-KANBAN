@@ -90,7 +90,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="(task, index) in sortedTasks"
+              v-for="(task, index) in filteredTasks"
               :key="task.taskId"
               class="itbkk-item"
             >
@@ -109,6 +109,7 @@
               <td
                 class="border px-4 py-2 itbkk-status"
                 :data-status="task.statusName"
+                :style="statusStyle(task.statusName)"
               >
                 {{ getStatusLabel(task.statusName, statuses) }}
               </td>
@@ -278,28 +279,57 @@ const fetchStatuses = async () => {
   }
 }
 
+const statusStyle = (status) => {
+  const statusUpperCase = status.toUpperCase()
+  switch (statusUpperCase) {
+    case 'TO DO':
+      return { background: 'linear-gradient(to right, #FF9A9E, #F67C5E)' } // Gradient in shades of pink-red
+    case 'DOING':
+      return { background: 'linear-gradient(to right, #FFE066, #F6E05E)' } // Gradient in shades of yellow
+    case 'DONE':
+      return { background: 'linear-gradient(to right, #AAF6BE, #68D391)' } // Gradient in shades of light green
+    case 'NO STATUS':
+      return {
+        backgroundColor: 'rgba(245, 245, 245, 0.8)',
+        color: '#888',
+        fontStyle: 'italic'
+      } // Light gray with opacity 0.8
+    case 'WAITING':
+      return { background: 'linear-gradient(to right, #D9A3FF, #B473FF)' } // Gradient in shades of purple
+    case 'IN PROGRESS':
+      return { background: 'linear-gradient(to right, #FFB347, #FFA733)' } // Gradient in shades of orange
+    default:
+      return { background: 'linear-gradient(to right, #A0CED9, #6CBEE6)' } // Default gradient in shades of blue
+  }
+}
+
 const sortedTasks = computed(() => {
   let sorted = [...tasks.value]
+
   if (sortOrder.value === 1) {
-    sorted.sort((a, b) => a.statusName.localeCompare(b.statusName))
+    sorted.sort((a, b) =>
+      (a.statusName || '').localeCompare(b.statusName || '')
+    )
   } else if (sortOrder.value === 2) {
-    sorted.sort((a, b) => b.statusName.localeCompare(a.statusName))
+    sorted.sort((a, b) =>
+      (b.statusName || '').localeCompare(a.statusName || '')
+    )
   } else {
     sorted.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn))
   }
 
-  let filteredTasks = sorted
+  return sorted
+})
 
+const filteredTasks = computed(() => {
+  console.log('Filtering tasks...')
   if (selectedStatuses.value.length > 0) {
-    filteredTasks = sorted.filter((task) =>
+    return sortedTasks.value.filter((task) =>
       selectedStatuses.value.includes(task.statusName)
     )
   } else {
-    // Show all tasks by default
-    filteredTasks = tasks.value
+    return sortedTasks.value
   }
-
-  return filteredTasks
 })
 
 const getStatusLabel = (statusName, statuses) => {
@@ -425,6 +455,7 @@ const closeFilterModal = () => {
 }
 
 const applyFilter = (selectedStatusesValue) => {
+  console.log('Selected statuses:', selectedStatusesValue)
   selectedStatuses.value = selectedStatusesValue
   closeFilterModal()
 }
@@ -526,26 +557,37 @@ tbody tr:hover {
   text-transform: uppercase;
 }
 
-.itbkk-status[data-status='TO DO'] {
+/*
+.itbkk-status[data-status='To Do'] {
   background-color: #f67c5e;
   color: #333;
 }
 
-.itbkk-status[data-status='DOING'] {
+.itbkk-status[data-status='Doing'] {
   background-color: #f6e05e;
   color: #333;
 }
 
-.itbkk-status[data-status='DONE'] {
+.itbkk-status[data-status='Done'] {
   background-color: #68d391;
   color: #333;
 }
 
-.itbkk-status[data-status='NO STATUS'] {
+.itbkk-status[data-status='No Status'] {
   background-color: #f5f5f5;
   color: #888;
   font-style: italic;
 }
+
+.itbkk-status[data-status='Waitings'] {
+  background-color: #b473ff;
+  color: #000000;
+}
+
+.itbkk-status[data-status='In Progress'] {
+  background-color: #b2faff;
+  color: #000000;
+} */
 
 .action-buttons {
   text-align: center;

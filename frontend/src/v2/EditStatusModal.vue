@@ -126,6 +126,12 @@ const saveChanges = async () => {
       throw new Error('The "No Status" status cannot be edited')
     }
 
+    if (props.selectedStatusIdToEdit === 6) {
+      alert('The "DONE" status cannot be edited')
+      emit('closeModal')
+      throw new Error('The "No Status" status cannot be edited')
+    }
+
     const existingStatuses = await fetchUtils.fetchData('statuses')
     const existingStatusNames = existingStatuses.map(
       (status) => status.statusName
@@ -134,6 +140,7 @@ const saveChanges = async () => {
     if (editedStatus.value.statusName !== initialStatus.value.statusName) {
       if (existingStatusNames.includes(editedStatus.value.statusName)) {
         alert('Status name must be unique. Please enter a different name.')
+        emit('closeModal')
         return
       }
     }
