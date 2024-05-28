@@ -1,3 +1,122 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import fetchUtils from '../lib/fetchUtils'
+import { useRoute, useRouter } from 'vue-router'
+
+const statuses = ref([])
+const tasks = ref([])
+const route = useRoute()
+const router = useRouter()
+
+// Fetch data function
+async function fetchData() {
+  try {
+    statuses.value = await fetchUtils.fetchData('statuses')
+    tasks.value = await fetchUtils.fetchData('tasks')
+
+    const statusId = route.params.statusId
+
+    if (statusId) {
+      const status = statuses.value.find(
+        (s) => s.statusId === parseInt(statusId)
+      )
+      status ? openEditModal(status) : router.push({ name: 'taskView' })
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+}
+
+// Back to Homepage functions
+const backToHomePage = () => {
+  router.push({ name: 'taskView' })
+}
+
+// Add modal
+import AddStatusModal from './AddStatusModal.vue'
+const isAddOpen = ref(false)
+const openAddModal = () => (isAddOpen.value = true)
+const closeModal = () => {
+  isAddOpen.value = false
+  isEditOpen.value = false
+  isDeleteOpen.value = false
+  isTransferOpen.value = false
+}
+const handleStatusAdded = () => fetchData()
+
+// Edit modal
+import EditStatusModal from './EditStatusModal.vue'
+const isEditOpen = ref(false)
+const selectedStatus = ref(null)
+const selectedStatusIdToEdit = ref(null)
+const openEditModal = (status) => {
+  selectedStatus.value = { ...status }
+  selectedStatusIdToEdit.value = status.statusId
+  isEditOpen.value = true
+}
+const handleStatusEdited = () => fetchData()
+
+// Delete modal
+import DeleteStatusModal from './DeleteStatusModal.vue'
+const isDeleteOpen = ref(false)
+const selectedStatusIdToDelete = ref(null)
+const openDeleteModal = (status) => {
+  selectedStatusIdToDelete.value = status.statusId
+  isDeleteOpen.value = true
+}
+const handleDelete = () => fetchData()
+
+// Transfer modal
+import TransferStatusModal from './TransferStatusModal.vue'
+const isTransferOpen = ref(false)
+const selectedStatusIdToTransfer = ref(null)
+const openTransferModal = (status) => {
+  selectedStatusIdToTransfer.value = status.statusId
+  isTransferOpen.value = true
+}
+const handleTransfer = () => fetchData()
+
+// Check if status is in use
+const checkTasksBeforeDelete = (status) => {
+  const statusInUse = tasks.value.some(
+    (task) => task.statusName === status.statusName
+  )
+  statusInUse ? openTransferModal(status) : openDeleteModal(status)
+}
+
+// Fetch data for update
+onMounted(fetchData)
+
+// Status Style function
+const statusStyle = (status) => {
+  const statusUpperCase = status.toUpperCase()
+  switch (statusUpperCase) {
+    case 'TO DO':
+      return { background: 'linear-gradient(to right, #FF9A9E, #F67C5E)' }
+    case 'DOING':
+      return { background: 'linear-gradient(to right, #FFE066, #F6E05E)' }
+    case 'DONE':
+      return { background: 'linear-gradient(to right, #AAF6BE, #68D391)' }
+    case 'NO STATUS':
+      return {
+        backgroundColor: 'rgba(245, 245, 245, 0.8)',
+        color: '#888',
+        fontStyle: 'italic'
+      }
+    case 'WAITING':
+      return { background: 'linear-gradient(to right, #D9A3FF, #B473FF)' }
+    case 'IN PROGRESS':
+      return { background: 'linear-gradient(to right, #FFB347, #FFA733)' }
+    case 'REVIEWING':
+      return { background: 'linear-gradient(to right, #FFB6C1, #FF69B4)' } 
+    case 'TESTING':
+      return { background: 'linear-gradient(to right, #ADD8E6, #87CEEB)' } 
+    default:
+      return { background: 'linear-gradient(to right, #A0CED9, #6CBEE6)' }
+  }
+}
+</script>
+
 <template>
   <div>
     <h1 class="heading">IT Bangmod Kradan Kanban by kw-3</h1>
@@ -42,7 +161,12 @@
               <td class="itbkk-status" style="text-align: center">
                 {{ index + 1 }}
               </td>
-              <td class="itbkk-status-name">{{ status.statusName }}</td>
+              <td
+                class="itbkk-status-name"
+                :style="statusStyle(status.statusName)"
+              >
+                {{ status.statusName }}
+              </td>
               <td class="itbkk-status-description" style="text-align: left">
                 <span
                   v-if="status.statusDescription"
@@ -117,133 +241,6 @@
     </TransferStatusModal>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue'
-import fetchUtils from '../lib/fetchUtils'
-import { useRoute, useRouter } from 'vue-router'
-
-const statuses = ref([])
-const tasks = ref([])
-const route = useRoute()
-const router = useRouter()
-
-async function fetchData() {
-  try {
-    const statusData = await fetchUtils.fetchData('statuses')
-    statuses.value = statusData
-
-    const taskData = await fetchUtils.fetchData('tasks')
-    tasks.value = taskData
-
-    // Check if route has a status ID
-    const statusId = route.params.statusId
-
-    if (statusId) {
-      // Validate the statusId
-      const status = statuses.value.find(s => s.statusId === parseInt(statusId))
-      if (status) {
-        // If status is found, open the edit modal
-        openEditModal(status)
-      } else {
-        // If status is not found, redirect to the task view
-        router.push({ name: 'taskView' })
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching status data:', error)
-  }
-}
-const backToHomePage = () => {
-  router.push({ name: 'taskView' })
-}
-
-// Add ----------------------------------------------------------
-import AddStatusModal from './AddStatusModal.vue'
-
-let isAddOpen = ref(false)
-
-const openAddModal = () => {
-  isAddOpen.value = true
-}
-
-const closeModal = () => {
-  isAddOpen.value = false
-  isEditOpen.value = false
-  isDeleteOpen.value = false
-  isTransferOpen.value = false
-}
-
-const handleStatusAdded = () => {
-  fetchData()
-}
-
-// Edit ----------------------------------------------------------
-
-import EditStatusModal from './EditStatusModal.vue'
-
-const isEditOpen = ref(false)
-const selectedStatus = ref(null)
-const selectedStatusIdToEdit = ref(null)
-
-const openEditModal = (status) => {
-  selectedStatus.value = { ...status }
-  console.log('Object to edit', selectedStatus.value)
-  selectedStatusIdToEdit.value = status.statusId
-  console.log('Id to edit', selectedStatusIdToEdit.value)
-  isEditOpen.value = true
-}
-const handleStatusEdited = () => {
-  fetchData()
-}
-
-// Delete --------------------------------------------------------
-import DeleteStatusModal from './DeleteStatusModal.vue'
-
-const isDeleteOpen = ref(false)
-
-const selectedStatusIdToDelete = ref(null)
-
-const openDeleteModal = (status) => {
-  console.log('Status ID to delete:', status.statusId)
-  selectedStatusIdToDelete.value = status.statusId
-  isDeleteOpen.value = true
-}
-
-const handleDelete = () => {
-  fetchData()
-}
-
-// Transfer --------------------------------------------------------
-import TransferStatusModal from './TransferStatusModal.vue'
-const isTransferOpen = ref(false)
-
-const selectedStatusIdToTransfer = ref(null)
-
-const openTransferModal = (status) => {
-  console.log('Status ID to transfer:', status.statusId)
-  selectedStatusIdToTransfer.value = status.statusId
-  isTransferOpen.value = true
-}
-
-const handleTransfer = () => {
-  fetchData()
-}
-
-// Check if status is in use --------------------------------------
-const checkTasksBeforeDelete = (status) => {
-  const statusInUse = tasks.value.some(
-    (task) => task.statusName === status.statusName
-  )
-  if (statusInUse) {
-    openTransferModal(status)
-  } else {
-    openDeleteModal(status)
-  }
-}
-
-onMounted(fetchData)
-</script>
 
 <style scoped>
 #app {

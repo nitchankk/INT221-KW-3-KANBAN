@@ -1,3 +1,67 @@
+<script setup>
+import { defineProps, defineEmits, ref, computed } from 'vue'
+import fetchUtils from '../lib/fetchUtils'
+import Toast from './Toast.vue'
+
+const props = defineProps({
+  isAddOpen: Boolean
+})
+
+const emit = defineEmits(['closeModal', 'statusAdded'])
+
+const statusName = ref('')
+const statusDescription = ref('')
+const statusCode = ref(0)
+const operationType = ref(null)
+const showToast = ref(false)
+
+const closeModal = () => {
+  statusName.value = ''
+  statusDescription.value = ''
+  emit('closeModal')
+}
+
+const isSaveDisabled = computed(() => {
+  return (
+    !statusName.value.trim() ||
+    statusName.value.length > 50 ||
+    statusDescription.value.length > 200
+  )
+})
+
+const addStatus = async () => {
+  operationType.value = 'add'
+  try {
+    const existingStatuses = await fetchUtils.fetchData('statuses')
+    const existingStatusNames = existingStatuses.map(
+      (status) => status.statusName
+    )
+
+    if (existingStatusNames.includes(statusName.value)) {
+      alert('Status name must be unique. Please enter a different name.')
+      return
+    }
+
+    const newStatus = {
+      statusName: statusName.value,
+      statusDescription: statusDescription.value
+    }
+    const response = await fetchUtils.postData('statuses', newStatus)
+    statusCode.value = response.statusCode
+    if (response.success) {
+      closeModal()
+      emit('statusAdded')
+      showToast.value = true
+      console.log(statusCode.value)
+    }
+  } catch (error) {
+    console.error('Error adding status:', error)
+    alert('An error has occurred, the status could not be added.')
+    closeModal()
+  }
+}
+</script>
+
 <template>
   <div class="fixed inset-0 flex items-center justify-center" v-if="isAddOpen">
     <div class="fixed inset-0 bg-black opacity-50"></div>
@@ -67,67 +131,3 @@
     @close="showToast = false"
   />
 </template>
-
-<script setup>
-import { defineProps, defineEmits, ref, computed } from 'vue'
-import fetchUtils from '../lib/fetchUtils'
-import Toast from './Toast.vue'
-
-const props = defineProps({
-  isAddOpen: Boolean
-})
-
-const emit = defineEmits(['closeModal', 'statusAdded'])
-
-const statusName = ref('')
-const statusDescription = ref('')
-const statusCode = ref(0)
-const operationType = ref(null)
-const showToast = ref(false)
-
-const closeModal = () => {
-  statusName.value = ''
-  statusDescription.value = ''
-  emit('closeModal')
-}
-
-const isSaveDisabled = computed(() => {
-  return (
-    !statusName.value.trim() ||
-    statusName.value.length > 50 ||
-    statusDescription.value.length > 200
-  )
-})
-
-const addStatus = async () => {
-  operationType.value = 'add'
-  try {
-    const existingStatuses = await fetchUtils.fetchData('statuses')
-    const existingStatusNames = existingStatuses.map(
-      (status) => status.statusName
-    )
-
-    if (existingStatusNames.includes(statusName.value)) {
-      alert('Status name must be unique. Please enter a different name.')
-      return
-    }
-
-    const newStatus = {
-      statusName: statusName.value,
-      statusDescription: statusDescription.value
-    }
-    const response = await fetchUtils.postData('statuses', newStatus)
-    statusCode.value = response.statusCode
-    if (response.success) {
-      closeModal()
-      emit('statusAdded')
-      showToast.value = true
-      console.log(statusCode.value)
-    }
-  } catch (error) {
-    console.error('Error adding status:', error)
-    alert('An error has occurred, the status could not be added.')
-    closeModal()
-  }
-}
-</script>

@@ -1,56 +1,3 @@
-<template>
-  <div class="modal-mask" v-if="isOpen">
-    <div class="itbkk-message">
-      <h2 class="text-lg font-semibold mb-4">Transfer and Delete</h2>
-      <p class="text-left mb-4">
-        There are tasks in
-        <span class="font-semibold">{{ defaultStatusName }}</span> status. In
-        order to delete this status, the system must transfer tasks in this
-        status to existing status.
-      </p>
-      <select
-        v-model="selectedStatusId"
-        class="mb-4 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:border-blue-500 sm:text-sm"
-      >
-        <option value="null" selected disabled hidden>
-          Select to transfer
-        </option>
-        <option
-          v-for="status in filteredStatuses"
-          :key="status.statusId"
-          :value="status.statusId"
-          class="py-2"
-        >
-          {{ status.statusName }}
-        </option>
-      </select>
-
-      <div class="flex justify-end">
-        <button
-          type="button"
-          class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2 itbkk-button-cancel"
-          @click="closeModal"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-md itbkk-button-confirm"
-          @click="transferStatus"
-        >
-          Transfer and Delete
-        </button>
-      </div>
-    </div>
-  </div>
-  <Toast
-    :show="showToast"
-    :statusCode="statusCode"
-    :operationType="operationType"
-    @close="showToast = false"
-  />
-</template>
-
 <script setup>
 import { defineProps, defineEmits, ref, onMounted, computed } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
@@ -162,6 +109,59 @@ const defaultStatusName = computed(() => {
   return defaultStatus ? defaultStatus.statusName : ''
 })
 </script>
+
+<template>
+  <div class="modal-mask" v-if="isOpen">
+    <div class="itbkk-message">
+      <h2 class="text-lg font-semibold mb-4">Transfer and Delete</h2>
+      <p class="text-left mb-4">
+        There are tasks in
+        <span class="font-semibold">{{ defaultStatusName }}</span> status. In
+        order to delete this status, the system must transfer tasks in this
+        status to existing status.
+      </p>
+      <select
+        v-model="selectedStatusId"
+        class="mb-4 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:border-blue-500 sm:text-sm"
+      >
+        <option value="null" selected disabled hidden>
+          Select to transfer
+        </option>
+        <option
+          v-for="status in filteredStatuses"
+          :key="status.statusId"
+          :value="status.statusId"
+          class="py-2"
+        >
+          {{ status.statusName }}
+        </option>
+      </select>
+
+      <div class="flex justify-end">
+        <button
+          type="button"
+          class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2 itbkk-button-cancel"
+          @click="closeModal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-md itbkk-button-confirm"
+          @click="transferStatus"
+        >
+          Transfer and Delete
+        </button>
+      </div>
+    </div>
+  </div>
+  <Toast
+    :show="showToast"
+    :statusCode="statusCode"
+    :operationType="operationType"
+    @close="showToast = false"
+  />
+</template>
 
 <style scoped>
 .modal-mask {

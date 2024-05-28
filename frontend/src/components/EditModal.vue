@@ -1,120 +1,3 @@
-<template>
-  <div class="modal-wrapper">
-    <div class="modal">
-      <div class="modal-content">
-        <h2 class="modal-title">Edit Task</h2>
-
-        <form @submit.prevent="handleEditTask">
-          <!-- Title Input -->
-          <div class="form-group">
-            <label for="title">Title:</label>
-            <input
-              type="text"
-              id="title"
-              v-model="editedTask.title"
-              class="itbkk-title"
-              required
-              maxlength="100"
-            />
-            <small v-if="editedTask.title.length > 100" class="error">
-              Title must be at most 100 characters long.
-            </small>
-          </div>
-
-          <!-- Description Input -->
-          <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea
-              id="description"
-              v-model="editedTask.description"
-              class="itbkk-description"
-              :placeholder="
-                editedTask.description ? '' : 'No Description Provided'
-              "
-              maxlength="500"
-            ></textarea>
-            <small v-if="editedTask.description.length > 500" class="error">
-              Description must be at most 500 characters long.
-            </small>
-          </div>
-
-          <!-- Assignees Input -->
-          <div class="form-group">
-            <label for="assignees">Assignees:</label>
-            <input
-              type="text"
-              id="assignees"
-              v-model="editedTask.assignees"
-              class="itbkk-assignees"
-              :placeholder="editedTask.assignees ? '' : 'Unassigned'"
-              maxlength="30"
-            />
-            <small v-if="editedTask.assignees.length > 30" class="error">
-              Assignees must be at most 30 characters long.
-            </small>
-          </div>
-
-          <!-- Status Select -->
-          <div class="form-group">
-            <label for="status">Status:</label>
-            <select
-              id="status"
-              v-model="editedTask.statusName"
-              class="itbkk-status"
-            >
-              <option v-if="statuses.length === 0" value="" disabled>
-                Loading...
-              </option>
-              <option
-                v-else
-                v-for="status in statuses"
-                :key="status.statusId"
-                :value="status.statusName"
-              >
-                {{ status.statusName }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Display timezone, created date, and updated date -->
-          <div class="modal-buttons">
-            <button
-              class="itbkk-button itbkk-button-confirm"
-              type="submit"
-              :class="{ disabled: isSaveDisabled }"
-              :disabled="isSaveDisabled"
-            >
-              Save
-            </button>
-            <button
-              class="itbkk-button itbkk-button-cancel"
-              type="button"
-              @click="closeModal"
-            >
-              Cancel
-            </button>
-          </div>
-
-          <!-- Details Container -->
-          <div class="details-container">
-            <div class="details-group">
-              <strong>Timezone:</strong> {{ timezone }}
-              <p>
-                <strong>Created Date:</strong>
-                {{ formatLocalDate(task.createdOn) }}
-              </p>
-              <p>
-                <strong>Updated Date:</strong>
-                {{ formatLocalDate(task.updatedOn) }}
-              </p>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, defineProps, defineEmits, onMounted } from 'vue'
 import FetchUtils from '../lib/fetchUtils'
@@ -138,7 +21,7 @@ const editedTask = ref({
   title: '',
   description: '',
   assignees: '',
-  statusName: '' 
+  statusName: ''
 })
 const statuses = ref([])
 
@@ -163,7 +46,7 @@ const handleEditTask = async () => {
       title: editedTask.value.title,
       description: editedTask.value.description,
       assignees: editedTask.value.assignees,
-      statusName: editedTask.value.statusName, 
+      statusName: editedTask.value.statusName,
       updatedOn: new Date().toISOString()
     }
 
@@ -212,6 +95,123 @@ onMounted(() => {
   fetchStatuses()
 })
 </script>
+
+<template>
+  <div class="modal-wrapper">
+    <div class="modal">
+      <div class="modal-content">
+        <h2 class="modal-title">Edit Task</h2>
+
+        <form @submit.prevent="handleEditTask">
+          <!-- Title -->
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input
+              type="text"
+              id="title"
+              v-model="editedTask.title"
+              class="itbkk-title"
+              required
+              maxlength="100"
+            />
+            <small v-if="editedTask.title.length > 100" class="error">
+              Title must be at most 100 characters long.
+            </small>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea
+              id="description"
+              v-model="editedTask.description"
+              class="itbkk-description"
+              :placeholder="
+                editedTask.description ? '' : 'No Description Provided'
+              "
+              maxlength="500"
+            ></textarea>
+            <small v-if="editedTask.description.length > 500" class="error">
+              Description must be at most 500 characters long.
+            </small>
+          </div>
+
+          <!-- Assignees -->
+          <div class="form-group">
+            <label for="assignees">Assignees:</label>
+            <input
+              type="text"
+              id="assignees"
+              v-model="editedTask.assignees"
+              class="itbkk-assignees"
+              :placeholder="editedTask.assignees ? '' : 'Unassigned'"
+              maxlength="30"
+            />
+            <small v-if="editedTask.assignees.length > 30" class="error">
+              Assignees must be at most 30 characters long.
+            </small>
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label for="status">Status:</label>
+            <select
+              id="status"
+              v-model="editedTask.statusName"
+              class="itbkk-status"
+            >
+              <option v-if="statuses.length === 0" value="" disabled>
+                Loading...
+              </option>
+              <option
+                v-else
+                v-for="status in statuses"
+                :key="status.statusId"
+                :value="status.statusName"
+              >
+                {{ status.statusName }}
+              </option>
+            </select>
+          </div>
+
+          <!-- button -->
+          <div class="modal-buttons">
+            <button
+              class="itbkk-button itbkk-button-confirm"
+              type="submit"
+              :class="{ disabled: isSaveDisabled }"
+              :disabled="isSaveDisabled"
+            >
+              Save
+            </button>
+            <button
+              class="itbkk-button itbkk-button-cancel"
+              type="button"
+              @click="closeModal"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <!-- timezone, created date, updated date -->
+          <div class="details-container">
+            <div class="details-group">
+              <strong>Timezone:</strong> {{ timezone }}
+              <p>
+                <strong>Created Date:</strong>
+                {{ formatLocalDate(task.createdOn) }}
+              </p>
+              <p>
+                <strong>Updated Date:</strong>
+                {{ formatLocalDate(task.updatedOn) }}
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .modal-wrapper {

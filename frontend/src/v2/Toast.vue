@@ -1,3 +1,43 @@
+<script>
+export default {
+  props: {
+    show: {
+      type: Boolean,
+      required: true
+    },
+    statusCode: {
+      type: Number,
+      required: true
+    },
+    operationType: {
+      type: String,
+      default: null
+    }
+  },
+  methods: {
+    closeToast() {
+      this.$emit('close')
+    }
+  },
+  mounted() {
+    if (this.show) {
+      setTimeout(() => {
+        this.closeToast()
+      }, 3000)
+    }
+  },
+  watch: {
+    show(newVal) {
+      if (newVal) {
+        setTimeout(() => {
+          this.closeToast()
+        }, 3000)
+      }
+    }
+  }
+}
+</script>
+
 <template>
   <transition name="slide-fade">
     <div
@@ -38,46 +78,6 @@
     </div>
   </transition>
 </template>
-
-<script>
-export default {
-  props: {
-    show: {
-      type: Boolean,
-      required: true
-    },
-    statusCode: {
-      type: Number,
-      required: true
-    },
-    operationType: {
-      type: String,
-      default: null
-    }
-  },
-  methods: {
-    closeToast() {
-      this.$emit('close')
-    }
-  },
-  mounted() {
-    if (this.show) {
-      setTimeout(() => {
-        this.closeToast()
-      }, 3000)
-    }
-  },
-  watch: {
-    show(newVal) {
-      if (newVal) {
-        setTimeout(() => {
-          this.closeToast()
-        }, 3000)
-      }
-    }
-  }
-}
-</script>
 
 <style scoped>
 .slide-fade-enter-active {

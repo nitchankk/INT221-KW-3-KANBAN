@@ -1,3 +1,29 @@
+<script>
+export default {
+  props: {
+    showModal: {
+      type: Boolean,
+      required: true
+    },
+    statusCode: {
+      type: Number
+    },
+    operationType: {
+      type: String,
+      required: true
+    },
+    closeModal: {
+      type: Function,
+      required: true
+    }
+  },
+  updated() {
+    console.log('Received status code:', this.statusCode)
+    console.log('operationType:', this.operationType)
+  }
+}
+</script>
+
 <template>
   <div class="modal-wrapper" v-if="showModal">
     <div class="modal">
@@ -38,32 +64,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    showModal: {
-      type: Boolean,
-      required: true
-    },
-    statusCode: {
-      type: Number
-    },
-    operationType: {
-      type: String,
-      required: true
-    },
-    closeModal: {
-      type: Function,
-      required: true
-    }
-  },
-  updated() {
-    console.log('Received status code:', this.statusCode)
-    console.log('operationType:', this.operationType)
-  }
-}
-</script>
-
 <style scoped>
 .modal-wrapper {
   position: fixed;
@@ -71,7 +71,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
   justify-content: center;

@@ -1,3 +1,74 @@
+<script>
+import FetchUtils from '../lib/fetchUtils'
+
+export default {
+  props: {
+    closeModal: {
+      type: Function,
+      required: true
+    }
+  },
+  data() {
+    return {
+      taskDetails: {
+        title: '',
+        description: '',
+        assignees: '',
+        statusName: 'No Status'
+      },
+      statuses: []
+    }
+  },
+  computed: {
+    isSaveDisabled() {
+      return (
+        !this.taskDetails.title.trim() ||
+        this.taskDetails.title.length > 100 ||
+        this.taskDetails.description.length > 500 ||
+        this.taskDetails.assignees.length > 30
+      )
+    }
+  },
+  methods: {
+    async handleSaveTask() {
+      try {
+        const { success, data, statusCode } = await FetchUtils.postData(
+          'tasks',
+          this.taskDetails
+        )
+        if (success && statusCode === 201) {
+          console.log('The task has been successfully added', statusCode)
+          this.$emit('taskSaved', data)
+          this.$emit('showStatusModal', statusCode)
+          this.taskDetails = {
+            title: '',
+            description: '',
+            assignees: '',
+            status: 'No Status'
+          }
+          this.closeModal()
+        } else {
+          console.error('Something went wrong while adding the task')
+        }
+      } catch (error) {
+        console.error('Error saving task:', error)
+      }
+    },
+    cancelModal() {
+      this.closeModal()
+    }
+  },
+  async created() {
+    try {
+      const data = await FetchUtils.fetchData('statuses')
+      this.statuses = data
+    } catch (error) {
+      console.error('Error fetching statuses:', error)
+    }
+  }
+}
+</script>
+
 <template>
   <div class="modal-wrapper">
     <div class="modal">
@@ -88,78 +159,6 @@
   </div>
 </template>
 
-<script>
-import FetchUtils from '../lib/fetchUtils'
-
-export default {
-  props: {
-    closeModal: {
-      type: Function,
-      required: true
-    }
-  },
-  data() {
-    return {
-      taskDetails: {
-        title: '',
-        description: '',
-        assignees: '',
-        statusName: 'No Status'
-      },
-      statuses: []
-    }
-  },
-  computed: {
-    isSaveDisabled() {
-      return (
-        !this.taskDetails.title.trim() ||
-        this.taskDetails.title.length > 100 ||
-        this.taskDetails.description.length > 500 ||
-        this.taskDetails.assignees.length > 30
-      )
-    }
-  },
-  methods: {
-    async handleSaveTask() {
-      try {
-        const { success, data, statusCode } = await FetchUtils.postData(
-          'tasks',
-          this.taskDetails
-        )
-        if (success && statusCode === 201) {
-          console.log('The task has been successfully added', statusCode)
-          this.$emit('taskSaved', data)
-          this.$emit('showStatusModal', statusCode)
-          this.taskDetails = {
-            title: '',
-            description: '',
-            assignees: '',
-            status: 'No Status'
-          }
-          this.closeModal()
-        } else {
-          console.error('Something went wrong while adding the task')
-        }
-      } catch (error) {
-        console.error('Error saving task:', error)
-      }
-    },
-    cancelModal() {
-      this.closeModal()
-    }
-  },
-  async created() {
-    try {
-      const data = await FetchUtils.fetchData('statuses')
-      this.statuses = data
-    } catch (error) {
-      console.error('Error fetching statuses:', error)
-    }
-  }
-}
-</script>
-
-<!-- Existing styles -->
 <style scoped>
 .modal-wrapper {
   position: fixed;

@@ -1,80 +1,3 @@
-<template>
-  <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center">
-    <div class="fixed inset-0 bg-black opacity-50"></div>
-    <div class="bg-white rounded-lg p-6 max-w-md w-full relative z-10">
-      <h2 class="text-lg font-semibold mb-4">Edit Status</h2>
-      <div v-if="editedStatus">
-        <form @submit.prevent="saveChanges" class="itbkk-modal-status">
-          <div class="mb-4">
-            <label for="statusName" class="block font-semibold mb-1 text-left"
-              >Name:</label
-            >
-            <input
-              v-model="editedStatus.statusName"
-              type="text"
-              id="statusName"
-              name="statusName"
-              maxlength="50"
-              class="w-full border rounded-md p-2 font-medium itbkk-status-name"
-            />
-            <small
-              v-if="editedStatus.statusName.length > 50"
-              class="text-red-500"
-              >Name must be at most 50 characters long.</small
-            >
-          </div>
-          <div class="mb-4">
-            <label
-              for="statusDescription"
-              class="block font-semibold mb-1 text-left itbkk-status-description"
-              >Description:</label
-            >
-            <textarea
-              v-model="editedStatus.statusDescription"
-              id="statusDescription"
-              name="statusDescription"
-              rows="4"
-              maxlength="200"
-              class="w-full border rounded-md p-2 font-medium"
-            ></textarea>
-            <small
-              v-if="editedStatus.statusDescription.length > 200"
-              class="text-red-500"
-              >Description must be at most 200 characters long.</small
-            >
-          </div>
-          <div class="flex justify-end">
-            <button
-              type="button"
-              @click="emit('closeModal')"
-              class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2 itbkk-button-cancel"
-            >
-              Cancel
-            </button>
-            <button
-              :disabled="isSaveDisabled"
-              type="submit"
-              class="px-4 py-2 rounded-md itbkk-button-confirm"
-              :class="{
-                'bg-gray-400 text-gray-600 cursor-not-allowed': isSaveDisabled,
-                'bg-blue-500 text-white hover:bg-blue-600': !isSaveDisabled
-              }"
-            >
-              Save
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <Toast
-    :show="showToast"
-    :statusCode="statusCode"
-    :operationType="operationType"
-    @close="showToast = false"
-  />
-</template>
-
 <script setup>
 import { defineProps, defineEmits, ref, watch, computed } from 'vue'
 import fetchUtils from '../lib/fetchUtils'
@@ -167,6 +90,83 @@ const saveChanges = async () => {
   }
 }
 </script>
+
+<template>
+  <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center">
+    <div class="fixed inset-0 bg-black opacity-50"></div>
+    <div class="bg-white rounded-lg p-6 max-w-md w-full relative z-10">
+      <h2 class="text-lg font-semibold mb-4">Edit Status</h2>
+      <div v-if="editedStatus">
+        <form @submit.prevent="saveChanges" class="itbkk-modal-status">
+          <div class="mb-4">
+            <label for="statusName" class="block font-semibold mb-1 text-left"
+              >Name:</label
+            >
+            <input
+              v-model="editedStatus.statusName"
+              type="text"
+              id="statusName"
+              name="statusName"
+              maxlength="50"
+              class="w-full border rounded-md p-2 font-medium itbkk-status-name"
+            />
+            <small
+              v-if="editedStatus.statusName.length > 50"
+              class="text-red-500"
+              >Name must be at most 50 characters long.</small
+            >
+          </div>
+          <div class="mb-4">
+            <label
+              for="statusDescription"
+              class="block font-semibold mb-1 text-left itbkk-status-description"
+              >Description:</label
+            >
+            <textarea
+              v-model="editedStatus.statusDescription"
+              id="statusDescription"
+              name="statusDescription"
+              rows="4"
+              maxlength="200"
+              class="w-full border rounded-md p-2 font-medium"
+            ></textarea>
+            <small
+              v-if="editedStatus.statusDescription.length > 200"
+              class="text-red-500"
+              >Description must be at most 200 characters long.</small
+            >
+          </div>
+          <div class="flex justify-end">
+            <button
+              type="button"
+              @click="emit('closeModal')"
+              class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2 itbkk-button-cancel"
+            >
+              Cancel
+            </button>
+            <button
+              :disabled="isSaveDisabled"
+              type="submit"
+              class="px-4 py-2 rounded-md itbkk-button-confirm"
+              :class="{
+                'bg-gray-400 text-gray-600 cursor-not-allowed': isSaveDisabled,
+                'bg-blue-500 text-white hover:bg-blue-600': !isSaveDisabled
+              }"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <Toast
+    :show="showToast"
+    :statusCode="statusCode"
+    :operationType="operationType"
+    @close="showToast = false"
+  />
+</template>
 
 <style scoped>
 .modal-container {

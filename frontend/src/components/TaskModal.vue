@@ -1,13 +1,38 @@
+<script>
+export default {
+  props: {
+    task: {
+      type: Object,
+      required: true
+    },
+    timezone: {
+      type: String,
+      required: true
+    },
+    createdDate: {
+      type: String,
+      required: true
+    },
+    updatedDate: {
+      type: String,
+      required: true
+    },
+    closeModal: {
+      type: Function,
+      required: true
+    }
+  }
+}
+</script>
+
 <template>
   <div class="modal-wrapper">
     <div class="modal">
       <div class="modal-content">
-        <!-- Modal content -->
-
         <h2 class="modal-title">{{ task.title }}</h2>
 
         <div class="grid-container">
-          <!-- Description box -->
+          <!-- Description -->
           <div class="description-box grid-item">
             <strong>Description</strong>
             <p class="itbkk-description">
@@ -18,7 +43,7 @@
             </p>
           </div>
 
-          <!-- Timezone, Created Date, and Updated Date -->
+          <!-- Timezone, Created Date, Updated Date -->
           <div class="timezone-created-updated-box grid-item">
             <div class="timezone-box">
               <strong>Timezone</strong>
@@ -37,7 +62,7 @@
           </div>
         </div>
 
-        <!-- Assignees and Status box -->
+        <!-- Assignees and Status -->
         <div class="assignees-status-container">
           <div class="assignees-box">
             <strong>Assignees</strong>
@@ -69,33 +94,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    task: {
-      type: Object,
-      required: true
-    },
-    timezone: {
-      type: String,
-      required: true
-    },
-    createdDate: {
-      type: String,
-      required: true
-    },
-    updatedDate: {
-      type: String,
-      required: true
-    },
-    closeModal: {
-      type: Function,
-      required: true
-    }
-  }
-}
-</script>
-
 <style scoped>
 .modal-wrapper {
   position: fixed;
@@ -103,9 +101,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5); 
   z-index: 1000;
-  backdrop-filter: blur(8px); /* Apply blur effect */
+  backdrop-filter: blur(8px); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -186,7 +184,6 @@ i {
 
 .assignees-box,
 .status-box {
-  
   overflow-y: auto;
   margin-bottom: 20px;
   padding: 15px;

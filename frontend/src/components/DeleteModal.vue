@@ -1,3 +1,49 @@
+<script setup>
+import FetchUtils from '../lib/fetchUtils'
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+  closeModal: {
+    type: Function,
+    required: true
+  },
+  taskId: {
+    type: Number,
+    required: true
+  },
+  taskTitle: {
+    type: String,
+    required: true
+  },
+  taskIndex: {
+    type: Number,
+    required: true
+  }
+})
+
+const emit = defineEmits(['deleted', 'showSuccessModal']) 
+
+const confirmDelete = async () => {
+  try {
+    const response = await FetchUtils.deleteData(`tasks/${props.taskId}`)
+    const statusCode = response.statusCode
+    console.log('Deletion status code:', statusCode)
+    emit('deleted', props.taskId, statusCode, 'delete')
+    if (statusCode === 200) {
+      emit('showSuccessModal') 
+    }
+    props.closeModal()
+  } catch (error) {
+    console.error('Error deleting task:', error)
+    alert('Failed to delete task. Please try again.')
+  }
+}
+
+const cancelModal = () => {
+  props.closeModal()
+}
+</script>
+
 <template>
   <div class="modal-wrapper">
     <div class="modal">
@@ -22,52 +68,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import FetchUtils from '../lib/fetchUtils'
-import { defineProps, defineEmits } from 'vue'
-
-const props = defineProps({
-  closeModal: {
-    type: Function,
-    required: true
-  },
-  taskId: {
-    type: Number,
-    required: true
-  },
-  taskTitle: {
-    type: String,
-    required: true
-  },
-  taskIndex: {
-    type: Number,
-    required: true
-  }
-})
-
-const emit = defineEmits(['deleted', 'showSuccessModal']) // Add 'showSuccessModal' to emitted events
-
-const confirmDelete = async () => {
-  try {
-    const response = await FetchUtils.deleteData(`tasks/${props.taskId}`)
-    const statusCode = response.statusCode
-    console.log('Deletion status code:', statusCode)
-    emit('deleted', props.taskId, statusCode, 'delete')
-    if (statusCode === 200) {
-      emit('showSuccessModal') // Emit 'showSuccessModal' event
-    }
-    props.closeModal()
-  } catch (error) {
-    console.error('Error deleting task:', error)
-    alert('Failed to delete task. Please try again.')
-  }
-}
-
-const cancelModal = () => {
-  props.closeModal()
-}
-</script>
 
 <style scoped>
 .modal-wrapper {

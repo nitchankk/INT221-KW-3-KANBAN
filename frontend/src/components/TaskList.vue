@@ -1,221 +1,3 @@
-<template>
-  <div>
-    <h1 class="heading">IT Bangmod Kradan Kanban by kw-3</h1>
-    <h2 class="subheading">Task List</h2>
-    <div id="app">
-      <div class="manage-status">
-        <button
-          @click="goToStatusManagement"
-          class="btn-hover color itbkk-manage-status"
-        >
-          Manage Status
-        </button>
-      </div>
-      <div class="table-container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th
-                class="itbkk-button-add"
-                style="width: 50px; text-align: center"
-              >
-                <button
-                  @click="handleAddTask"
-                  style="border: none; background: none; padding: 0"
-                >
-                  <img
-                    src="../assets/add.png"
-                    alt="Add Icon"
-                    style="width: 30px; height: 30px"
-                  />
-                </button>
-              </th>
-              <th style="width: 600px">
-                Title
-                <button @click="openFilterModal" class="itbkk-filter-status">
-                  <img
-                    src="../assets/filter.png"
-                    alt="filter Icon"
-                    style="width: 25px; height: 25px"
-                  />
-                </button>
-              </th>
-              <th style="width: 200px">Assignees</th>
-              <th style="width: 120px; position: relative">
-                Status
-                <button
-                  @click="sortTasksByStatus"
-                  class="itbkk-button-sort"
-                  style="
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    border: none;
-                    background: none;
-                    padding: 0;
-                  "
-                >
-                  <img
-                    v-if="sortOrder === 0"
-                    src="../assets/sort.png"
-                    alt="Sort Icon"
-                  />
-                  <img
-                    v-else-if="sortOrder === 1"
-                    src="../assets/aesc.png"
-                    alt="Sort Ascending Icon"
-                  />
-                  <img
-                    v-else
-                    src="../assets/desc.png"
-                    alt="Sort Descending Icon"
-                  />
-                </button>
-              </th>
-
-              <th style="width: 70px">
-                <img
-                  src="../assets/menu-bar.png"
-                  alt="Action Icon"
-                  style="
-                    width: 25px;
-                    height: 25px;
-                    display: block;
-                    margin: 0 auto;
-                  "
-                />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(task, index) in filteredTasks"
-              :key="task.taskId"
-              class="itbkk-item"
-            >
-              <td class="border px-4 py-2" style="text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
-                {{ task.title }}
-              </td>
-              <td
-                class="border px-4 py-2 itbkk-assignees"
-                :style="{ fontStyle: task.assignees ? 'normal' : 'italic' }"
-              >
-                {{ task.assignees || 'Unassigned' }}
-              </td>
-              <td
-                class="border px-4 py-2 itbkk-status"
-                :data-status="task.statusName"
-                :style="statusStyle(task.statusName)"
-              >
-                {{ getStatusLabel(task.statusName, statuses) }}
-              </td>
-              <td class="border px-4 py-2" style="width: 100px">
-                <div class="action-buttons">
-                  <button class="itbkk-button-action">
-                    <button
-                      @click="openEditModal(task.taskId)"
-                      style="
-                        border: none;
-                        background: none;
-                        padding: 0;
-                        margin-right: 10px;
-                      "
-                      class="itbkk-button-edit"
-                    >
-                      <img
-                        src="../assets/edit.png"
-                        alt="Edit Icon"
-                        style="width: 30px; height: 30px"
-                      />
-                    </button>
-
-                    <button
-                      @click="openDeleteModal(task.taskId)"
-                      style="border: none; background: none; padding: 0"
-                      class="itbkk-button-delete"
-                    >
-                      <img
-                        src="../assets/delete2.png"
-                        alt="Delete Icon"
-                        style="width: 30px; height: 30px"
-                      />
-                    </button>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <task-modal
-      v-if="selectedTask"
-      :task="selectedTask"
-      :timezone="timezone"
-      :createdDate="formatLocalDate(selectedTask.createdOn)"
-      :updatedDate="formatLocalDate(selectedTask.updatedOn)"
-      :closeModal="closeModal"
-    />
-
-    <add-modal
-      v-if="showAddModal"
-      @taskSaved="handleTaskSaved"
-      @showStatusModal="handleShowStatusModal"
-      :closeModal="cancelAdd"
-    />
-
-    <status-modal
-      :showModal="showSuccessModal"
-      :statusCode="statusCode"
-      :closeModal="closeSuccessModal"
-      :operationType="operationType"
-    />
-
-    <delete-modal
-      v-if="showDeleteModal"
-      :closeModal="closeDeleteModal"
-      :taskId="taskIdToDelete"
-      :taskTitle="taskTitleToDelete"
-      :taskIndex="taskIndexToDelete"
-      @deleted="handleTaskDeleted"
-    />
-    <edit-modal
-      v-if="showEditModal"
-      :task="taskToEdit"
-      :closeModal="closeEditModal"
-      :onTaskUpdated="onTaskUpdated"
-      @editSuccess="handleEditSuccess"
-    />
-    <filter-modal
-      v-if="showFilterModal"
-      :statuses="statuses"
-      :selectedStatuses="selectedStatuses"
-      @applyFilter="applyFilter"
-      @close="closeFilterModal"
-    ></filter-modal>
-  </div>
-
-  <div class="area">
-    <ul class="circles">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -283,23 +65,23 @@ const statusStyle = (status) => {
   const statusUpperCase = status.toUpperCase()
   switch (statusUpperCase) {
     case 'TO DO':
-      return { background: 'linear-gradient(to right, #FF9A9E, #F67C5E)' } // Gradient in shades of pink-red
+      return { background: 'linear-gradient(to right, #FF9A9E, #F67C5E)' }
     case 'DOING':
-      return { background: 'linear-gradient(to right, #FFE066, #F6E05E)' } // Gradient in shades of yellow
+      return { background: 'linear-gradient(to right, #FFE066, #F6E05E)' }
     case 'DONE':
-      return { background: 'linear-gradient(to right, #AAF6BE, #68D391)' } // Gradient in shades of light green
+      return { background: 'linear-gradient(to right, #AAF6BE, #68D391)' }
     case 'NO STATUS':
       return {
         backgroundColor: 'rgba(245, 245, 245, 0.8)',
         color: '#888',
         fontStyle: 'italic'
-      } // Light gray with opacity 0.8
+      }
     case 'WAITING':
-      return { background: 'linear-gradient(to right, #D9A3FF, #B473FF)' } // Gradient in shades of purple
+      return { background: 'linear-gradient(to right, #D9A3FF, #B473FF)' }
     case 'IN PROGRESS':
-      return { background: 'linear-gradient(to right, #FFB347, #FFA733)' } // Gradient in shades of orange
+      return { background: 'linear-gradient(to right, #FFB347, #FFA733)' }
     default:
-      return { background: 'linear-gradient(to right, #A0CED9, #6CBEE6)' } // Default gradient in shades of blue
+      return { background: 'linear-gradient(to right, #A0CED9, #6CBEE6)' }
   }
 }
 
@@ -471,6 +253,228 @@ onMounted(() => {
   }
 })
 </script>
+
+<template>
+  <div>
+    <h1 class="heading">IT Bangmod Kradan Kanban by kw-3</h1>
+    <h2 class="subheading">Task List</h2>
+    <div id="app">
+      <div class="manage-status">
+        <button
+          @click="goToStatusManagement"
+          class="btn-hover color itbkk-manage-status"
+        >
+          Manage Status
+        </button>
+      </div>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th
+                class="itbkk-button-add"
+                style="width: 50px; text-align: center"
+              >
+                <button
+                  @click="handleAddTask"
+                  style="border: none; background: none; padding: 0"
+                >
+                  <img
+                    src="../assets/add.png"
+                    alt="Add Icon"
+                    style="width: 30px; height: 30px"
+                  />
+                </button>
+              </th>
+              <th style="width: 600px">
+                Title
+                <button @click="openFilterModal" class="itbkk-filter-status">
+                  <img
+                    src="../assets/filter.png"
+                    alt="filter Icon"
+                    style="width: 25px; height: 25px"
+                  />
+                </button>
+              </th>
+              <th style="width: 200px">Assignees</th>
+              <th style="width: 120px; position: relative">
+                Status
+                <button
+                  @click="sortTasksByStatus"
+                  class="itbkk-button-sort"
+                  style="
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    border: none;
+                    background: none;
+                    padding: 0;
+                  "
+                >
+                  <img
+                    v-if="sortOrder === 0"
+                    src="../assets/sort.png"
+                    alt="Sort Icon"
+                  />
+                  <img
+                    v-else-if="sortOrder === 1"
+                    src="../assets/aesc.png"
+                    alt="Sort Ascending Icon"
+                  />
+                  <img
+                    v-else
+                    src="../assets/desc.png"
+                    alt="Sort Descending Icon"
+                  />
+                </button>
+              </th>
+
+              <th style="width: 70px">
+                <img
+                  src="../assets/menu-bar.png"
+                  alt="Action Icon"
+                  style="
+                    width: 25px;
+                    height: 25px;
+                    display: block;
+                    margin: 0 auto;
+                  "
+                />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(task, index) in filteredTasks"
+              :key="task.taskId"
+              class="itbkk-item"
+            >
+              <td class="border px-4 py-2" style="text-align: center">
+                {{ index + 1 }}
+              </td>
+              <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
+                {{ task.title }}
+              </td>
+              <td
+                class="border px-4 py-2 itbkk-assignees"
+                :style="{
+                  fontStyle: task.assignees ? 'normal' : 'italic',
+                  color: task.assignees ? 'black' : 'grey'
+                }"
+              >
+                {{ task.assignees || 'Unassigned' }}
+              </td>
+              <td
+                class="border px-4 py-2 itbkk-status"
+                :data-status="task.statusName"
+                :style="statusStyle(task.statusName)"
+              >
+                {{ getStatusLabel(task.statusName, statuses) }}
+              </td>
+              <td class="border px-4 py-2" style="width: 100px">
+                <div class="action-buttons">
+                  <button class="itbkk-button-action">
+                    <button
+                      @click="openEditModal(task.taskId)"
+                      style="
+                        border: none;
+                        background: none;
+                        padding: 0;
+                        margin-right: 10px;
+                      "
+                      class="itbkk-button-edit"
+                    >
+                      <img
+                        src="../assets/edit.png"
+                        alt="Edit Icon"
+                        style="width: 30px; height: 30px"
+                      />
+                    </button>
+
+                    <button
+                      @click="openDeleteModal(task.taskId)"
+                      style="border: none; background: none; padding: 0"
+                      class="itbkk-button-delete"
+                    >
+                      <img
+                        src="../assets/delete2.png"
+                        alt="Delete Icon"
+                        style="width: 30px; height: 30px"
+                      />
+                    </button>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <task-modal
+      v-if="selectedTask"
+      :task="selectedTask"
+      :timezone="timezone"
+      :createdDate="formatLocalDate(selectedTask.createdOn)"
+      :updatedDate="formatLocalDate(selectedTask.updatedOn)"
+      :closeModal="closeModal"
+    />
+
+    <add-modal
+      v-if="showAddModal"
+      @taskSaved="handleTaskSaved"
+      @showStatusModal="handleShowStatusModal"
+      :closeModal="cancelAdd"
+    />
+
+    <status-modal
+      :showModal="showSuccessModal"
+      :statusCode="statusCode"
+      :closeModal="closeSuccessModal"
+      :operationType="operationType"
+    />
+
+    <delete-modal
+      v-if="showDeleteModal"
+      :closeModal="closeDeleteModal"
+      :taskId="taskIdToDelete"
+      :taskTitle="taskTitleToDelete"
+      :taskIndex="taskIndexToDelete"
+      @deleted="handleTaskDeleted"
+    />
+    <edit-modal
+      v-if="showEditModal"
+      :task="taskToEdit"
+      :closeModal="closeEditModal"
+      :onTaskUpdated="onTaskUpdated"
+      @editSuccess="handleEditSuccess"
+    />
+    <filter-modal
+      v-if="showFilterModal"
+      :statuses="statuses"
+      :selectedStatuses="selectedStatuses"
+      @applyFilter="applyFilter"
+      @close="closeFilterModal"
+    ></filter-modal>
+  </div>
+
+  <div class="area">
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+</template>
+
 <style scoped>
 #app {
   width: 1500px;
@@ -556,38 +560,6 @@ tbody tr:hover {
   border-radius: 4px;
   text-transform: uppercase;
 }
-
-/*
-.itbkk-status[data-status='To Do'] {
-  background-color: #f67c5e;
-  color: #333;
-}
-
-.itbkk-status[data-status='Doing'] {
-  background-color: #f6e05e;
-  color: #333;
-}
-
-.itbkk-status[data-status='Done'] {
-  background-color: #68d391;
-  color: #333;
-}
-
-.itbkk-status[data-status='No Status'] {
-  background-color: #f5f5f5;
-  color: #888;
-  font-style: italic;
-}
-
-.itbkk-status[data-status='Waitings'] {
-  background-color: #b473ff;
-  color: #000000;
-}
-
-.itbkk-status[data-status='In Progress'] {
-  background-color: #b2faff;
-  color: #000000;
-} */
 
 .action-buttons {
   text-align: center;
