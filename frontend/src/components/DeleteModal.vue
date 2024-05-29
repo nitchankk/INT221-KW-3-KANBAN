@@ -35,7 +35,7 @@ const confirmDelete = async () => {
     props.closeModal()
   } catch (error) {
     console.error('Error deleting task:', error)
-    alert('Failed to delete task. Please try again.')
+    alert('Failed to delete task.')
   }
 }
 

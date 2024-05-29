@@ -64,12 +64,10 @@ const handleEditTask = async () => {
       }
     } else {
       console.error('Failed to update task')
-      console.error('Failed to update task. Please try again.')
       alert('Failed to edit task. Please try again.')
     }
   } catch (error) {
     console.error('Error updating task:', error)
-    console.error('An error occurred while updating the task.')
     alert('Error to updating task. Please try again.')
   }
 }

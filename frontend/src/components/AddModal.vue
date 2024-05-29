@@ -48,7 +48,7 @@ export default {
           }
           this.closeModal()
         } else {
-          console.error('Something went wrong while adding the task')
+          console.error('Something wrong while adding the task')
         }
       } catch (error) {
         console.error('Error saving task:', error)
