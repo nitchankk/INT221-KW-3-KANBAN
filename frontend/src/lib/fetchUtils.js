@@ -38,7 +38,6 @@ const postData = async (url, data) => {
       console.log('Data posted successfully! Status code:', response.status)
       return { success: true, data: responseData, statusCode: response.status }
     } else {
-      // handle other successful responses if needed
       return { success: true, data: responseData, statusCode: response.status }
     }
   } catch (error) {
@@ -81,7 +80,6 @@ const deleteData = async (url) => {
       console.log('Data deleted successfully! Status code:', response.status)
       return { success: true, data: responseData, statusCode: response.status }
     } else {
-      // handle other successful responses if needed
       return { success: true, data: responseData, statusCode: response.status }
     }
   } catch (error) {
@@ -106,7 +104,6 @@ const deleteAndTransferData = async (url, newId) => {
       )
       return { success: true, data: responseData, statusCode: response.status }
     } else {
-      // handle other successful responses if needed
       return { success: true, data: responseData, statusCode: response.status }
     }
   } catch (error) {
