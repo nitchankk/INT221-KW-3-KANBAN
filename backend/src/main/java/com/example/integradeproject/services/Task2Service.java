@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -82,7 +83,8 @@ public class Task2Service {
     @Transactional
     public NewTask2DTO deleteById(Integer id) {
         Task2 task2 = repository.findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "ID " + id + " DOES NOT EXIST !!!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task2 with ID " + id + " not found"));
+
         repository.deleteById(task2.getTaskId());
         NewTask2DTO deletedTask2DTO = mapper.map(task2, NewTask2DTO.class);
 
