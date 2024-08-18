@@ -1,7 +1,7 @@
 package com.example.integradeproject.controllers;
 import com.example.integradeproject.dtos.NewTaskDTO;
 import com.example.integradeproject.dtos.TaskIdDTO;
-import com.example.integradeproject.entities.Task;
+import com.example.integradeproject.project_management.Task;
 import com.example.integradeproject.services.ListMapper;
 import com.example.integradeproject.dtos.TaskDTO;
 import com.example.integradeproject.services.TaskService;
@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-
-import java.util.List;
 
 
 @RestController

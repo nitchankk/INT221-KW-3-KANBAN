@@ -1,12 +1,10 @@
 package com.example.integradeproject.services;
 
-import com.example.integradeproject.dtos.NewTaskDTO;
 import com.example.integradeproject.dtos.StatusDTO;
-import com.example.integradeproject.entities.Status;
-import com.example.integradeproject.entities.Task;
-import com.example.integradeproject.entities.Task2;
-import com.example.integradeproject.repositories.StatusRepository;
-import com.example.integradeproject.repositories.Task2Repository;
+import com.example.integradeproject.project_management.Status;
+import com.example.integradeproject.project_management.Task2;
+import com.example.integradeproject.project_management.StatusRepository;
+import com.example.integradeproject.project_management.Task2Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;

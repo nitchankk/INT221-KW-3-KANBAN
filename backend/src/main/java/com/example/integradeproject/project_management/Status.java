@@ -1,4 +1,4 @@
-package com.example.integradeproject.entities;
+package com.example.integradeproject.project_management;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "statuses")
+@Table(name = "statuses" , schema = "project_management")
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

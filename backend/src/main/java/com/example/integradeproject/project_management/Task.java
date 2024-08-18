@@ -1,5 +1,4 @@
-package com.example.integradeproject.entities;
-
+package com.example.integradeproject.project_management;
 
 import com.example.integradeproject.services.CharConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,20 +18,18 @@ import java.util.Date;
 @Setter
 @Entity
 @Data
-@Table(name = "tasks")
+@Table(name = "tasks", schema = "project_management")
 
 
-public class Task2 {
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer taskId;
     private String title ;
     private String description ;
     private String assignees ;
-
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "statusId" ,name ="statusId")
-    private Status  statusId ;
+    @Convert(converter = CharConverter.class)
+    private String status ;
 
     @Column(name = "createdOn", updatable = false, insertable = false)
     private Date createdOn;
@@ -41,5 +38,5 @@ public class Task2 {
 
 
 
-}
 
+}
