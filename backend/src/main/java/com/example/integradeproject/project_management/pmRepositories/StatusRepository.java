@@ -1,6 +1,6 @@
-package com.example.integradeproject.project_management;
+package com.example.integradeproject.project_management.pmRepositories;
 
-import com.example.integradeproject.project_management.Status;
+import com.example.integradeproject.project_management.pmEntitities.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,14 +1,14 @@
-package com.example.integradeproject.project_management;
+package com.example.integradeproject.project_management.pmRepositories;
 
-import com.example.integradeproject.project_management.Status;
-import com.example.integradeproject.project_management.Task2;
+import com.example.integradeproject.project_management.pmEntitities.Status;
+import com.example.integradeproject.project_management.pmEntitities.Task2;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface Task2Repository extends JpaRepository<Task2 , Integer> {
+public interface Task2Repository extends JpaRepository<Task2, Integer> {
     List<Task2> findByStatusId(Status string);
     @Query("SELECT t FROM Task2 t WHERE t.statusId.statusName IN :statusNames")
     List<Task2> findByStatusNames(@Param("statusNames") List<String> statusNames);

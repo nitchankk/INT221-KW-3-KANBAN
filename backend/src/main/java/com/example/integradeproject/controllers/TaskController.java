@@ -1,7 +1,7 @@
 package com.example.integradeproject.controllers;
 import com.example.integradeproject.dtos.NewTaskDTO;
 import com.example.integradeproject.dtos.TaskIdDTO;
-import com.example.integradeproject.project_management.Task;
+import com.example.integradeproject.project_management.pmEntitities.Task;
 import com.example.integradeproject.services.ListMapper;
 import com.example.integradeproject.dtos.TaskDTO;
 import com.example.integradeproject.services.TaskService;

@@ -1,8 +1,8 @@
 package com.example.integradeproject.services;
 
 import com.example.integradeproject.dtos.NewTaskDTO;
-import com.example.integradeproject.project_management.Task;
-import com.example.integradeproject.project_management.TaskRepository;
+import com.example.integradeproject.project_management.pmEntitities.Task;
+import com.example.integradeproject.project_management.pmRepositories.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

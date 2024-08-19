@@ -1,6 +1,7 @@
-package com.example.integradeproject.project_management;
+package com.example.integradeproject.project_management.pmEntitities;
 
 
+import com.example.integradeproject.project_management.pmEntitities.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Task2 {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "statusId" ,name ="statusId")
-    private Status  statusId ;
+    private Status statusId ;
 
     @Column(name = "createdOn", updatable = false, insertable = false)
     private Date createdOn;

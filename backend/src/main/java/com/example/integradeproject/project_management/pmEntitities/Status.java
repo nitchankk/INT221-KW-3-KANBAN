@@ -1,4 +1,4 @@
-package com.example.integradeproject.project_management;
+package com.example.integradeproject.project_management.pmEntitities;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,7 +1,7 @@
 package com.example.integradeproject.controllers;
 
 import com.example.integradeproject.dtos.*;
-import com.example.integradeproject.project_management.Task2;
+import com.example.integradeproject.project_management.pmEntitities.Task2;
 import com.example.integradeproject.services.ListMapper;
 import com.example.integradeproject.services.Task2Service;
 import com.example.integradeproject.services.TaskValidator;

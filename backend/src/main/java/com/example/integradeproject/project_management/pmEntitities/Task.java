@@ -1,4 +1,4 @@
-package com.example.integradeproject.project_management;
+package com.example.integradeproject.project_management.pmEntitities;
 
 import com.example.integradeproject.services.CharConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
