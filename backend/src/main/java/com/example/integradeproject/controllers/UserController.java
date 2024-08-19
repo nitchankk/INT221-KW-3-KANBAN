@@ -29,9 +29,9 @@ public class UserController {
         List<String> errors = new ArrayList<>();
 
         // Validate username
-        if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
+        if (loginRequest.getUserName() == null || loginRequest.getUserName().isEmpty()) {
             errors.add("Username cannot be empty");
-        } else if (loginRequest.getUsername().length() > 50) {
+        } else if (loginRequest.getUserName().length() > 50) {
             errors.add("Username must be at most 50 characters long");
         }
 
@@ -48,7 +48,7 @@ public class UserController {
         }
 
         // If validation passes, proceed with authentication
-        User user = userRepository.findByUsername(loginRequest.getUsername());
+        User user = userRepository.findByUsername(loginRequest.getUserName());
 
         if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             return ResponseEntity.ok("Login successful");
