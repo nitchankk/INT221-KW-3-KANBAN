@@ -244,7 +244,7 @@ const statusStyle = (status) => {
 
 <style scoped>
 #app {
-  width: 1500px;
+  width: 1200px;
   margin: 0 auto;
 }
 

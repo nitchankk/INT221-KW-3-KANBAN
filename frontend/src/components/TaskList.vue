@@ -330,7 +330,7 @@ onMounted(() => {
                 </button>
               </th>
 
-              <th style="width: 70px">
+              <th style="width: 100px">
                 <img
                   src="../assets/menu-bar.png"
                   alt="Action Icon"
@@ -462,7 +462,7 @@ onMounted(() => {
 
 <style scoped>
 #app {
-  width: 1500px;
+  width: 1200px;
   margin: 0 auto;
 }
 
