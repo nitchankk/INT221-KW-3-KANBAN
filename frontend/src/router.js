@@ -1,43 +1,49 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import App from './App.vue';
-import TaskList from './components/TaskList.vue';
-import StatusList from './v2/StatusList.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import App from './App.vue'
+import TaskList from './components/TaskList.vue'
+import StatusList from './v2/StatusList.vue'
+import Login from './v3/Login.vue'
 
 const routes = [
   {
     path: '/task',
-    name: "taskView",
-    component: TaskList,
+    name: 'taskView',
+    component: TaskList
   },
   {
     path: '/task/:taskId',
-    name: "taskDetail",
-    component: TaskList,
+    name: 'taskDetail',
+    component: TaskList
   },
   {
     path: '/status',
-    name: "statusView",
-    component: StatusList,
+    name: 'statusView',
+    component: StatusList
   },
   {
     path: '/status/:statusId',
-    name: "statusDetail",
-    component: StatusList,
+    name: 'statusDetail',
+    component: StatusList
   },
   {
     path: '/',
-    redirect: '/task',
-    component: App,
+    redirect: '/login',
+    component: App
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/task', 
+    redirect: '/task'
+  },
+  {
+    path: '/login',
+    name: 'loginView',
+    component: Login
   }
-];
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router
