@@ -51,13 +51,20 @@ public class ProjectManagementDatasourceConfig {
                 .build();
     }
 
-    @Bean(name = "projectManagementTransactionManager")
-    public PlatformTransactionManager projectManagementTransactionManager(
-            final @Qualifier("projectManagementEntityManager") LocalContainerEntityManagerFactoryBean projectManagementEntityManager) {
-        return new JpaTransactionManager(
-                Objects.requireNonNull(
-                        projectManagementEntityManager.getObject()
-                )
-        );
-    }
+//    @Bean(name = "projectManagementTransactionManager")
+//    public PlatformTransactionManager projectManagementTransactionManager(
+//            final @Qualifier("projectManagementEntityManager") LocalContainerEntityManagerFactoryBean projectManagementEntityManager) {
+//        return new JpaTransactionManager(
+//                Objects.requireNonNull(
+//                        projectManagementEntityManager.getObject()
+//                )
+//        );
+//    }
+//
+@Bean(name = "projectManagementTransactionManager")
+@Primary
+public PlatformTransactionManager projectManagementTransactionManager(
+        @Qualifier("projectManagementEntityManager") LocalContainerEntityManagerFactoryBean projectManagementEntityManager) {
+    return new JpaTransactionManager(Objects.requireNonNull(projectManagementEntityManager.getObject()));
+}
 }

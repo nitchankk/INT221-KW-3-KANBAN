@@ -33,6 +33,7 @@ public class Task2Service {
     @Autowired
     private StatusRepository statusRepository;
 
+
     public List<Task2DTO> getTask(String sortBy, List<String> filterStatuses) {
         List<Task2> tasks;
         if (filterStatuses == null || filterStatuses.isEmpty()) {

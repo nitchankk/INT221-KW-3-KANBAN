@@ -7,8 +7,11 @@ import com.example.integradeproject.services.Task2Service;
 import com.example.integradeproject.services.TaskValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +29,7 @@ public class Task2Controller {
     @Autowired
     private ListMapper listMapper;
 
+
     @GetMapping("")
     public ResponseEntity<List<Task2DTO>> getAllTasks(
             @RequestParam(required = false) String sortBy,
@@ -39,6 +43,7 @@ public class Task2Controller {
         Task2IdDTO task2IdDTO = modelMapper.map(task2 ,Task2IdDTO.class);
         return ResponseEntity.ok(task2IdDTO);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<NewTask2DTO> removeTask (@PathVariable Integer id ){
         NewTask2DTO newTask2DTO = service.deleteById(id);

@@ -1,6 +1,6 @@
 package com.example.integradeproject.controllers;
 
-import com.example.integradeproject.services.UserService;
+import com.example.integradeproject.security.JwtTokenUtil;
 import com.example.integradeproject.user_account.LoginRequest;
 import com.example.integradeproject.user_account.User;
 import com.example.integradeproject.user_account.UserRepository;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -24,8 +25,11 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         List<String> errors = new ArrayList<>();
 
         // Validate username
@@ -51,7 +55,9 @@ public class UserController {
         User user = userRepository.findByUsername(loginRequest.getUserName());
 
         if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok("Login successful");
+            // Generate JWT token
+            String token = jwtTokenUtil.generateToken(user);
+            return ResponseEntity.ok(Map.of("access_token", token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("The username or password is incorrect.");
         }
