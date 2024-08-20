@@ -8,42 +8,61 @@ const routes = [
   {
     path: '/task',
     name: 'taskView',
-    component: TaskList
+    component: TaskList,
+    meta: { requiresAuth: true }
   },
   {
     path: '/task/:taskId',
     name: 'taskDetail',
-    component: TaskList
+    component: TaskList,
+    meta: { requiresAuth: true }
   },
   {
     path: '/status',
     name: 'statusView',
-    component: StatusList
+    component: StatusList,
+    meta: { requiresAuth: true }
   },
   {
     path: '/status/:statusId',
     name: 'statusDetail',
-    component: StatusList
-  },
-  {
-    path: '/',
-    redirect: '/login',
-    component: App
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/task'
+    component: StatusList,
+    meta: { requiresAuth: true }
   },
   {
     path: '/login',
     name: 'loginView',
     component: Login
+  },
+  {
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/task'
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
+})
+
+// Add a navigation guard to protect routes that require authentication
+router.beforeEach((to, from, next) => {
+  // Check if the route requires authentication
+  if (to.meta.requiresAuth) {
+    // Check if the user is authenticated
+    const isAuthenticated = localStorage.getItem('isAuthenticated')
+    if (isAuthenticated) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

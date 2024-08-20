@@ -31,7 +31,13 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
+
 export default {
+  setup() {
+    const router = useRouter()
+    return { router }
+  },
   data() {
     return {
       username: '',
@@ -40,13 +46,35 @@ export default {
     }
   },
   methods: {
-    login() {
-      if (this.username === 'admin' && this.password === 'password') {
-        console.log('Login successful')
-        this.$router.push('/task')
-        this.showError = false
-      } else {
-        console.log('Login failed')
+    async login() {
+      try {
+        const response = await fetch('http://localhost:8080/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userName: this.username,
+            password: this.password
+          })
+        })
+
+        if (response.status === 200) {
+          console.log('Login successful')
+          // Set the authentication status
+          localStorage.setItem('isAuthenticated', 'true')
+          this.showError = false
+          // Redirect the user to the task page
+          this.$router.push('/task')
+        } else {
+          console.log('Login failed')
+          this.showError = true
+          setTimeout(() => {
+            this.showError = false
+          }, 3000)
+        }
+      } catch (error) {
+        console.error('Error during login:', error)
         this.showError = true
         setTimeout(() => {
           this.showError = false

@@ -286,7 +286,7 @@ onMounted(() => {
                   />
                 </button>
               </th>
-              <th style="width: 600px">
+              <th style="width: 400px">
                 Title
                 <button @click="openFilterModal" class="itbkk-filter-status">
                   <img
