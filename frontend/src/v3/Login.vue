@@ -25,7 +25,7 @@
     </div>
     <div v-if="showError" class="error-toast">
       <p>Error</p>
-      <p>Username or Password is incorrect.</p>
+      <p>{{ errorMessage }}.</p>
     </div>
   </div>
 </template>
@@ -61,21 +61,24 @@ export default {
 
         if (response.status === 200) {
           console.log('Login successful')
-          // Set the authentication status
-          localStorage.setItem('isAuthenticated', 'true')
           this.showError = false
-          // Redirect the user to the task page
+          localStorage.setItem('isAuthenticated', 'true')
           this.$router.push('/task')
-        } else {
-          console.log('Login failed')
+        } else if ((response.status === 401) | (response.status === 400)) {
+          console.log('Login failed: Unauthorized')
           this.showError = true
-          setTimeout(() => {
-            this.showError = false
-          }, 3000)
+          this.errorMessage = 'Username or Password is incorrect.'
+        } else {
+          console.log('Login failed: Other error', response.status)
+          this.showError = true
+          this.errorMessage = 'There is a problem. Please try again later.'
         }
       } catch (error) {
         console.error('Error during login:', error)
         this.showError = true
+        this.errorMessage = 'There is a problem. Please try again later.'
+      }
+      if (this.showError) {
         setTimeout(() => {
           this.showError = false
         }, 3000)

@@ -49,11 +49,10 @@ const router = createRouter({
   routes
 })
 
-// Add a navigation guard to protect routes that require authentication
+// guard
 router.beforeEach((to, from, next) => {
-  // Check if the route requires authentication
   if (to.meta.requiresAuth) {
-    // Check if the user is authenticated
+    // Check case
     const isAuthenticated = localStorage.getItem('isAuthenticated')
     if (isAuthenticated) {
       next()
