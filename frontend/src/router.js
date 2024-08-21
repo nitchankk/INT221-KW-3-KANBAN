@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import App from './App.vue'
 import TaskList from './components/TaskList.vue'
 import StatusList from './v2/StatusList.vue'
 import Login from './v3/Login.vue'
@@ -36,7 +35,7 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/task'
   },
   {
     path: '/:pathMatch(.*)*',
@@ -51,9 +50,15 @@ const router = createRouter({
 
 // guard
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    // Check case
-    const isAuthenticated = localStorage.getItem('isAuthenticated')
+  const isAuthenticated = localStorage.getItem('isAuthenticated')
+
+  if (to.name === 'loginView') {
+    if (isAuthenticated) {
+      next('/task')
+    } else {
+      next()
+    }
+  } else if (to.meta.requiresAuth) {
     if (isAuthenticated) {
       next()
     } else {

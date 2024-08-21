@@ -4,16 +4,16 @@
       <h1 class="title">Login</h1>
       <form @submit.prevent="login">
         <div class="input-group">
-          <input type="text" v-model="username" required />
+          <input type="text" v-model="username" maxlength="50" required />
           <label>Username</label>
           <span class="highlight"></span>
         </div>
         <div class="input-group">
-          <input type="password" v-model="password" required />
+          <input type="password" v-model="password" maxlength="14" required />
           <label>Password</label>
           <span class="highlight"></span>
         </div>
-        <button type="submit" class="login-btn">
+        <button type="submit" class="login-btn" :disabled="isSignInDisabled">
           <span>Login</span>
           <svg viewBox="0 0 24 24">
             <path
@@ -25,7 +25,7 @@
     </div>
     <div v-if="showError" class="error-toast">
       <p>Error</p>
-      <p>{{ errorMessage }}.</p>
+      <p>{{ errorMessage }}</p>
     </div>
   </div>
 </template>
@@ -42,7 +42,8 @@ export default {
     return {
       username: '',
       password: '',
-      showError: false
+      showError: false,
+      errorMessage: '' // Initialize errorMessage
     }
   },
   methods: {
@@ -64,10 +65,17 @@ export default {
           this.showError = false
           localStorage.setItem('isAuthenticated', 'true')
           this.$router.push('/task')
-        } else if ((response.status === 401) | (response.status === 400)) {
+        } else if (response.status === 401) {
           console.log('Login failed: Unauthorized')
           this.showError = true
-          this.errorMessage = 'Username or Password is incorrect.'
+          const { message } = await response.json()
+          this.errorMessage = message || 'Username or Password is incorrect.'
+        } else if (response.status === 400) {
+          console.log('Login failed: Bad request')
+          this.showError = true
+          const { message } = await response.json()
+          this.errorMessage =
+            message || 'There is a problem. Please try again later.'
         } else {
           console.log('Login failed: Other error', response.status)
           this.showError = true
@@ -78,11 +86,11 @@ export default {
         this.showError = true
         this.errorMessage = 'There is a problem. Please try again later.'
       }
-      if (this.showError) {
-        setTimeout(() => {
-          this.showError = false
-        }, 3000)
-      }
+    }
+  },
+  computed: {
+    isSignInDisabled() {
+      return this.username.trim() === '' || this.password.trim() === ''
     }
   }
 }
@@ -255,5 +263,17 @@ input:focus ~ .highlight {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.login-btn:disabled {
+  background: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.login-btn:disabled:hover {
+  background: #cccccc;
+  color: #666666;
+  box-shadow: none;
 }
 </style>
