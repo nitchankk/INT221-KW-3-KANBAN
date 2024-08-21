@@ -1,8 +1,11 @@
 <template>
   <div class="login-container">
     <div class="login-box">
-      <h1 class="title">Login</h1>
-      <form @submit.prevent="login">
+      <div class="login-header">
+        <h1 class="title">Welcome Back</h1>
+        <p class="subtitle">Please sign in to your account</p>
+      </div>
+      <form @submit.prevent="login" class="login-form">
         <div class="input-group">
           <input type="text" v-model="username" maxlength="50" required />
           <label>Username</label>
@@ -14,7 +17,7 @@
           <span class="highlight"></span>
         </div>
         <button type="submit" class="login-btn" :disabled="isSignInDisabled">
-          <span>Login</span>
+          <span>Sign In</span>
           <svg viewBox="0 0 24 24">
             <path
               d="M4,12V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V12A2,2 0 0,0 18,10H6A2,2 0 0,0 4,12M6,12H18V20H6V12M12,2A2,2 0 0,1 14,4V8H10V4A2,2 0 0,1 12,2Z"
@@ -43,7 +46,7 @@ export default {
       username: '',
       password: '',
       showError: false,
-      errorMessage: '' // Initialize errorMessage
+      errorMessage: ''
     }
   },
   methods: {
@@ -65,17 +68,10 @@ export default {
           this.showError = false
           localStorage.setItem('isAuthenticated', 'true')
           this.$router.push('/task')
-        } else if (response.status === 401) {
+        } else if (response.status === 401 || response.status === 400) {
           console.log('Login failed: Unauthorized')
           this.showError = true
-          const { message } = await response.json()
-          this.errorMessage = message || 'Username or Password is incorrect.'
-        } else if (response.status === 400) {
-          console.log('Login failed: Bad request')
-          this.showError = true
-          const { message } = await response.json()
-          this.errorMessage =
-            message || 'There is a problem. Please try again later.'
+          this.errorMessage = 'Username or Password is incorrect.'
         } else {
           console.log('Login failed: Other error', response.status)
           this.showError = true
@@ -85,6 +81,11 @@ export default {
         console.error('Error during login:', error)
         this.showError = true
         this.errorMessage = 'There is a problem. Please try again later.'
+      }
+      if (this.showError) {
+        setTimeout(() => {
+          this.showError = false
+        }, 3000)
       }
     }
   },
@@ -102,53 +103,94 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-
-body {
   background: linear-gradient(-45deg, #e7886a, #e47ba3, #67abc4, #68c7b1);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
-  height: 100vh;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .login-box {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 40px;
   backdrop-filter: blur(20px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .title {
   color: #ffffff;
   font-size: 2.5em;
-  margin-bottom: 30px;
-  text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.subtitle {
+  color: #ffffff;
+  font-size: 1.2em;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
 }
 
 .input-group {
   position: relative;
   margin-bottom: 30px;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: fadeInLeft 0.5s ease-out forwards;
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 input {
   font-size: 16px;
   padding: 10px 10px 10px 5px;
   display: block;
-  width: 300px;
+  width: 100%;
   border: none;
   border-bottom: 1px solid #ffffff;
   background: transparent;
@@ -205,7 +247,7 @@ input:focus ~ .highlight {
   background: #ffffff;
   color: #667eea;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
   border-radius: 25px;
   cursor: pointer;
@@ -213,7 +255,9 @@ input:focus ~ .highlight {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease-out 0.6s forwards;
 }
 
 .login-btn:hover {
@@ -236,7 +280,7 @@ input:focus ~ .highlight {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #ffcccb; /* Pastel red */
+  background-color: #ffcccb;
   color: #d8000c;
   padding: 15px 20px;
   border-radius: 5px;
@@ -275,5 +319,17 @@ input:focus ~ .highlight {
   background: #cccccc;
   color: #666666;
   box-shadow: none;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style>
