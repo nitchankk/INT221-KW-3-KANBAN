@@ -108,9 +108,9 @@ const statusStyle = (status) => {
     case 'IN PROGRESS':
       return { background: 'linear-gradient(to right, #FFB347, #FFA733)' }
     case 'REVIEWING':
-      return { background: 'linear-gradient(to right, #FFB6C1, #FF69B4)' } 
+      return { background: 'linear-gradient(to right, #FFB6C1, #FF69B4)' }
     case 'TESTING':
-      return { background: 'linear-gradient(to right, #ADD8E6, #87CEEB)' } 
+      return { background: 'linear-gradient(to right, #ADD8E6, #87CEEB)' }
     default:
       return { background: 'linear-gradient(to right, #A0CED9, #6CBEE6)' }
   }
@@ -121,14 +121,14 @@ const statusStyle = (status) => {
   <div>
     <div id="app">
       <h2 class="heading">Status Manager</h2>
-      <div class="back-home">
+      <!-- <div class="back-home">
         <button
           @click="backToHomePage"
           class="btn-hover color itbkk-button-home"
         >
           Home
         </button>
-      </div>
+      </div> -->
       <div class="table-container">
         <table>
           <thead>

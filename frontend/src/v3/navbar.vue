@@ -2,12 +2,14 @@
   <nav class="navbar">
     <div class="navbar-content">
       <div class="logo-container">
-        <img src="@/assets/KANBANLOGO.png" alt="Kanban Logo" class="logo" />
+        <router-link to="/task">
+          <img src="../assets/KANBANLOGO.png" alt="KANBAN Logo" class="logo" />
+        </router-link>
       </div>
       <div class="user-actions">
         <div class="user-info">
           <img src="../assets/user.png" alt="User Avatar" class="user-avatar" />
-          <span class="username">{{ username }}</span>
+          <span class="username itbkk-fullname">{{ username }}</span>
         </div>
         <button @click="toggleDropdown" class="menu-btn" aria-label="User Menu">
           <svg

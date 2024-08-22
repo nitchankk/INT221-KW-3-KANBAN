@@ -257,14 +257,14 @@ onMounted(() => {
   <div>
     <h1 class="heading">Task List</h1>
     <div id="app">
-      <div class="manage-status">
+      <!-- <div class="manage-status">
         <button
           @click="goToStatusManagement"
           class="btn-hover color itbkk-manage-status"
         >
           Manage Status
         </button>
-      </div>
+      </div> -->
       <div class="table-container">
         <table class="table">
           <thead>

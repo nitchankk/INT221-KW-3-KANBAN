@@ -7,16 +7,33 @@
       </div>
       <form @submit.prevent="login" class="login-form">
         <div class="input-group">
-          <input type="text" v-model="username" maxlength="50" required />
+          <input
+            type="text"
+            v-model="username"
+            class="itbkk-username"
+            maxlength="50"
+            required
+          />
           <label>Username</label>
           <span class="highlight"></span>
         </div>
         <div class="input-group">
-          <input type="password" v-model="password" maxlength="14" required />
+          <input
+            type="password"
+            v-model="password"
+            class="itbkk-password"
+            maxlength="14"
+            required
+          />
           <label>Password</label>
           <span class="highlight"></span>
         </div>
-        <button type="submit" class="login-btn" :disabled="isSignInDisabled">
+        <button
+          type="submit"
+          class="login-btn itbkk-button-signin"
+          :class="{ disabled: isSignInDisabled }"
+          :disabled="isSignInDisabled"
+        >
           <span>Sign In</span>
           <svg viewBox="0 0 24 24">
             <path
@@ -28,7 +45,7 @@
     </div>
     <div v-if="showError" class="error-toast">
       <p>Error</p>
-      <p>{{ errorMessage }}</p>
+      <p class="itbkk-message">{{ errorMessage }}</p>
     </div>
   </div>
 </template>
@@ -330,7 +347,6 @@ input:focus ~ .highlight {
 .login-btn:disabled {
   background: #cccccc;
   color: #666666;
-  cursor: not-allowed;
 }
 
 .login-btn:disabled:hover {
