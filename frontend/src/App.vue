@@ -1,8 +1,12 @@
 <template>
-  <RouterView />
+  <div id="app">
+    <Navbar />
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
+import Navbar from './v3/navbar.vue'
 </script>
 
 <style>
@@ -12,6 +16,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 </style>

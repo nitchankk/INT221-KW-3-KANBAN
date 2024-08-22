@@ -119,9 +119,8 @@ const statusStyle = (status) => {
 
 <template>
   <div>
-    <h1 class="heading">IT Bangmod Kradan Kanban by kw-3</h1>
     <div id="app">
-      <h2 class="subheading">Status Manager</h2>
+      <h2 class="heading">Status Manager</h2>
       <div class="back-home">
         <button
           @click="backToHomePage"
@@ -250,7 +249,7 @@ const statusStyle = (status) => {
 
 .heading {
   text-align: center;
-  font-size: 48px;
+  font-size: 43px;
   font-weight: bold;
   color: #fff;
   margin-bottom: 10px;
@@ -299,7 +298,7 @@ table {
 }
 
 thead {
-  background-color: #d3e7fc;
+  background-color: #ffffff;
 }
 
 th,

@@ -255,8 +255,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <h1 class="heading">IT Bangmod Kradan Kanban by kw-3</h1>
-    <h2 class="subheading">Task List</h2>
+    <h1 class="heading">Task List</h1>
     <div id="app">
       <div class="manage-status">
         <button
@@ -467,7 +466,7 @@ onMounted(() => {
 
 .heading {
   text-align: center;
-  font-size: 48px;
+  font-size: 45px;
   font-weight: bold;
   color: #fff;
   margin-bottom: 10px;
@@ -497,11 +496,12 @@ onMounted(() => {
 
 .table-container {
   margin: 0 auto;
-  width: 100%;
+  width: 1100px;
   max-width: 1700px;
   overflow-x: hidden;
   border-radius: 8px;
   font-size: 19px;
+  color: #333;
 }
 
 .table {
@@ -513,7 +513,7 @@ onMounted(() => {
 
 .table th,
 .table td {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ffffff;
   padding: 12px;
   text-align: left;
   height: 40px;
@@ -523,7 +523,7 @@ onMounted(() => {
 }
 
 .table th {
-  background-color: #d3e7fc;
+  background-color: #ffffff;
   font-weight: bold;
 }
 
