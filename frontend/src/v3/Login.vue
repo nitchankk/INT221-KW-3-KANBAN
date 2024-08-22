@@ -35,6 +35,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
+import VueJwtDecode from 'vue-jwt-decode'
 
 export default {
   setup() {
@@ -64,9 +65,17 @@ export default {
         })
 
         if (response.status === 200) {
+          const data = await response.json()
           console.log('Login successful')
           this.showError = false
           localStorage.setItem('isAuthenticated', 'true')
+
+          // เก็บ token
+          if (data.access_token) {
+            this.decodeAndLogToken(data.access_token)
+            localStorage.setItem('token', data.access_token)
+          }
+
           this.$router.push('/task')
         } else if (response.status === 401 || response.status === 400) {
           console.log('Login failed: Unauthorized')
@@ -86,6 +95,14 @@ export default {
         setTimeout(() => {
           this.showError = false
         }, 3000)
+      }
+    },
+    decodeAndLogToken(token) {
+      try {
+        const decodedToken = VueJwtDecode.decode(token)
+        console.log('Decoded token:', decodedToken)
+      } catch (error) {
+        console.error('Error decoding token:', error)
       }
     }
   },

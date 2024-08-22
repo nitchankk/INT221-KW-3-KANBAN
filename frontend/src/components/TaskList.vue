@@ -104,7 +104,6 @@ const sortedTasks = computed(() => {
 })
 
 const filteredTasks = computed(() => {
-  console.log('Filtering tasks...')
   if (selectedStatuses.value.length > 0) {
     return sortedTasks.value.filter((task) =>
       selectedStatuses.value.includes(task.statusName)
