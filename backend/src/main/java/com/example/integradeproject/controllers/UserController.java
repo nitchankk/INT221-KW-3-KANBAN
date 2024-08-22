@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = {"http://ip23kw3.sit.kmutt.ac.th", "http://intproj23.sit.kmutt.ac.th" ,"http://localhost:5173"})
+@CrossOrigin(origins = {"http://ip23kw3.sit.kmutt.ac.th", "http://intproj23.sit.kmutt.ac.th", "http://localhost:5173"})
 @AllArgsConstructor
 public class UserController {
 
@@ -49,7 +49,7 @@ public class UserController {
 
         // If there are validation errors, return them all
         if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(String.join(", ", errors));
+            return ResponseEntity.badRequest().body(Map.of("message", String.join(", ", errors)));
         }
 
         // If validation passes, proceed with authentication
@@ -60,7 +60,7 @@ public class UserController {
             String token = jwtTokenUtil.generateToken(user);
             return ResponseEntity.ok(Map.of("access_token", token));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("The username or password is incorrect.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "The username or password is incorrect."));
         }
     }
 }

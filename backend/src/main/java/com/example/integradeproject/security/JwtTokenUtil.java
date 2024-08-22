@@ -21,8 +21,8 @@ public class JwtTokenUtil {
 
     @PostConstruct
     public void init() {
-        // Generate a secure key for HS512
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        // Generate a secure key for HS256
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public String generateToken(User user) {
@@ -33,13 +33,15 @@ public class JwtTokenUtil {
         information.put("role", user.getRole());
 
         return Jwts.builder()
+                .setHeaderParam("typ", "JWT") // Explicitly set the token type as JWT
                 .setClaims(information)
                 .setIssuer("https://intproj23.sit.kmutt.ac.th/kw3/") // Set the correct issuer
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                .signWith(secretKey)
+                .signWith(secretKey) // Sign with HS256
                 .compact();
     }
+
     public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
