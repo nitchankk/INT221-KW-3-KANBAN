@@ -65,7 +65,9 @@ const navigate = () => {
 
 const logout = () => {
   console.log('Logging out...')
+  localStorage.clear()
   showDropdown.value = false
+  router.push({ name: 'loginView' })
 }
 </script>
 
