@@ -42,7 +42,7 @@
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
-const username = ref('John Doe')
+const username = localStorage.getItem('username')
 const showDropdown = ref(false)
 
 const router = useRouter()

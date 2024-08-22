@@ -100,6 +100,7 @@ export default {
     decodeAndLogToken(token) {
       try {
         const decodedToken = VueJwtDecode.decode(token)
+        localStorage.setItem('username', decodedToken.name)
         console.log('Decoded token:', decodedToken)
       } catch (error) {
         console.error('Error decoding token:', error)
