@@ -120,294 +120,365 @@ const statusStyle = (status) => {
 <template>
   <div>
     <div id="app">
-      <h2 class="heading">Status Manager</h2>
-      <!-- <div class="back-home">
-        <button
-          @click="backToHomePage"
-          class="btn-hover color itbkk-button-home"
-        >
-          Home
-        </button>
-      </div> -->
       <div class="table-container">
-        <table>
+        <table class="table header-table">
           <thead>
             <tr>
-              <th style="width: 40px; text-align: center" class="add-icon">
-                <button
-                  @click="openAddModal"
-                  style="border: none; background: none; padding: 0"
-                  class="itbkk-button-add"
-                >
-                  <img
-                    src="../assets/add-status.png"
-                    alt="Add Icon"
-                    style="width: 25px; height: 25px"
-                  />
+              <th class="itbkk-button-add" style="text-align: center">
+                <button @click="openAddModal" class="icon-button add-button">
+                  <i class="fas fa-plus-circle"></i>
                 </button>
               </th>
-              <th style="width: 150px">Name</th>
-              <th style="width: 400px">Description</th>
-              <th style="width: 80px">Action</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th style="width: 100px">
+                <i
+                  class="fas fa-ellipsis-h"
+                  style="
+                    width: 25px;
+                    height: 25px;
+                    display: block;
+                    margin: 0 auto;
+                    margin-top: 10px;
+                  "
+                ></i>
+              </th>
             </tr>
           </thead>
-          <tbody>
-            <tr
-              v-for="(status, index) in statuses"
-              :key="status.id"
-              class="itbkk-item"
-            >
-              <td class="itbkk-status" style="text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td
-                class="itbkk-status-name"
-                :style="statusStyle(status.statusName)"
+        </table>
+        <div class="body-container">
+          <table class="table body-table">
+            <tbody>
+              <tr
+                v-for="(status, index) in statuses"
+                :key="status.id"
+                class="itbkk-item"
               >
-                {{ status.statusName }}
-              </td>
-              <td class="itbkk-status-description" style="text-align: left">
-                <span
-                  v-if="status.statusDescription"
-                  v-html="status.statusDescription"
-                ></span>
-                <span
-                  v-else
-                  class="no-description"
-                  style="font-style: italic; color: #808080"
-                  >No description provided</span
+                <td class="border px-4 py-2" style="text-align: center">
+                  {{ index + 1 }}
+                </td>
+                <td
+                  class="itbkk-status-name"
+                  :style="statusStyle(status.statusName)"
                 >
-              </td>
-              <td>
-                <div class="action-buttons">
-                  <button class="itbkk-button-action">
+                  {{ status.statusName }}
+                </td>
+                <td class="itbkk-status-description">
+                  <span
+                    v-if="status.statusDescription"
+                    v-html="status.statusDescription"
+                  ></span>
+                  <span v-else class="no-description"
+                    >No description provided</span
+                  >
+                </td>
+                <td class="border px-4 py-2" style="width: 100px">
+                  <div class="action-buttons">
                     <button
-                      style="margin-right: 15px"
-                      class="itbkk-button-edit"
+                      class="icon-button edit-button"
                       @click="openEditModal(status)"
                     >
-                      <img
-                        src="../assets/pencil.png"
-                        alt="EditStatus"
-                        class="action-icon"
-                      />
+                      <i class="fas fa-edit"></i>
                     </button>
                     <button
-                      class="itbkk-button-delete"
+                      class="icon-button delete-button"
                       @click="checkTasksBeforeDelete(status)"
                     >
-                      <img
-                        src="../assets/delete-status.png"
-                        alt="DeleteStatus"
-                        class="action-icon"
-                      />
+                      <i class="fas fa-trash-alt"></i>
                     </button>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
+    <!-- Modals -->
     <AddStatusModal
       :isAddOpen="isAddOpen"
       @closeModal="closeModal"
       @statusAdded="handleStatusAdded"
-    >
-    </AddStatusModal>
+    />
     <EditStatusModal
       :isOpen="isEditOpen"
       @closeModal="closeModal"
       @statusEdited="handleStatusEdited"
       :statusData="selectedStatus"
       :selectedStatusIdToEdit="selectedStatusIdToEdit"
-    >
-    </EditStatusModal>
+    />
     <DeleteStatusModal
       :isOpen="isDeleteOpen"
       @closeModal="closeModal"
       @statusDeleted="handleDelete"
       :statusIdToDelete="selectedStatusIdToDelete"
-    >
-    </DeleteStatusModal>
+    />
     <TransferStatusModal
       :isOpen="isTransferOpen"
       @closeModal="closeModal"
       @statusTransfered="handleTransfer"
       :statusIdToTransfer="selectedStatusIdToTransfer"
-    >
-    </TransferStatusModal>
+    />
+
+    <div class="fab" @click="backToHomePage">
+      <i class="fa fa-home"></i>
+    </div>
   </div>
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Montserrat:wght@700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  color: #343a40;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Montserrat', sans-serif;
+}
+
 #app {
-  width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-}
-
-.heading {
-  text-align: center;
-  font-size: 43px;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  animation: glow 2s infinite alternate;
-}
-
-.subheading {
-  text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  color: #fff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 2px 2px 4px rgba(59, 192, 233, 0.747);
-  }
-  to {
-    text-shadow: 4px 4px 8px rgba(230, 70, 245, 0.8);
-  }
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 .table-container {
   margin: 0 auto;
-  width: 80%;
-  max-width: 1500px;
-  border-radius: 8px;
-  overflow-x: hidden;
-  font-size: 19px;
+  width: 1000px;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #343a40;
+  background: #ffffff;
+  border: 2px solid #ff6b6b;
+  box-shadow: 0 8px 32px 0 rgba(255, 107, 107, 0.2);
+  overflow: hidden;
 }
 
-h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
-
-table {
+.header-table {
   width: 100%;
-  border-collapse: collapse;
-  border-radius: 8px;
+  table-layout: fixed;
 }
 
-thead {
+.body-container {
+  max-height: calc(70px * 10);
+  overflow-y: auto;
+}
+
+.body-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  table-layout: fixed;
   background-color: #ffffff;
+  overflow: hidden;
 }
 
-th,
-td {
-  padding: 12px;
-  border: 1px solid #e2e8f0;
+.table th,
+.table td {
+  border: none;
+  padding: 8px;
   text-align: left;
-  height: 40px;
+  height: 30px;
   word-wrap: break-word;
   word-break: break-all;
   white-space: normal;
 }
 
-th {
+.table th {
+  background-color: #ff6b6b;
   font-weight: bold;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 tbody tr:nth-child(even) {
-  background-color: #ffedf7ea;
+  background-color: #ffe3e3;
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #daf6f8cb;
+  background-color: #ffffff;
 }
 
 tbody tr:hover {
-  background-color: #acc1ca;
+  background-color: #ffccd5;
+  transition: background-color 0.3s ease;
+}
+
+.itbkk-status-name {
+  padding: 5px 8px;
+  border-radius: 15px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 0.7em;
 }
 
 .action-buttons {
   text-align: center;
 }
 
-.itbkk-button-action {
+.icon-button {
+  border: none;
   background: none;
-  border: none;
-  padding: 0;
+  padding: 5px;
+  font-size: 1.2em;
+  color: #ffffff;
   cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.action-icon {
-  width: 25px;
-  height: 25px;
-  display: block;
-  margin: 0 auto;
+.icon-button:hover {
+  color: #353b41;
+  transform: scale(1.1);
 }
 
-.back-home {
+.icon-button:active {
+  transform: scale(0.9);
+}
+
+.add-button {
+  font-size: 1.5em;
+}
+
+.edit-button {
+  color: #f06542;
+}
+.delete-button {
+  color: #d33131;
+}
+
+.add-button:hover {
+  animation: pulse 1s infinite;
+}
+
+.edit-button:hover {
+  animation: rotate 0.5s ease;
+}
+
+.delete-button:hover {
+  animation: wobble 0.5s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: translateX(0%);
+  }
+  15% {
+    transform: translateX(-25%) rotate(-5deg);
+  }
+  30% {
+    transform: translateX(20%) rotate(3deg);
+  }
+  45% {
+    transform: translateX(-15%) rotate(-3deg);
+  }
+  60% {
+    transform: translateX(10%) rotate(2deg);
+  }
+  75% {
+    transform: translateX(-5%) rotate(-1deg);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.no-description {
+  font-style: italic;
+  color: #808080;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7f7f7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #ff6b6b, #f06543);
+  border-radius: 5px;
+}
+
+@media (min-width: 769px) {
+  .body-container {
+    height: calc(40px * 10);
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    width: 95%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+
+  .icon-button {
+    font-size: 1em;
+  }
+}
+
+.fab {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-  text-align: right;
-  margin: 10px;
-}
-
-.add-icon button:hover {
-  transform: translateY(1px);
-}
-
-.add-icon button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-button-action button:hover {
-  transform: translateY(1px);
-}
-
-.itbkk-button-action button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-hover {
-  width: 130px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
   height: 60px;
-  text-align: center;
-  border: none;
-  background-size: 300% 100%;
-  border-radius: 50px;
-  -o-transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(45deg, #ff6b6b, #f06543);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.btn-hover:hover {
-  background-position: 100% 0;
-  -o-transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
-}
-
-.btn-hover:focus {
-  outline: none;
-}
-
-.btn-hover.color {
-  background-image: linear-gradient(
-    to right,
-    #1ac47a,
-    #4ecca4,
-    #31e990,
-    #3fc082
-  );
-  box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
+.fab:hover {
+  transform: scale(1.1) rotate(360deg);
 }
 </style>

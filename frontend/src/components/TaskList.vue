@@ -260,7 +260,7 @@ onMounted(() => {
         <table class="table header-table">
           <thead>
             <tr>
-              <th class="itbkk-button-add" style="text-align: center">
+              <!-- <th class="itbkk-button-add" style="text-align: center">
                 <button
                   @click="handleAddTask"
                   style="border: none; background: none; padding: 0"
@@ -271,21 +271,34 @@ onMounted(() => {
                     style="width: 30px; height: 30px"
                   />
                 </button>
+              </th> -->
+
+              <th class="itbkk-button-add" style="text-align: center">
+                <button @click="handleAddTask" class="icon-button add-button">
+                  <i class="fas fa-plus-circle"></i>
+                </button>
               </th>
               <th>
                 Title
-                <button @click="openFilterModal" class="itbkk-filter-status">
+                <!-- <button @click="openFilterModal" class="itbkk-filter-status">
                   <img
                     src="../assets/filter.png"
                     alt="filter Icon"
                     style="width: 20px; height: 20px"
                   />
+                </button> -->
+
+                <button
+                  @click="openFilterModal"
+                  class="icon-button filter-button"
+                >
+                  <i class="fas fa-filter"></i>
                 </button>
               </th>
               <th>Assignees</th>
               <th style="position: relative">
                 Status
-                <button
+                <!-- <button
                   @click="sortTasksByStatus"
                   class="itbkk-button-sort"
                   style="
@@ -315,9 +328,25 @@ onMounted(() => {
                     src="../assets/desc.png"
                     alt="Sort Descending Icon"
                   />
+                </button> -->
+
+                <button
+                  @click="sortTasksByStatus"
+                  class="icon-button sort-button"
+                >
+                  <i
+                    :class="[
+                      'fas',
+                      sortOrder === 0
+                        ? 'fa-sort'
+                        : sortOrder === 1
+                        ? 'fa-sort-up'
+                        : 'fa-sort-down'
+                    ]"
+                  ></i>
                 </button>
               </th>
-              <th style="width: 100px">
+              <!-- <th style="width: 100px">
                 <img
                   src="../assets/menu-bar.png"
                   alt="Action Icon"
@@ -328,6 +357,19 @@ onMounted(() => {
                     margin: 0 auto;
                   "
                 />
+              </th> -->
+
+              <th style="width: 100px">
+                <i
+                  class="fas fa-ellipsis-h"
+                  style="
+                    width: 25px;
+                    height: 25px;
+                    display: block;
+                    margin: 0 auto;
+                    margin-top: 10px;
+                  "
+                ></i>
               </th>
             </tr>
           </thead>
@@ -365,7 +407,7 @@ onMounted(() => {
                 <td class="border px-4 py-2" style="width: 100px">
                   <div class="action-buttons">
                     <button class="itbkk-button-action">
-                      <button
+                      <!--<button
                         @click="openEditModal(task.taskId)"
                         style="
                           border: none;
@@ -391,6 +433,20 @@ onMounted(() => {
                           alt="Delete Icon"
                           style="width: 30px; height: 30px"
                         />
+                      </button>
+                    -->
+
+                      <button
+                        @click="openEditModal(task.taskId)"
+                        class="icon-button edit-button"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        @click="openDeleteModal(task.taskId)"
+                        class="icon-button delete-button"
+                      >
+                        <i class="fas fa-trash-alt"></i>
                       </button>
                     </button>
                   </div>
@@ -617,6 +673,132 @@ tbody tr:hover {
   transform: scale(0.95);
 }
 
+.icon-button {
+  border: none;
+  background: none;
+  padding: 5px;
+  font-size: 1.2em;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.icon-button:hover {
+  color: #353b41;
+  transform: scale(1.1);
+}
+
+.icon-button:active {
+  transform: scale(0.9);
+}
+
+.add-button {
+  font-size: 1.5em;
+}
+
+.add-button:hover {
+  animation: pulse 1s infinite;
+}
+
+.filter-button {
+  margin-left: 10px;
+}
+
+.filter-button:hover {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.sort-button:hover {
+  animation: flip 0.6s ease;
+}
+
+.edit-button {
+  color: #f06542;
+}
+.delete-button {
+  color: #d33131;
+}
+.edit-button:hover {
+  animation: rotate 0.5s ease;
+}
+
+.delete-button:hover {
+  animation: wobble 0.5s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: perspective(400px) rotateY(0);
+  }
+  100% {
+    transform: perspective(400px) rotateY(180deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: translateX(0%);
+  }
+  15% {
+    transform: translateX(-25%) rotate(-5deg);
+  }
+  30% {
+    transform: translateX(20%) rotate(3deg);
+  }
+  45% {
+    transform: translateX(-15%) rotate(-3deg);
+  }
+  60% {
+    transform: translateX(10%) rotate(2deg);
+  }
+  75% {
+    transform: translateX(-5%) rotate(-1deg);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
 .fab {
   position: fixed;
   bottom: 30px;
@@ -662,7 +844,7 @@ tbody tr:hover {
 
 @media (min-width: 769px) {
   .body-container {
-    height: calc(70px * 10);
+    height: calc(40px * 10);
   }
 }
 @media (max-width: 768px) {

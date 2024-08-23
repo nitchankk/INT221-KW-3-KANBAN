@@ -6,9 +6,10 @@
           <img src="../assets/KANBANLOGO.png" alt="KANBAN Logo" class="logo" />
         </router-link>
       </div>
+
       <div class="user-actions">
         <div class="user-info">
-          <img src="../assets/user.png" alt="User Avatar" class="user-avatar" />
+          <i class="fa fa-user user-avatar" aria-hidden="true"></i>
           <span class="username itbkk-fullname">{{ username }}</span>
         </div>
         <button @click="toggleDropdown" class="menu-btn" aria-label="User Menu">
@@ -86,6 +87,7 @@ const logout = () => {
 
 .navbar-content {
   max-width: 1200px;
+  height: 40px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -121,11 +123,13 @@ const logout = () => {
 }
 
 .user-avatar {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  margin-top: 20px;
+  color: #e74c3c;
 }
 
 .user-avatar:hover {
