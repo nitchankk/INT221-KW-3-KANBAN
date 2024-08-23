@@ -255,24 +255,12 @@ onMounted(() => {
 
 <template>
   <div>
-    <h1 class="heading">Task List</h1>
     <div id="app">
-      <!-- <div class="manage-status">
-        <button
-          @click="goToStatusManagement"
-          class="btn-hover color itbkk-manage-status"
-        >
-          Manage Status
-        </button>
-      </div> -->
       <div class="table-container">
-        <table class="table">
+        <table class="table header-table">
           <thead>
             <tr>
-              <th
-                class="itbkk-button-add"
-                style="width: 50px; text-align: center"
-              >
+              <th class="itbkk-button-add" style="text-align: center">
                 <button
                   @click="handleAddTask"
                   style="border: none; background: none; padding: 0"
@@ -284,18 +272,18 @@ onMounted(() => {
                   />
                 </button>
               </th>
-              <th style="width: 400px">
+              <th>
                 Title
                 <button @click="openFilterModal" class="itbkk-filter-status">
                   <img
                     src="../assets/filter.png"
                     alt="filter Icon"
-                    style="width: 25px; height: 25px"
+                    style="width: 20px; height: 20px"
                   />
                 </button>
               </th>
-              <th style="width: 200px">Assignees</th>
-              <th style="width: 120px; position: relative">
+              <th>Assignees</th>
+              <th style="position: relative">
                 Status
                 <button
                   @click="sortTasksByStatus"
@@ -308,6 +296,8 @@ onMounted(() => {
                     border: none;
                     background: none;
                     padding: 0;
+                    width: 30px;
+                    height: 30px;
                   "
                 >
                   <img
@@ -327,7 +317,6 @@ onMounted(() => {
                   />
                 </button>
               </th>
-
               <th style="width: 100px">
                 <img
                   src="../assets/menu-bar.png"
@@ -342,71 +331,74 @@ onMounted(() => {
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr
-              v-for="(task, index) in filteredTasks"
-              :key="task.taskId"
-              class="itbkk-item"
-            >
-              <td class="border px-4 py-2" style="text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
-                {{ task.title }}
-              </td>
-              <td
-                class="border px-4 py-2 itbkk-assignees"
-                :style="{
-                  fontStyle: task.assignees ? 'normal' : 'italic',
-                  color: task.assignees ? 'black' : 'grey'
-                }"
-              >
-                {{ task.assignees || 'Unassigned' }}
-              </td>
-              <td
-                class="border px-4 py-2 itbkk-status"
-                :data-status="task.statusName"
-                :style="statusStyle(task.statusName)"
-              >
-                {{ getStatusLabel(task.statusName, statuses) }}
-              </td>
-              <td class="border px-4 py-2" style="width: 100px">
-                <div class="action-buttons">
-                  <button class="itbkk-button-action">
-                    <button
-                      @click="openEditModal(task.taskId)"
-                      style="
-                        border: none;
-                        background: none;
-                        padding: 0;
-                        margin-right: 10px;
-                      "
-                      class="itbkk-button-edit"
-                    >
-                      <img
-                        src="../assets/edit.png"
-                        alt="Edit Icon"
-                        style="width: 30px; height: 30px"
-                      />
-                    </button>
-
-                    <button
-                      @click="openDeleteModal(task.taskId)"
-                      style="border: none; background: none; padding: 0"
-                      class="itbkk-button-delete"
-                    >
-                      <img
-                        src="../assets/delete2.png"
-                        alt="Delete Icon"
-                        style="width: 30px; height: 30px"
-                      />
-                    </button>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
         </table>
+        <div class="body-container">
+          <table class="table body-table">
+            <tbody>
+              <tr
+                v-for="(task, index) in filteredTasks"
+                :key="task.taskId"
+                class="itbkk-item"
+              >
+                <td class="border px-4 py-2" style="text-align: center">
+                  {{ index + 1 }}
+                </td>
+                <td class="itbkk-title" @click="handleTaskClick(task.taskId)">
+                  {{ task.title }}
+                </td>
+                <td
+                  class="border px-4 py-2 itbkk-assignees"
+                  :style="{
+                    fontStyle: task.assignees ? 'normal' : 'italic',
+                    color: task.assignees ? 'black' : 'grey'
+                  }"
+                >
+                  {{ task.assignees || 'Unassigned' }}
+                </td>
+                <td
+                  class="border px-4 py-2 itbkk-status"
+                  :data-status="task.statusName"
+                  :style="statusStyle(task.statusName)"
+                >
+                  {{ getStatusLabel(task.statusName, statuses) }}
+                </td>
+                <td class="border px-4 py-2" style="width: 100px">
+                  <div class="action-buttons">
+                    <button class="itbkk-button-action">
+                      <button
+                        @click="openEditModal(task.taskId)"
+                        style="
+                          border: none;
+                          background: none;
+                          padding: 0;
+                          margin-right: 10px;
+                        "
+                        class="itbkk-button-edit"
+                      >
+                        <img
+                          src="../assets/edit.png"
+                          alt="Edit Icon"
+                          style="width: 30px; height: 30px"
+                        />
+                      </button>
+                      <button
+                        @click="openDeleteModal(task.taskId)"
+                        style="border: none; background: none; padding: 0"
+                        class="itbkk-button-delete"
+                      >
+                        <img
+                          src="../assets/delete2.png"
+                          alt="Delete Icon"
+                          style="width: 30px; height: 30px"
+                        />
+                      </button>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -441,6 +433,7 @@ onMounted(() => {
       :taskIndex="taskIndexToDelete"
       @deleted="handleTaskDeleted"
     />
+
     <edit-modal
       v-if="showEditModal"
       :task="taskToEdit"
@@ -448,6 +441,7 @@ onMounted(() => {
       :onTaskUpdated="onTaskUpdated"
       @editSuccess="handleEditSuccess"
     />
+
     <filter-modal
       v-if="showFilterModal"
       :statuses="statuses"
@@ -455,94 +449,122 @@ onMounted(() => {
       @applyFilter="applyFilter"
       @close="closeFilterModal"
     ></filter-modal>
+
+    <div class="fab" @click="goToStatusManagement">
+      <i class="fas fa-cog"></i>
+    </div>
   </div>
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Montserrat:wght@700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  color: #343a40;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Montserrat', sans-serif;
+}
+
 #app {
-  width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 .heading {
   text-align: center;
-  font-size: 45px;
+  font-size: 20px;
   font-weight: bold;
-  color: #fff;
+  color: #353b41;
   margin-bottom: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  animation: glow 2s infinite alternate;
-}
-
-.subheading {
-  text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  color: #fff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 2px 2px 4px rgba(59, 192, 233, 0.747);
-  }
-  to {
-    text-shadow: 4px 4px 8px rgba(230, 70, 245, 0.8);
-  }
+  margin-top: 10px;
+  font-family: 'Montserrat', sans-serif;
+  text-shadow: 2px 2px 4px rgba(255, 107, 107, 0.2);
 }
 
 .table-container {
   margin: 0 auto;
-  width: 1100px;
-  max-width: 1700px;
-  overflow-x: hidden;
-  border-radius: 8px;
-  font-size: 19px;
-  color: #333;
+  width: 800px; /* Reduced width */
+  border-radius: 10px;
+  font-size: 16px; /* Reduced font size */
+  color: #343a40;
+  background: #ffffff;
+  border: 2px solid #ff6b6b;
+  box-shadow: 0 8px 32px 0 rgba(255, 107, 107, 0.2);
+  overflow: hidden;
+}
+
+.header-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.body-container {
+  max-height: calc(70px * 10);
+  overflow-y: auto;
+}
+
+.body-table {
+  width: 100%;
+  table-layout: fixed;
 }
 
 .table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
-  border-radius: 8px;
   table-layout: fixed;
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
 .table th,
 .table td {
-  border: 1px solid #ffffff;
-  padding: 12px;
+  border: none;
+  padding: 8px; /* Reduced padding */
   text-align: left;
-  height: 40px;
+  height: 30px; /* Reduced height */
   word-wrap: break-word;
   word-break: break-all;
   white-space: normal;
 }
 
 .table th {
-  background-color: #ffffff;
+  background-color: #ff6b6b;
   font-weight: bold;
+  color: #ffffff;
+  font-size: 14px; /* Reduced font size */
 }
 
 tbody tr:nth-child(even) {
-  background-color: #ffedf7ea;
+  background-color: #ffe3e3;
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #daf6f8cb;
+  background-color: #ffffff;
 }
 
 tbody tr:hover {
-  background-color: #acc1ca;
+  background-color: #ffccd5;
+  transition: background-color 0.3s ease;
 }
 
 .itbkk-status {
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 5px 8px;
+  border-radius: 15px;
   text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 0.7em;
 }
 
 .action-buttons {
@@ -550,138 +572,156 @@ tbody tr:hover {
 }
 
 .action-button {
-  display: flex;
   border: none;
-  background: none;
-  padding: 0;
-  margin-right: 10px;
+  border-radius: 10px;
+  background: #f06543;
+  color: #ffffff;
+  padding: 10px;
+  transition: all 0.3s ease;
 }
 
-.manage-status {
+.action-button:active {
+  transform: scale(0.95);
+}
+
+.itbkk-item {
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.itbkk-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+}
+
+.itbkk-button-add button,
+.itbkk-button-action button,
+.itbkk-button-sort,
+.itbkk-filter-status {
+  transition: transform 0.2s ease;
+}
+
+.itbkk-button-add button:active,
+.itbkk-button-action button:active,
+.itbkk-button-sort:active,
+.itbkk-filter-status:active {
+  transform: scale(0.95);
+}
+
+.fab {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-  text-align: right;
-  margin: 10px;
-}
-
-.itbkk-button-add button:hover {
-  transform: translateY(1px);
-}
-
-.itbkk-button-add button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-button-action button:hover {
-  transform: translateY(1px);
-}
-
-.itbkk-button-action button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-button-sort {
-  width: 35px;
-  height: 35px;
-}
-
-.itbkk-button-sort button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-button-sort img {
-  width: 100%;
-  height: 100%;
-}
-
-.itbkk-button-sort img:hover {
-  transform: translateY(1px);
-}
-
-.itbkk-button-sort img:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-filter-status button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.itbkk-filter-status img {
-  width: 100%;
-  height: 100%;
-}
-
-.itbkk-filter-status img:hover {
-  transform: translateY(1px);
-}
-
-.itbkk-filter-status img:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-hover {
-  width: 130px;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
   height: 60px;
-  text-align: center;
-  border: none;
-  background-size: 300% 100%;
-  border-radius: 50px;
-  -o-transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
+  background: linear-gradient(45deg, #ff6b6b, #f06543);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.btn-hover:hover {
-  background-position: 100% 0;
-  -o-transition: all 0.4s ease-in-out;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
+.fab:hover {
+  transform: scale(1.1) rotate(90deg);
 }
 
-.btn-hover:focus {
-  outline: none;
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-.btn-hover.color {
-  background-image: linear-gradient(
-    to right,
-    #667eea,
-    #764ba2,
-    #6b8dd6,
-    #8e37d7
-  );
-  box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
-}
-</style>
-
-<style>
-body {
-  background: linear-gradient(-45deg, #e7886a, #e47ba3, #67abc4, #68c7b1);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-  height: 100vh;
+::-webkit-scrollbar-track {
+  background: #f7f7f7;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #ff6b6b, #f06543);
+  border-radius: 5px;
+}
+
+.modal {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  border: 2px solid #ff6b6b;
+  box-shadow: 0 8px 32px 0 rgba(255, 107, 107, 0.2);
+}
+
+@media (min-width: 769px) {
+  .body-container {
+    height: calc(70px * 10);
   }
-  50% {
-    background-position: 100% 50%;
+}
+@media (max-width: 768px) {
+  .task-list-container {
+    padding: 0.5rem;
   }
-  100% {
-    background-position: 0% 50%;
+
+  .table-container {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+
+  .column-assignees,
+  .column-status {
+    display: none;
+  }
+
+  .column-title {
+    width: 60%;
+  }
+
+  .column-actions {
+    width: 80px;
+  }
+
+  .fab {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .column-index {
+    display: none;
+  }
+
+  .column-title {
+    width: 70%;
+  }
+
+  .column-actions {
+    width: 60px;
+  }
+
+  .add-button img,
+  .filter-button img,
+  .sort-button img,
+  .action-button img {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>

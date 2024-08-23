@@ -24,5 +24,6 @@ const showNavbar = computed(() => {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+  background-color: #ffff;
 }
 </style>
